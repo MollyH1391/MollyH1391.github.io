@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="reset.CSS">
+</head>
+<style>
+    .menu {
+        width: 1200px;
+        height: 350px;
+        padding-top: 40px;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-image: url(/webpic/首頁圖.JPG);
+        background-size: contain;
+        font-family: sans-serif;
+        color: white;
+        text-decoration: none;
+    }
+
+    .menu .item {
+        /* width: 150px;
+        height: 50px; */
+        /* padding: 5px; */
+        margin: 5px;
+        /* border: white 1px; */
+        font-size: 14px;
+        text-decoration: none;
+        text-align: center;
+        color: floralwhite;
+        display: flex;
+        /* flex-direction: column; */
+    }
+
+    .menu span{
+        font-weight: bold;
+        font-size: 12px;
+        color: white;
+        text-decoration: none;
+    }
+
+    h1 {
+        font-weight: bold;
+        font-size: 30px;
+        margin: 10px;
+        color: white;
+        text-decoration: none;
+    }
+
+
+    .wrapinfo {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        font-family: sans-serif;
+    }
+
+    .wrapinfo .col {
+        width: 480px;
+        padding: 30px;
+        margin: 15px;
+        text-align: center;
+        line-height: 1.2;
+        /* border: 15px solid white; */
+    }
+
+    .wrapclassplan {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .wrapclassplan .col {
+        width: 210px;
+        padding: 15px;
+        margin: 30px;
+        /* position: relative; */
+        line-height: 1.2;
+    }
+
+    .wrapclassplan .col img {
+        display: block;
+        margin: auto;
+        height: 100px;
+        width: 100px;
+    }
+
+    .banner {
+        width: 1160px;
+        height: 50px;
+        padding: 20px;
+        margin: auto;
+        text-align: center;
+        background-color: darkblue;
+        color: white;
+        font-size: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .wraptools {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .wraptools .col {
+        width: 210px;
+        padding: 15px;
+        margin: 30px;
+        line-height: 1.2;
+    }
+
+    .wraptools .col img {
+        display: block;
+        margin: auto;
+    }
+
+    .wrapcoop {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .wrapcoop .col {
+        width: 210px;
+        padding: 15px;
+        margin: 30px;
+    }
+
+    .wrapcoop .col img {
+        display: block;
+        margin: auto;
+    }
+
+    .wrapcontact {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: rgb(241, 239, 239);
+    }
+
+    .wrapcontact .col {
+        width: 480px;
+        padding: 30px;
+        margin: 15px;
+        text-align: left;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .wrapcontact .col h3 {
+
+        text-align: left;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold
+    }
+
+    p {
+        text-align: left;
+        font-size: 18px;
+        padding: 30px;
+        margin: auto;
+    }
+
+    h3 {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
+
+    }
+
+
+
+    h4 {
+        text-align: center;
+        font-weight: bold;
+        /* font: size 18px; */
+        color: red;
+        padding: 8px;
+    }
+
+    .wraptools h4 {
+        text-align: center;
+        font-weight: bold;
+        color: black;
+        /* font: size 18px; */
+        padding: 8px;
+    }
+
+    li {
+        list-style-type: disc;
+        margin: 8px;
+
+    }
+</style>
+
+<header>
+    <nav class="menu">
+        <img src="/webpic/redB.webp" alt="BS" style="width: 3%;height: 12%;""><br><br>
+        <a href="#" class="logo"><h1> Build School <br> <span> developer career builder </span> </h1></a> 
+        
+        <a href=" #" class="item">台北班簡介</a>
+        <a href="#" class="item">新竹班簡介</a>
+        <a href="#" class="item">microsoft證照</a>
+        <a href="#" class="item">校友會-青築未來協會Build the future</a>
+        <a href="#" class="item">Blog</a>
+        <a href="#" class="item">歷屆老師</a>
+        <a href="#" class="item">問題洽詢</a>
+    </nav>
+</header>
+
+<body>
+
+    <article class="wrapinfo">
+        <section class="col">
+            <img src="/webpic/BS.JPG" alt="build school" width="100px" height="80px">
+            <h2>Build School <br><br>
+                /*我們的理念*/
+            </h2>
+            <p>
+                Build = 將程式碼編譯及建置成可執行的軟體 <br>
+                Build = 動手做 <br>
+                Build = 軟體開發職涯的打造者 <br>
+            </p>
+
+        </section>
+        <section class="col">
+            <h2>實作及就業導向的軟體開發學校</h2>
+            <p>
+                因應數位新時代的來臨，軟體、App、IoT
+                、SaaS、雲端平台的應用需求大爆炸，軟體工程師的招募需求持續上升，以2016年5月求職平台的統計資料，從高科技、電商、金融、傳產、網路服務、軟體資訊、新創等各行業，台灣至少有 27,000
+                位軟體開發工程師的職缺，甚至日本、新加坡等軟體及App
+                外商也來台灣求才。<br><br>為了彌補企業求才所需技能及實務教學上的落差，我們希望能幫助想搭上軟體開發及數位經濟這艘火箭的學員們，打造更有競爭力的職涯!
+                ​ </p>
+        </section>
+        <section class="col">
+            <h2>打造專案作品的學習方式 <br>
+
+                (Project-based Learning)</h2>
+            <p>透過身經百戰的實務講師、各大企業的資深軟體工程師或CTO，帶領學員實作一個真正能運作的產品開發，解決真實世界的問題，透過專題過程中的實作，培養解決問題的能力，這裏不只是程式教學或教育訓練，學的不只是技能，而是
+                Learn how to learn，以因應變化多端的軟體開發技能，及自主尋找解答的能力。</p>
+        </section>
+        <section class="col">
+            <img src="/webpic/動手實作.webp" alt="動手實作才是真學習"><br><br>
+            <h2>動手實作才是真學習</h2>
+
+        </section>
+        <section class="col">
+            <img src="/webpic/就業銜接.webp" alt="就業銜接"><br><br>
+            <h2>就業銜接</h2>
+
+        </section>
+        <section class="col">
+            <h2>真正企業職場所需技能 <br>
+
+                (Career Readiness)</h2>
+            <p>除了透過打造專題作品過程，學到了技術及硬技能外，不同於一般的軟體培訓，我們更加入了簡報技巧、履歷及面試準備、以及真正軟體開發的團隊溝通及運作，這些軟實力 (Soft-Skill)
+                的培養，讓學員能提早做好準備，在職場上成為一位專業的軟體工程師!</p>
+        </section>
+        <section class="col">
+            <h2>企業導師的連結 <br>
+
+                (Mentor Network)</h2>
+            <p>每一位在軟體開發上有實務經驗的企業導師，他們是各大企業的主管、資深軟體工程師或 CTO，其人際連結及資源將帶給同學更多更好的就業機會，你將比別人站得更高，看得更遠!</p>
+        </section>
+        <section class="col">
+            <img src="/webpic/連結及影響力.webp" alt="連結及影響力"><br><br>
+            <h2>連結及影響力</h2>
+
+        </section>
+    </article>
+
+    <section class="banner">
+        18 - 24週的實作及作品開發 - 從訓練、就業、到企業連結
+    </section>
+
+    <article class="wrapclassplan">
+
+        <section class="col">
+            <h3>第 1 - 4 個月</h3><br><br>
+            <img src="/webpic/第 1 - 4 個月.svg" alt="1-4M"><br><br>
+            <h4>程式基礎教學</h4>
+            <ul>
+                <li>業界實戰講師</li>
+                <li>企業主管/創業家/CTO 演講</li>
+            </ul>
+        </section>
+        <section class="col">
+            <h3>第 5 - 6 個月</h3><br><br>
+            <img src="/webpic/第 5 - 6 個月.svg" alt="5-6M"><br><br>
+            <h4>專案及作品導向實作</h4>
+            <ul>
+                <li>Web / App 作品開發 - 企業導師指導</li>
+                <li>不只是 Demo - 真實可運作成果</li>
+                <li>團隊開發 - 真實軟體開發團隊的運作及分工 (Agile敏捷, kanban 看板, CI 自動化建置)</li>
+            </ul>
+
+        </section>
+        <section class="col">
+            <h3>第 6 - 7 月</h3><br><br>
+            <img src="/webpic/第 6 - 7 月.svg" alt="6-7M"><br><br>
+            <h4>作品發表</h4>
+            <ul>
+                <li>簡報 Demo 及溝通技巧</li>
+                <li>作品及程式碼講解</li>
+                <li>個人履歷準備 – GitHub, CodePen …</li>
+            </ul>
+
+        </section>
+        <section class="col">
+            <h3>未來及展望</h3><br><br>
+            <img src="/webpic/未來及展望.webp" alt="future"><br><br>
+            <h4>就業及企業導師諮詢</h4>
+            <ul>
+                <li>就業媒合或未來職涯諮詢</li>
+                <li>企業導師 -人際連結及資源</li>
+            </ul>
+
+            </sect>
+    </article>
+
+    <section class="banner">
+        在課程及作品實作中，將採用這些工具 - 熟悉實務上軟體開發團隊的運作、分工及真實專案的流程
+    </section>
+
+    <article class="wraptools">
+        <section class="col">
+            <img src="/webpic/git.webp" alt="git"><br><br>
+            <img src="/webpic/gitlogo.webp" alt="gitlogo"><br><br>
+            <h4>版本控管及程式碼管理</h4>
+            <ul>
+                <li>學員之練習及作品之程式碼，皆採用主流的 Git 當版本控管，熟悉版控的各種操作及實務專案運用; 課程中公開之練習程式碼，提交至 GitHub 上，其它學員可參考或供講師 Code Review
+                    檢閱，並熟悉 Open Source 生態及工具</li>
+            </ul>
+        </section>
+        <section class="col">
+            <img src="/webpic/visualstudio.webp" alt="visualstudio"><br><br><br><br>
+            <img src="/webpic/trello.webp" alt="Trello"><br><br>
+            <h4>作品開發及團隊管理</h4>
+            <ul>
+                <li>除了使用 GitHub 外，專題開發階段也將使用 Microsoft Azure DevOps Services
+                    進行團隊開發、包括程式碼管理、工作項目追蹤、自動化建置等，熟悉一個軟體開發專案之流程、分工及日常工作。</li>
+                <li>也可透過目前許多開發團隊常用的專案管理及看板工具 - Trello 進行工作分派、追蹤、或整個班的工作事項管理</li>
+            </ul>
+        </section>
+        <section class="col">
+            <img src="/webpic/Azure.webp" alt="Azure"><br><br><br>
+            <img src="/webpic/sql.webp" alt="SQL"><br><br>
+            <h4>雲端平台及服務</h4>
+            <ul>
+                <li>雲端平台的使用已逐漸成為一個成熟軟體開發團隊之基礎，並讓開發、測試、佈署工作更加的便利及自動化。因此學員將使用 Microsoft Azure 當成作品及專案應用系統執行的雲端平台，包括 Azure
+                    App Service 建立網站服務、Azure SQL Database 建立資料庫服務</li>
+            </ul>
+        </section>
+        <section class="col">
+            <img src="/webpic/microsoft teams.webp" alt="microsoft teams"><br><br><br>
+            <img src="/webpic/slack.webp" alt="slack"><br><br>
+            <h4>團隊溝通協作及通知</h4>
+            <ul>
+                <li>課程過程中的線上討論、遠端溝通、或技術分享，將可透過 Microsoft Teams 或Slack 工具。另外練習的程式碼提交至 GitHub、或是 Trello 上的工作狀態更新，或是 Azure
+                    DevOps 上自動化建置的狀態，皆可發通知至 Microsoft Teams 或 Slack，透過自動化提升工作效率，並熟悉一個軟體開發團隊的協同合作</li>
+            </ul>
+        </section>
+    </article>
+
+    <section class="banner">
+        我們的講師及企業導師擁有在這些公司的工作經歷、擔任主管或資深工程師
+    </section>
+
+    <aside class="wrapcoop">
+        <div class="col">
+            <img src="/webpic/microsoft.webp" alt="microsoft"><br><br><br>
+            <img src="/webpic/twMVC.webp" alt="twMVC">
+        </div>
+        <div class="col">
+            <img src="/webpic/kingston.webp" alt="kingston"><br><br>
+            <img src="/webpic/trend.webp" alt="trend">
+        </div>
+        <div class="col">
+            <img src="/webpic/kerry.webp" alt="kerry"><br><br>
+            <img src="/webpic/gamania.webp" alt="gamania">
+        </div>
+        <div class="col">
+            <img src="/webpic/skilltree.webp" alt="skilltree"><br><br><br>
+            <img src="/webpic/leopard.webp" alt="leopard">
+        </div>
+
+    </aside>
+
+    <footer class="wrapcontact">
+        <div class="link-top" style="width: 100%;height: 1px;border-top: solid #6c6d6e 3px;"></div>
+        <span class="col">
+            <h3 style="padding: 1px;">合作及接洽</h3>
+            若為企業欲徵才、或非營利組織或公益團體希望參加我們的培訓或公益合作、或成為我們的講師或擔任指導學生的企業導師 (Inspire Mentor)，請與我們連絡
+        </span>
+        <span class="col"> </span>
+        <span class="col">Build School​ 青杉人才有限公司 | 青群科技有限公司 <br>
+
+            社團法人台灣青築未來協會 Build the Future<br>
+
+            (內政部立案 : 台內團字第 1090033261 號)<br>
+
+            email: contact@build-school.com 電話: 02-66057606<br>
+
+            ​台北市忠孝東路三段96號11F-1 (台北科大對面/忠孝新生站3號出口)</span><br>
+        <span class="col"> </span>
+
+        <span class="col">
+            <img src="/webpic/fb.webp" alt="facebook">
+            <img src="/webpic/yt.webp" alt="youtube">
+            <span style="text-decoration: underline;">隱私權宣告</span>
+        </span>
+
+        <span class="col" style="text-align: right;">
+            © 2021 by Build School
+        </span>
+
+        </span>
+
+    </footer>
+
+</body>
+
+</html>
