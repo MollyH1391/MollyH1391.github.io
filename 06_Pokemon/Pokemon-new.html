@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Pokemon圖鑑</h1>
+    <button id="showall-onclick">載入寶可夢圖鑑列表01</button>
+    <button id="showall-addEventListener">載入寶可夢圖鑑列表02</button>
+    <button id="Clickplus">click+1</button>
+    <button id="Clickminus">click-1</button>
+    <button id='reset'>Reset</button>
+
+    <div class="pokemonArea"></div>
+
+
+    <script>
+        //變數宣告 一開始是0
+        let pokemonCount = 0
+
+        //DOM宣告
+        const pokemonArea = document.querySelector('.pokemonArea');
+        const showallOnclick = document.querySelector('#showall-onclick');
+        const showallAddEventListener = document.querySelector('#showall-addEventListener');
+        const Clickplus = document.querySelector('#Clickplus');
+        const Clickminus = document.querySelector('#Clickminus');
+        const resetbtn = document.querySelector('#reset');
+
+
+        //初始執行winow.onload
+        window.onload = function () {
+            showallOnclick.onclick = showall;
+            showallAddEventListener.addEventListener('click', showall);
+            Clickplus.onclick = plus;
+            Clickminus.onclick = minus;
+            resetbtn.onclick = reset;
+        }
+
+        //Function宣告
+        function display(count) {
+            let pokemon = "";
+            for (let i = 1; i <= count; i++) {
+                let fileName = i.toString().padStart(3, '0');
+                let pathFile = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png`;
+                let pokemonImg = `<img src='${pathFile}'>`;
+                pokemon += pokemonImg;
+            }
+            pokemonArea.innerHTML = pokemon;
+        }
+
+        function showall() {
+            pokemonCount = 890;
+            display(pokemonCount);
+        }
+
+        function reset() {
+            pokemonCount = 0;
+            display(pokemonCount);
+        }
+
+        function plus() {
+            pokemonCount += 1
+            display(pokemonCount);
+        }
+        function minus() {
+            pokemonCount -= 1
+            display(pokemonCount);
+        }
+    </script>
+
+
+</body>
+
+</html>
