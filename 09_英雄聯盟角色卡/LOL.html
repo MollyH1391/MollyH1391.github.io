@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>英雄聯盟角色卡</title>
+    <style>
+        section {
+            background-color: #268785;
+        }
+
+        .LOLtitle {
+            font-size: 50px;
+            font-weight: 900;
+            color: azure;
+        }
+
+        .card {
+            margin: 10px;
+            overflow: hidden;
+        }
+        .card:hover{
+            box-shadow: #255359 5px 5px ; 
+            transform: translate(5px, 5px)
+        }
+        .card:hover .card-text{
+            color: azure;
+            background-color:#255359 ;
+            width: 80px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .card:hover img{
+            transform: scale(1.1);
+            transition: transform 0.5s;
+            
+        }
+        
+        .card-title{
+            background-color:#A5DEE4 ;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .modal-title{
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="title">
+        <div class="container">
+            <div class="row">
+                <h1 class="LOLtitle m-auto py-5"></h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- 放腳色卡的區域 -->
+    <section>
+        <div class="container">
+            <div class="col-12">
+                <div class="row LOL-cards justify-content-around">
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LOL template -->
+    <template id="LOLcard">
+        <div class="card" style="width: 18rem;">
+            <img src="" class="card-img-top pt-3" alt="英雄聯盟角色卡">
+            <div class="card-body">
+                <h5 class="card-title p-2"></h5>
+                <p class="card-text"></p>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    詳細
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title btn-dark p-2" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img class="w-100" id="LOLImage">
+                    <h1 id="description" class="m-auto py-3"></h1>
+                    <p class="modal-text-blurb bg-info text-white p-2 rounded-sm"></p>
+                    <p class="modal-text bg-primary  text-white p-2 rounded-sm"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="./LOL.js"></script>
+</body>
+
+</html>
