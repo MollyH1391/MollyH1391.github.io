@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./reset.CSS">
+
+    <title>calculator</title>
+    <style>
+        button{
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .container{
+            /* width: 50%;
+            height: 500px; */
+            background-color: #434343;
+        }
+        .input-group{
+            width: 300px;
+            margin: auto;
+        }
+        body{
+            background-color: lightgrey;
+        }
+        p{
+            color: aliceblue;
+
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row justify-content-center m-auto py-3">
+                <div class="col-12 col-md-6">
+                    <div class="input-group mb-3 d-flex flex-column">
+                        <div class="title">
+                            <p class="fs-4 text-center">計算機</p>
+                        </div>
+                        <input type="text" class="form-control w-100" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default">
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center m-3 w-75 m-auto">
+                <div class="col-12 col-md-6 d-flex justify-content-center">
+                    <button type="button" class="fs-4 btn btn-secondary num">1</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">2</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">3</button>
+                    <button type="button" class="fs-4 btn btn-warning sign">+</button>
+                </div>
+            </div>
+            <div class="row justify-content-center m-3 w-75 m-auto">
+                <div class="col-12 col-md-6 d-flex justify-content-center">
+                    <button type="button" class="fs-4 btn btn-secondary num">4</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">5</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">6</button>
+                    <button type="button" class="fs-4 btn btn-warning sign">-</button>
+                </div>
+            </div>
+            <div class="row justify-content-center m-3 w-75 m-auto">
+                <div class="col-12 col-md-6 d-flex justify-content-center">
+                    <button type="button" class="fs-4 btn btn-secondary num">7</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">8</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">9</button>
+                    <button type="button" class="fs-4 btn btn-warning sign">*</button>
+                </div>
+            </div>
+            <div class="row justify-content-center m-3 w-75 m-auto">
+                <div class="col-12 col-md-6 d-flex justify-content-center">
+                    <button type="button" class="fs-4 btn btn-secondary reset">C</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">0</button>
+                    <button type="button" class="fs-4 btn btn-secondary num">.</button>
+                    <button type="button" class="fs-4 btn btn-warning sign equal">=</button>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+
+
+
+    <script>
+        let currentSign = '' //記下按的符號
+        let numFirst = 0
+        let numSecond = 0
+
+        const calculateNethods = [
+            { sign: '+', func: (a, b) => a + b },
+            { sign: '-', func: (a, b) => a - b },
+            { sign: '*', func: (a, b) => a * b },
+            { sign: '/', func: (a, b) => a / b }
+        ]   //加上平方、開根號
+        //DOM
+        const numberInput = document.querySelector('input')
+        const resetBtn = document.querySelector('.reset')
+        const equalBtn = document.querySelector('.equal')
+
+        const numberBtns = document.querySelectorAll('.num')
+        const signBtns = document.querySelectorAll('.sign')
+
+        //window.onload
+        window.onload = function () {
+            //數字按鈕們
+            numberBtns.forEach(btn => {
+                btn.onclick = function () {
+                    numberInput.value += btn.innerText
+                }
+            })
+
+            //清除按鈕
+            resetBtn.onclick = function () {
+                numberInput.value = ''
+            }
+
+            //符號的按鈕門
+            signBtns.forEach(btn => {
+                btn.onclick = function () {
+                    currentSign = btn.innerText
+                    numFirst = parseFloat(numberInput.value)
+                    numberInput.value = ''
+                }
+            })
+            //等於按鈕
+            equalBtn.onclick = function () {
+                numSecond = parseFloat(numberInput.value)
+                let calculate = calculateNethods.find(x => x.sign == currentSign)
+                let answer = calculate.func(numFirst, numSecond)
+
+                numberInput.value = answer
+            }
+        }
+
+        //function
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
