@@ -32,22 +32,31 @@ function requestJSON() {
             cloneCard.querySelector('p').innerText = item.title
             cloneCard.querySelector('img').src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${item.id}_0.jpg`
 
-            cloneCard.querySelector('.btn').addEventListener('click', function(){
+            cloneCard.querySelector('.btnDetail').addEventListener('click', function(){
 
                 let modal = document.querySelector('#exampleModal')
                 modal.querySelector('h5').innerText = item.title
-
+                
                 let stats = ''
                 let data = Object.keys(item.stats)
 
                 data.forEach((txt) => {
-                    stats = `${stats + txt} : ${item.stats[txt]} \n`
+                    stats += `${txt.toUpperCase()} : ${item.stats[txt]} \n`
+                    // console.log(stats)
+                    //console.log(txt)
+                    
                 })
                 modal.querySelector('.modal-text').innerText = stats
                 modal.querySelector('.modal-text-blurb').innerText = item.blurb
 
                 modal.querySelector('#LOLImage').src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${item.id}_0.jpg`;
                 modal.querySelector('#description').innerText = item.name +" - "+item.id;
+            })
+
+            cloneCard.querySelector('.btnvideo').addEventListener('click', function(){
+                let videomodal = document.querySelector('#exampleModalv')
+                const videourl = '<iframe class="w-100" src="https://www.youtube.com/embed/oyj1ov7w-Qo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                videomodal.querySelector('.video').innerHTML = videourl
             })
             row.append(cloneCard)
         })

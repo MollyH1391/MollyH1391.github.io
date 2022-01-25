@@ -84,14 +84,17 @@
             <div class="card-body">
                 <h5 class="card-title p-2"></h5>
                 <p class="card-text"></p>
-                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-dark btnDetail" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     詳細
+                </button>
+                <button type="button" class="btn btn-danger btnvideo" data-bs-toggle="modal" data-bs-target="#exampleModalv">
+                    影片
                 </button>
             </div>
         </div>
     </template>
 
-    <!-- Modal -->
+    <!-- 詳細Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -111,6 +114,30 @@
             </div>
         </div>
     </div>
+    <!-- 影片Modal -->
+    <div class="modal fade" id="exampleModalv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title btn-dark p-2" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+                <div class="modal-body">
+                    <div class="video">
+
+                    </div>
+                    <!-- <img class="w-100" id="LOLImage"> -->
+                    <!-- <h1 id="description" class="m-auto py-3"></h1>
+                    <p class="modal-text-blurb bg-info text-white p-2 rounded-sm"></p>
+                    <p class="modal-text bg-primary  text-white p-2 rounded-sm"></p> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
