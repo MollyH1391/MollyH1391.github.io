@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <title>discount</title>
+    <style>
+        body {
+            background-color: #FEDFE1;
+            position: relative;
+        }
+
+
+        i {
+            font-size: 40px;
+        }
+
+        [box-id] {
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            transition: 0.3s;
+            /* outline: orange 1px solid; */
+        }
+
+        [box-id].active {
+            transition: 0.3s;
+            transform: scale(2);
+        }
+        p{
+            font-size: 30px;
+            font-weight: 800;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row justify-content-around">
+                <div class="col-6">
+                    <!-- <div class="modal" tabindex="0">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Modal body text goes here.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5 text-center">
+            <div class="row">
+                <h1 class="fw-5">title</h1>
+                <p></p>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div box-id="1" class="col-3"></div>
+                <div box-id="2" class="col-3"></div>
+                <div box-id="3" class="col-3"></div>
+                <div box-id="4" class="col-3"></div>
+            </div>
+            <div class="row">
+                <div box-id="14" class="col-3"></div>
+                <div box-id="15" class="col-3"></div>
+                <div box-id="16" class="col-3"></div>
+                <div box-id="5" class="col-3"></div>
+            </div>
+            <div class="row">
+                <div box-id="13" class="col-3"></div>
+                <div box-id="20" class="col-3"></div>
+                <div box-id="17" class="col-3"></div>
+                <div box-id="6" class="col-3"></div>
+            </div>
+            <div class="row">
+                <div box-id="12" class="col-3"></div>
+                <div box-id="19" class="col-3"></div>
+                <div box-id="18" class="col-3"></div>
+                <div box-id="7" class="col-3"></div>
+            </div>
+            <div class="row">
+                <div box-id="11" class="col-3"></div>
+                <div box-id="10" class="col-3"></div>
+                <div box-id="9" class="col-3"></div>
+                <div box-id="8" class="col-3"></div>
+            </div>
+            <div class="row justify-content-around mt-3">
+                <div class="col-6">
+                    <button type="button" class="btn btn-danger w-100">Get Discount!</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script>
+        let brickData = [
+            {
+                id: '1',
+                color: '#D0104C',
+                icon: 'fas fa-hat-cowboy-side',
+                target: function () {
+                    return 'free shipping'
+                }
+            },
+
+            {
+                id: '2',
+                color: '#268785',
+                icon: 'fas fa-gift',
+                target: function () {
+                    return '8% off'
+                }
+            },
+            {
+                id: '3',
+                color: '#E2943B',
+                icon: 'fas fa-shopping-bag',
+                target: function () {
+                    return '10% off'
+                }
+            },
+            {
+                id: '4',
+                color: '#9E7A7A',
+                icon: 'fas fa-tshirt',
+                target: function () {
+                    return '15% off'
+                }
+            },
+            {
+                id: '5',
+                color: '#FFC408',
+                icon: 'fas fa-shopping-basket',
+                target: function () {
+                    return '12% off'
+                }
+            },
+            {
+                id: '6',
+                color: '#D0104C',
+                icon: 'fas fa-hat-cowboy-side',
+                target: function () {
+                    return '5% off'
+                }
+            },
+
+            {
+                id: '7',
+                color: '#268785',
+                icon: 'fas fa-gift',
+                target: function () {
+                    return 'free shipping'
+                }
+            },
+            {
+                id: '8',
+                color: '#E2943B',
+                icon: 'fas fa-shopping-bag',
+                target: function () {
+                    return '10% off'
+                }
+            },
+            {
+                id: '9',
+                color: '#9E7A7A',
+                icon: 'fas fa-tshirt',
+                target: function () {
+                    return '15% off'
+                }
+            },
+            {
+                id: '10',
+                color: '#FFC408',
+                icon: 'fas fa-shopping-basket',
+                target: function () {
+                    return '12% off'
+                }
+            },
+            {
+                id: '11',
+                color: '#D0104C',
+                icon: 'fas fa-hat-cowboy-side',
+                target: function () {
+                    return '5% off'
+                }
+            },
+
+            {
+                id: '12',
+                color: '#268785',
+                icon: 'fas fa-gift',
+                target: function () {
+                    return '8% off'
+                }
+            },
+            {
+                id: '13',
+                color: '#E2943B',
+                icon: 'fas fa-shopping-bag',
+                target: function () {
+                    return '10% off'
+                }
+            },
+            {
+                id: '14',
+                color: '#9E7A7A',
+                icon: 'fas fa-tshirt',
+                target: function () {
+                    return 'free shipping'
+                }
+            },
+            {
+                id: '15',
+                color: '#FFC408',
+                icon: 'fas fa-shopping-basket',
+                target: function () {
+                    return '12% off'
+                }
+            },
+            {
+                id: '16',
+                color: '#D0104C',
+                icon: 'fas fa-hat-cowboy-side',
+                target: function () {
+                    return '5% off'
+                }
+            },
+
+            {
+                id: '17',
+                color: '#268785',
+                icon: 'fas fa-gift',
+                target: function () {
+                    return '8% off'
+                }
+            },
+            {
+                id: '18',
+                color: '#E2943B',
+                icon: 'fas fa-shopping-bag',
+                target: function () {
+                    return '10% off'
+                }
+            },
+            {
+                id: '19',
+                color: '#9E7A7A',
+                icon: 'fas fa-tshirt',
+                target: function () {
+                    return 'free shipping'
+                }
+            },
+            {
+                id: '20',
+                color: '#FFC408',
+                icon: 'fas fa-shopping-basket',
+                target: function () {
+                    return 'Congrats! 50% off!'
+                }
+            },
+
+
+        ]
+        //宣告startBtn.onclick會用的到全域變數
+        let steps = 0 //剩下要走的步數
+        let allSteps = 0 //全部的步數
+        let currentIndex = 0 //目前走到哪一格
+        //DOM
+        let title = document.querySelector('h1')
+        title.style.color = '#9E7A7A'
+        title.innerText = `試試手氣，享受折扣`
+
+        let discount
+        let p = document.querySelector('p')
+
+
+        //找出所有[box-id]屬性的格子，所以用querySelectorAll
+        let bricks = document.querySelectorAll('[box-id]')
+        //抓出按鈕
+        const startBtn = document.querySelector('button')
+        //控制速度的變數
+        let speed = 80 //速率  預設80，值越大表是速率越慢
+        //抓到template
+        //let cardTemplate = document.querySelector("#mm")
+
+        //抓出p
+        //const msgShow = document.querySelector('p')
+        //const modal = document.querySelector('.container')
+
+        //window onload
+        window.onload = function () {
+
+            console.log(bricks) //會跑出NodeList
+            //排序格子，要把NodeList先變成Array
+            bricks = Array.from(bricks).sort((a, b) => {
+                return a.getAttributeNode('box-id').value - b.getAttributeNode('box-id').value
+            })
+            console.log("排序後")
+            console.log(bricks)
+
+            //針對每個格子去塞font awesome的圖示
+            bricks.forEach((box) => {
+                let id = box.getAttributeNode('box-id').value
+                //找對應到的資料是哪一筆(brickData)，面的id要==brickData的id
+                let data = brickData.find(x => x.id == id)
+
+                let i = document.createElement('i')
+                i.setAttribute('class', data.icon)
+                i.style.color = data.color
+                box.appendChild(i)
+            })
+
+            //按下button的時候要做甚麼事情
+            startBtn.onclick = function () {
+                speed = 80
+                //一按下start就要產出一個亂數，至少要走一步，所以要+1
+                let random = Math.floor(Math.random() * brickData.length) + 1
+                console.log(random)
+
+                steps = random + (2 * bricks.length)//多轉2圈再停
+                //console.log(steps)
+                allsteps = steps // 總步數等於steps
+                getDiscount() //走的方法
+                reset()
+            }
+
+            //function
+
+            function reset(){
+                p.innerText = ""
+                bricks[currentIndex].classList.remove('active')
+            }
+
+            function getDiscount() {
+                //移除目前走到的格子的樣式
+                bricks[currentIndex].classList.remove('active')
+                //移除後往前走一步
+                currentIndex++
+
+                //判斷目前的currentIndex有沒有超過格子都總長度(不可超過20格)
+                //如果超過就要把currentIndex歸0，重頭開始走
+                if (currentIndex >= bricks.length) {
+                    currentIndex = 0
+                }
+
+                //目前走到的格子要加上active的樣式(紅色框框)steps--
+                bricks[currentIndex].classList.add('active')
+                //之後的步數要-1
+                steps--
+
+                //接下來要判斷是不是已經走完了，如果剩餘的步數 > 0，表示還沒有走完
+                if (steps > 0) {
+                    //還沒走完，就要繼續走，再呼叫一次自己
+                    //setTimeout遞2個參數是速率，在自己的function再呼叫自己，是遞迴寫法
+                    setTimeout(getDiscount, speed)
+                    //變速 先增後減
+                    //if (steps > Math.floor((allsteps / 3))) speed -= 7
+                    if (steps < Math.floor((allsteps / 3))) speed += 7
+                }
+                else {
+                    //走完了，要做的方法
+                    let discount = brickData[currentIndex].target()
+                    //alert(discount)
+                
+                    p.innerText = `Congrats! You get: ${discount}`
+                    p.style.color = '#C73E3A'
+                    // bricks[currentIndex].onclick = function () {
+                    //     let btn = document.createElement('button')
+                    //     //btn.classList.add('btn-close')
+                    //     btn.setAttribute('type', 'button')
+                    //     btn.setAttribute('data-bs-dismiss', 'modal')
+                    //     btn.setAttribute('data-bs-target', '#exampleModal')
+                    //     const div1 = document.createElement('div')
+                    //     div1.classList('modal fade')
+                    //     div1.setAttribute('id', 'exampleModal')
+                    //     div1.setAttribute('tabindex', '-1')
+                    //     div1.setAttribute('aria-labelledby', 'exampleModalLabel')
+                    //     div1.setAttribute('aria-hidden', 'true')
+                    //     const div2 = document.createElement('div')
+                    //     div2.classList.add('modal-dialog')
+                    //     const div3 = document.createElement('div')
+                    //     div3.classList.add('modal-content')
+                    //     const div4 = document.createElement('div')
+                    //     div4.classList.add('modal-header')
+                    //     const H5 = document.createElement('h5')
+                    //     H5.classList.add('modal-title')
+                    //     H5.setAttribute('id', 'exampleModalLabel')
+                    //     H5.innerText = `${discount}`
+                    //     const btnc = document.createElement('button')
+                    //     btnc.setAttribute('type', 'button')
+                    //     btnc.setAttribute('btn', 'btn-secondary')
+                    //     btnc.setAttribute('data-bs-dismiss', 'modal')
+                    //     btnc.innerText = `Close`
+                    // }
+
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
