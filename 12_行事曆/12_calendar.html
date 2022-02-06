@@ -11,30 +11,48 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Document</title>
+    <style>
+        body {
+            background-color: #B19693;
+        }
+        .container{
+            background-color: #FFFFFB;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1 class="year-month">0000年-00月</h1>
-    <table class="table text-center">
-        <thead>
-            <tr>
-                <th>日</th>
-                <th>一</th>
-                <th>二</th>
-                <th>三</th>
-                <th>四</th>
-                <th>五</th>
-                <th>六</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- 動態生成日期 -->
+    <div class="section">
+        <div class="container mt-5 p-5">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <h1 class="year-month">0000年-00月</h1>
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>日</th>
+                                <th>一</th>
+                                <th>二</th>
+                                <th>三</th>
+                                <th>四</th>
+                                <th>五</th>
+                                <th>六</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 動態生成日期 -->
 
-        </tbody>
-    </table>
+                        </tbody>
+                    </table>
 
-    <button type="button" class="btn btn-primary" onclick="previousMonth()">往上月</button>
-    <button type="button" class="btn btn-primary" onclick="nextMonth()">往下月</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="previousMonth()">往上月</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="nextMonth()">往下月</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 一共需要兩個modal，一個新增行程一個修改行程 -->
     <!-- 新增modal -->
@@ -95,7 +113,7 @@
 
         const addModal = document.querySelector('#add-modal');
         const editModal = document.querySelector('#edit-modal');
-        
+
         const addDateInput = document.querySelector('#add-date');
         const addTitleInput = document.querySelector('#add-title');
         const editDateInput = document.querySelector('#edit-date');
@@ -148,8 +166,8 @@
                                         currentTodoIndex = index
                                         editDateInput.value = `${year}-${month + 1}-${td.childNodes[0].data}`;
                                         editTitleInput.value = item.title;
-                                        
-                                        
+
+
                                         event.stopPropagation();
                                     }
 
@@ -235,11 +253,11 @@
 
             bootstrap.Modal.getOrCreateInstance(editModal).hide()
             init()
-            
+
         }
 
         //刪除行程
-        function deleteTodoItem(){
+        function deleteTodoItem() {
             let date = editDateInput.value;
             let todoList = JSON.parse(localStorage.getItem(date));
             todoList.splice(currentTodoIndex, 1);

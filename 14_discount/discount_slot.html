@@ -49,21 +49,20 @@
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-6">
-                    <!-- <div class="modal" tabindex="0">
+                    <!-- show-modal -->
+                    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                    <h5 class="modal-title">Congrats</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Modal body text goes here.</p>
+                                    <span></span>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                <div class="modal-footer"> -->
+                                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                                    <!-- <a type="button" class="btn btn-secondary" data-bs-dismiss="modal" href="#"></a>
                                 </div>
                             </div>
                         </div>
@@ -293,13 +292,15 @@
         let allSteps = 0 //全部的步數
         let currentIndex = 0 //目前走到哪一格
         //DOM
+
+        const showModal = document.querySelector('#show-modal')
+
         let title = document.querySelector('h1')
         title.style.color = '#9E7A7A'
         title.innerText = `試試手氣，享受折扣`
 
         let discount
         let p = document.querySelector('p')
-
 
         //找出所有[box-id]屬性的格子，所以用querySelectorAll
         let bricks = document.querySelectorAll('[box-id]')
@@ -391,6 +392,11 @@
                 
                     p.innerText = `Congrats! You get: ${discount}`
                     p.style.color = '#C73E3A'
+                    // let showDiscount = brickData[currentIndex]
+                    // showDiscount.onclick = function(){
+                    //     bootstrap.Modal.getOrCreateInstance(showModal).show()
+                    // }
+
                     // bricks[currentIndex].onclick = function () {
                     //     let btn = document.createElement('button')
                     //     //btn.classList.add('btn-close')
