@@ -184,6 +184,13 @@
 
         function setMarker() {
             if (markers) markers.clearLayers()
+             //markers樣式自訂
+            var diningMarker = L.icon({
+                iconUrl: './restaurant.png',
+                iconSize: [50, 50],
+                iconAnchor: [22, 94],
+                popupAnchor: [-3, -76]
+            })
 
             restaurantData.forEach(item => {
                 let data = item
@@ -193,7 +200,7 @@
 
                 let color = data.Name != undefined ? '#F75C2F' : 'black'
 
-                let marker = L.marker([data.Lat, data.Lng])
+                let marker = L.marker([data.Lat, data.Lng], {icon:diningMarker })
                 //console.log(marker)
                 marker.bindPopup(
                     `
