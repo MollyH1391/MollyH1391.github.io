@@ -42,6 +42,9 @@
             font-size: 30px;
             font-weight: 800;
         }
+        #showModal{
+            
+        }
     </style>
 </head>
 
@@ -311,12 +314,7 @@
         const startBtn = document.querySelector('button')
         //控制速度的變數
         let speed = 80 //速率  預設80，值越大表是速率越慢
-        //抓到template
-        //let cardTemplate = document.querySelector("#mm")
-
-        //抓出p
-        //const msgShow = document.querySelector('p')
-        //const modal = document.querySelector('.container')
+    
 
         //window onload
         window.onload = function () {
@@ -394,6 +392,7 @@
                     show_Modal()
                     //alert(discount)
 
+                    //結束的時候，走道的納格要跳出modal
                     function show_Modal() {
                         bricks[currentIndex].click()
                         bootstrap.Modal.getOrCreateInstance(showModal).show()
