@@ -37,7 +37,8 @@
             transition: 0.3s;
             transform: scale(2);
         }
-        p{
+
+        p {
             font-size: 30px;
             font-weight: 800;
         }
@@ -49,24 +50,7 @@
         <div class="container">
             <div class="row justify-content-around">
                 <div class="col-6">
-                    <!-- show-modal -->
-                    <!-- <div id="show-modal" class="modal fade" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Congrats</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <span></span>
-                                </div>
-                                <div class="modal-footer"> -->
-                                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                                    <!-- <a type="button" class="btn btn-secondary" data-bs-dismiss="modal" href="#"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+
                 </div>
             </div>
         </div>
@@ -110,6 +94,25 @@
             <div class="row justify-content-around mt-3">
                 <div class="col-6">
                     <button type="button" class="btn btn-danger w-100">Get Discount!</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- show modal -->
+        <div id="showModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Congrats</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="showDiscount">Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-primary" href="#">去結帳</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,14 +296,14 @@
         let currentIndex = 0 //目前走到哪一格
         //DOM
 
-        const showModal = document.querySelector('#show-modal')
+        const showModal = document.querySelector('#showModal')
 
         let title = document.querySelector('h1')
         title.style.color = '#9E7A7A'
         title.innerText = `試試手氣，享受折扣`
 
         let discount
-        let p = document.querySelector('p')
+        let p = document.querySelector('#showDiscount')
 
         //找出所有[box-id]屬性的格子，所以用querySelectorAll
         let bricks = document.querySelectorAll('[box-id]')
@@ -354,7 +357,7 @@
 
             //function
 
-            function reset(){
+            function reset() {
                 p.innerText = ""
                 bricks[currentIndex].classList.remove('active')
             }
@@ -388,43 +391,19 @@
                 else {
                     //走完了，要做的方法
                     let discount = brickData[currentIndex].target()
+                    show_Modal()
                     //alert(discount)
-                
-                    p.innerText = `Congrats! You get: ${discount}`
-                    p.style.color = '#C73E3A'
-                    // let showDiscount = brickData[currentIndex]
-                    // showDiscount.onclick = function(){
+
+                    function show_Modal() {
+                        bricks[currentIndex].click()
+                        bootstrap.Modal.getOrCreateInstance(showModal).show()
+                        p.innerText = `You get: ${discount}`
+                        p.style.color = '#C73E3A'
+                    }
+                    // bricks[currentIndex].onclick = function(event){
                     //     bootstrap.Modal.getOrCreateInstance(showModal).show()
                     // }
 
-                    // bricks[currentIndex].onclick = function () {
-                    //     let btn = document.createElement('button')
-                    //     //btn.classList.add('btn-close')
-                    //     btn.setAttribute('type', 'button')
-                    //     btn.setAttribute('data-bs-dismiss', 'modal')
-                    //     btn.setAttribute('data-bs-target', '#exampleModal')
-                    //     const div1 = document.createElement('div')
-                    //     div1.classList('modal fade')
-                    //     div1.setAttribute('id', 'exampleModal')
-                    //     div1.setAttribute('tabindex', '-1')
-                    //     div1.setAttribute('aria-labelledby', 'exampleModalLabel')
-                    //     div1.setAttribute('aria-hidden', 'true')
-                    //     const div2 = document.createElement('div')
-                    //     div2.classList.add('modal-dialog')
-                    //     const div3 = document.createElement('div')
-                    //     div3.classList.add('modal-content')
-                    //     const div4 = document.createElement('div')
-                    //     div4.classList.add('modal-header')
-                    //     const H5 = document.createElement('h5')
-                    //     H5.classList.add('modal-title')
-                    //     H5.setAttribute('id', 'exampleModalLabel')
-                    //     H5.innerText = `${discount}`
-                    //     const btnc = document.createElement('button')
-                    //     btnc.setAttribute('type', 'button')
-                    //     btnc.setAttribute('btn', 'btn-secondary')
-                    //     btnc.setAttribute('data-bs-dismiss', 'modal')
-                    //     btnc.innerText = `Close`
-                    // }
 
                 }
             }
