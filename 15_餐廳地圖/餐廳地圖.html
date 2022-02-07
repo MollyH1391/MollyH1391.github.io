@@ -27,6 +27,10 @@
     <title>document</title>
 
     <style>
+        body {
+            background-color: #fdf4bdf5;
+        }
+
         .container-fluid>.row {
             height: 100vh;
         }
@@ -34,9 +38,23 @@
         #map {
             height: 100%;
         }
-        table{
-            border: 2px solid grey;
+
+        table {
+            border: 2px solid white;
+            width: 80%;
+            margin-bottom: 1rem;
+            vertical-align: top;
+            background-color: rgba(219, 247, 255, 0.89);
+            font-size: 20px;
+            /* height: 300px; */
         }
+        tbody{
+            border: 2px solid #f8f9fa;
+            font-size: large;
+            
+        }
+        
+    
     </style>
 </head>
 
@@ -48,7 +66,7 @@
                 <div id="map"></div>
             </div>
             <div class="col-6">
-                <div class="row">
+                <div class="row mb-5">
                     <div class="form-group col-6">
                         <label for="district">縣市</label>
                         <select class="form-control" id="district">
@@ -58,23 +76,23 @@
                 </div>
                 <div class="row">
                     <h2 class="w-100 text-center"><strong></strong>餐廳資訊</h2>
-                    <div class="col-12">
-                        <table class="table table-bordered table-striped text-center">
+                    <div class="col-12 d-flex justify-content-center">
+                        <table class=" text-center table-striped">
                             <thead>
                                 <tr>
-                                    <th>餐聽名稱</th>
+                                    <th class="py-3">餐聽名稱</th>
                                 </tr>
                             </thead>
                             <tbody id="name"></tbody>
                             <thead>
                                 <tr>
-                                    <th>電話</th>
+                                    <th class="py-3">電話</th>
                                 </tr>
                             </thead>
                             <tbody id="phone"></tbody>
                             <thead>
                                 <tr>
-                                    <th>地址</th>
+                                    <th class="py-3">地址</th>
                                 </tr>
                             </thead>
                             <tbody id="address"></tbody>
@@ -196,10 +214,13 @@
 
                     let nameTd = document.createElement('td')
                     nameTd.innerText = data.Name
+                    nameTd.classList.add('py-3')
                     let phoneTd = document.createElement('td')
                     phoneTd.innerText = data.Phone
+                    phoneTd.classList.add('py-3')
                     let addressTd = document.createElement('td')
                     addressTd.innerText = data.Address
+                    addressTd.classList.add('py-3')
 
                     nameTr.appendChild(nameTd)
                     phoneTr.appendChild(phoneTd)
