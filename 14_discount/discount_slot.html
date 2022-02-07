@@ -41,9 +41,14 @@
         p {
             font-size: 30px;
             font-weight: 800;
+            
         }
         #showModal{
-            
+            background-color: rgb(250, 244, 244);
+            color: aliceblue;
+        }
+        .modal-content{
+            background-color: #ad7c7c;
         }
     </style>
 </head>
@@ -397,7 +402,7 @@
                         bricks[currentIndex].click()
                         bootstrap.Modal.getOrCreateInstance(showModal).show()
                         p.innerText = `You get: ${discount}`
-                        p.style.color = '#C73E3A'
+                        p.style.color = 'aliceblue'
                     }
                     // bricks[currentIndex].onclick = function(event){
                     //     bootstrap.Modal.getOrCreateInstance(showModal).show()
