@@ -51,9 +51,9 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-6 d-flex justify-content-center">
-                    <button type="button" class="btn btn-dark num">x</button>
+                    <button type="button" class="btn btn-dark reset">x</button>
                     <button type="button" class="btn btn-dark num">0</button>
-                    <button type="button" class="btn btn-dark num">v</button>
+                    <button type="button" class="btn btn-dark guess">v</button>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
             //數字按鈕們
             numberBtns.forEach(btn => {
                 btn.onclick = function () {
-                    gameGuessInput.value += btn.innerText
+                    //gameGuessInput.value += btn.innerText
                 }
             })
         }

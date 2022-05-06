@@ -26,33 +26,45 @@
             margin: 10px;
             overflow: hidden;
         }
-        .card:hover{
-            box-shadow: #255359 5px 5px ; 
+
+        .card:hover {
+            box-shadow: #255359 5px 5px;
             transform: translate(5px, 5px)
         }
-        .card:hover .card-text{
+
+        .card:hover .card-text {
             color: azure;
-            background-color:#255359 ;
+            background-color: #255359;
             width: 80px;
             text-align: center;
             border-radius: 5px;
         }
-        
-        .card:hover img{
+
+        .card:hover img {
             transform: scale(1.1);
             transition: transform 0.5s;
-            
+
         }
-        
-        .card-title{
-            background-color:#A5DEE4 ;
+
+        .card-title {
+            background-color: #A5DEE4;
             border-radius: 5px;
             text-align: center;
         }
-        .modal-title{
+
+        .modal-title {
             border-radius: 5px;
         }
     </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDW0N3Y99H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RDW0N3Y99H');
+    </script>
 </head>
 
 <body>
@@ -84,10 +96,12 @@
             <div class="card-body">
                 <h5 class="card-title p-2"></h5>
                 <p class="card-text"></p>
-                <button type="button" class="btn btn-dark btnDetail" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-dark btnDetail" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
                     詳細
                 </button>
-                <button type="button" class="btn btn-danger btnvideo" data-bs-toggle="modal" data-bs-target="#exampleModalv">
+                <button type="button" class="btn btn-danger btnvideo" data-bs-toggle="modal"
+                    data-bs-target="#exampleModalv">
                     影片
                 </button>
             </div>

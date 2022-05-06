@@ -41,13 +41,15 @@
         p {
             font-size: 30px;
             font-weight: 800;
-            
+
         }
-        #showModal{
+
+        #showModal {
             background-color: rgb(250, 244, 244);
             color: aliceblue;
         }
-        .modal-content{
+
+        .modal-content {
             background-color: #ad7c7c;
         }
     </style>
@@ -319,7 +321,7 @@
         const startBtn = document.querySelector('button')
         //控制速度的變數
         let speed = 80 //速率  預設80，值越大表是速率越慢
-    
+
 
         //window onload
         window.onload = function () {
@@ -345,7 +347,17 @@
             })
 
             //按下button的時候要做甚麼事情
+            var isClick = true
             startBtn.onclick = function () {
+
+                if (isClick) {
+                    isClick = false;
+                    //定时器
+                    setTimeout(function () {
+                        isClick = true;
+                    }, 5000);//五秒内不能重复点击
+                }
+
                 speed = 80
                 //一按下start就要產出一個亂數，至少要走一步，所以要+1
                 let random = Math.floor(Math.random() * brickData.length) + 1
@@ -358,6 +370,12 @@
                 reset()
             }
 
+            //avoidRepeatClick
+            // function avoidRepeatClick(){
+            //     var isClick = true
+
+            // }
+
             //function
 
             function reset() {
@@ -366,6 +384,15 @@
             }
 
             function getDiscount() {
+
+                if (isClick) {
+                    isClick = false;
+                    //定时器
+                    setTimeout(function () {
+                        isClick = true;
+                    }, 5000);//五秒内不能重复点击
+                }
+
                 //移除目前走到的格子的樣式
                 bricks[currentIndex].classList.remove('active')
                 //移除後往前走一步
