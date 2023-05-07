@@ -1,0 +1,30 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Member
+@model IEnumerable<MemberCardListViewModel>
+
+@{
+    ViewData["Title"] = "會員卡列表";
+}
+<main class="bg_page vh-100">
+    <div class="container pt-5">
+        <h1 class="text_card fw-light fs-h1 text-center mb-5">目前擁有會員卡</h1>
+        <div class="row">
+            <a asp-controller="Member" asp-action="Account" class="col-6 col-lg-3 mb-3 mb-lg-4">
+                <img class="w-100 rounded-3" src="~/img/Member/member_card.png" alt="member-card">
+            </a>
+            @foreach(var card in Model)
+            {
+                <form method="post" asp-controller="Member" asp-action="MemberCard" class="col-6 col-lg-3 mb-3 mb-lg-4">
+                    <input name="BrandId" value="@Html.DisplayFor(model => card.BrandId)" class="d-none"/>
+                    <button type="submit">
+                        <img class="w-100 rounded-3" src="@Html.DisplayFor(model => card.CardImgUrl)" alt="store-member-card">
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</main>
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}
+

@@ -1,0 +1,18 @@
+.card_logo{
+    width: 70px; 
+    height: 70px; 
+    top: 10px; 
+    left: 10px;
+}
+
+.shopcard_tag{
+    font-size: 10px;
+}
+
+.card_category{
+    width: 20px;
+}
+
+.shopcard_favorite_btn {
+    box-shadow: none !important;
+}

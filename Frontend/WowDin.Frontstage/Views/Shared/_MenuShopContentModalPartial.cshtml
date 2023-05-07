@@ -1,0 +1,81 @@
+﻿@model StoreShopMenuViewModel
+
+<div class="modal fade" id="menu_formore_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="menu_modal_header">
+                <div class="d-flex px-3 pt-3 align-items-center">
+                    <h3 class="fz_16 fw-bold m-0">店家資訊</h3>
+                    <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times-circle text_pink fz_18"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="col menu_shop_content">
+                    <h4 class="menu_shop_name fz_15 fw-bold">@Model.BrandName @Model.Name</h4>
+                    <div class="menu_shop_information_modal scroll_none">
+                        @if(@Model.StarAmount > 0)
+                        {
+                            <div class="menu_stars icon_star d-inline-block">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Model.Star)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-star star_light"></i>
+                                    }
+                                }
+                            </div>
+                            <span class="menu_stars_value">@Model.Star</span>
+                            <span class="menu_stars_total">(@Model.StarAmount)</span>
+                        }
+                        <div class="menu_shop_more_content">
+                            <ul>
+                                <li>
+                                    <i class="fas fa-clock text-center"> </i> @Model.OpenTimeSpan
+                                </li>
+                                <li>
+                                    <i class="fas fa-phone text-center"></i>
+                                    <a href="tel:@Model.Phone"
+                                        class="menu_first_color_text">@Model.Phone</a>
+                                </li>
+                                <li>
+                                    <i class="fas fa-map-marker-alt text-center"></i>
+                                    <a href="https://www.google.com/maps/place/@Model.FullAddress" target="_blank"
+                                        class="menu_first_color_text">@Model.FullAddress</a>
+                                </li>
+                                <li>
+                                    <i class="fas fa-dollar-sign text-center"></i> @Model.PayMethod
+                                </li>
+                                <li>
+                                    <i class="fas fa-money-bill text-center"></i> @Model.PriceLimit
+                                    @if (Model.PreOrder == true)
+                                    {
+                                        <span class="text_pink d-block">
+                                            (非訂餐時間僅提供預訂)
+                                        </span>
+                                    }
+                                </li>
+                                <li>
+                                    <i class="fas fa-address-card text-center"></i>
+                                    @if(Model.HasSticker)
+                                    {
+                                        <span class="m-0">此門市支援專屬姓名貼紙</span> 
+                                    }
+                                    else
+                                    {
+                                        <span class="m-0">此門市不支援專屬姓名貼紙</span> 
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

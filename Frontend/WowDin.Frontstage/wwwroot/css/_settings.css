@@ -1,0 +1,277 @@
+:root{
+    --din-main-blue: #0098ff;
+    --din-main-pink: #ff6482;
+    --din-main-orange: #f37423;
+    --din-main-white: #ffffff;
+
+    --din-text-card: #747474; 
+    --din-text-normal: #9e9e9e; /* 一般灰字 */
+    --din-text-disable-input: #e6e6e6;
+    --din-text-disable-checkbox: #bbbbbb;
+    --din-text-score: #616161;
+
+    /* --din-bg-red: #f44336; 購物車數字的背景 - 有關動態，先不用 */
+    --din-bg-warning-msg: #fff3f5; /* 有小驚嘆號的提示訊息 */
+    --din-bg-card-tag: #eeeeee; /* 卡片tag的背景 */
+    --din-bg-page: #ececec; 
+    --din-bg-order-item: #f8f8f8; /* 品項的背景 */
+    --din-bg-disable-btn: #bbbbbb;
+    --din-bg-state-success: #4caf50;
+    --din-bg-notify-btn: #00b900;
+
+    --din-icon-social: #444444;
+    --din-icon-ashcan: #ababab;
+    --din-icon-star: #f9a825; /* 卡片的星星 */
+    --din-icon-star-light: #FDDCA8;
+    --din-icon-category: #000000;
+    --din-icon-notify-bell: #00b900;
+
+    --din-input-border: #ccc;
+
+    --din-letter-size-nav: 18px;
+    --din-letter-size-nav-sub: 15px;
+    --din-letter-size-card-title: 17px;
+    --din-letter-size-input: 16px;
+    --din-letter-size-footer: 18px;
+    --din-letter-size-title: 30px;
+    --din-letter-size-note: 12px;
+
+    --din-card-border-radius: 8px;
+    --din-card-border-radius-small: 4px;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    font-size: 14px;
+    font-family: Noto Sans TC, sans-serif;
+    line-height: 25px;
+    letter-spacing: 0.8px; 
+}
+
+a{
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+}
+
+ol, ul{
+    padding: 0px;
+    margin: 0px;
+}
+
+.text_blue{
+    color: var(--din-main-blue);
+}
+
+.text_pink{
+    color: var(--din-main-pink);
+}
+
+.text_orange{
+    color: var(--din-main-orange);
+}
+
+.text_white{
+    color: var(--din-main-white);
+}
+
+.text_gray{
+    color: var(--din-text-normal);
+}
+
+.text_card{
+    color: var(--din-text-card);
+}
+
+.text_disable_input{
+    color: var(--din-text-disable-input);
+}
+
+.text_disable_checkbox{
+    color: var(--din-text-disable-checkbox);
+}
+
+.text_score{
+    color: var(--din-text-score);
+}
+
+.bg_blue{
+    background-color: var(--din-main-blue);
+}
+
+.bg_pink{
+    background-color: var(--din-main-pink);
+}
+
+.bg_orange{
+    background-color: var(--din-main-orange);
+}
+
+.bg_white{
+    background-color: var(--din-main-white);
+}
+
+.bg_warning_msg{
+    background-color: var(--din-bg-warning-msg);
+}
+
+.bg_card_tag{
+    background-color: var(--din-bg-card-tag);
+}
+
+.bg_page{
+    background-color: var(--din-bg-page);
+}
+
+.bg_order_item{
+    background-color: var(--din-bg-order-item);
+}
+
+.bg_disable_btn{
+    background-color: var(--din-bg-disable-btn);
+}
+
+.bg_state_success{
+    background-color: var(--din-bg-state-success);
+}
+
+.bg_notify_btn{
+    background-color: var(--din-bg-notify-btn);
+}
+
+.icon_social{
+    color: var(--din-icon-social);
+}
+
+.icon_ashcan{
+    color: var(--din-icon-ashcan);
+}
+
+.icon_star{
+    color: var(--din-icon-star);
+}
+
+.icon_category{
+    color: var(--din-icon-category);
+}
+
+.icon_notify_bell{
+    color: var(--din-icon-notify-bell);
+}
+
+.fz_18{
+    font-size: var(--din-letter-size-nav);
+}
+
+.fz_17{
+    font-size: var(--din-letter-size-card-title);
+}
+
+.fz_16{
+    font-size: var(--din-letter-size-input);
+}
+
+.fz_15{
+    font-size: var(--din-letter-size-nav-sub);
+}
+
+.fz_30{
+    font-size: var(--din-letter-size-title);
+}
+
+.fz_12 {
+    font-size: var(--din-letter-size-note);
+}
+
+.rounded_corner {
+    border-radius: var(--din-card-border-radius);
+    overflow: hidden;
+}
+
+.rounded_corner_small{
+    border-radius: var(--din-card-border-radius-small);
+    overflow: hidden;
+}
+
+input{
+    border: 1px solid var(--din-input-border);
+}
+
+.input_noshadow:focus{
+    box-shadow: none !important;
+    border-color: var(--din-input-border);
+}
+
+input[type="text"], input[type="text"]{
+    border-radius: var(--din-card-border-radius-small);
+}
+
+input[type="text"]:not([disabled], .is-invalid):hover, 
+input[type="tel"]:not([disabled], .is-invalid):hover
+{
+    border: 1px solid black;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus
+{
+    box-shadow: none !important;
+    border-color: var(--din-input-border);
+}
+
+input[type="text"]:not(.is-invalid):focus-visible,
+input[type="tel"]:not(.is-invalid):focus-visible
+{
+    outline: none !important;
+    border-width: 1px;
+}
+
+input.btn-check:focus + label.btn{
+    box-shadow: none !important;
+}
+
+/* 卷軸隱藏 */
+/*::-webkit-scrollbar {
+    width: 0px;
+}*/
+
+*::-webkit-scrollbar {
+    color: transparent;
+    width: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--din-bg-card-tag);
+    border-radius: 3px;
+}
+
+#toast-container > div{
+    opacity: 1;
+}
+.toast-warning {
+    background-color: var(--din-main-pink);
+}
+.toast-info {
+    background-color: var(--din-icon-social);
+} 

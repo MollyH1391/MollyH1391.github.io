@@ -1,0 +1,29 @@
+﻿@model StoreShopMenuViewModel
+
+<div class="modal fade" id="menu_search_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="menu_modal_header p-3">
+                <div class="d-flex">
+                    <h3 class="fz_16 fw-bold m-0">搜尋商品</h3>
+                    <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times-circle text_pink fz_18"></i>
+                    </button>
+                </div>
+                <div class="mt-2 menu_search_input d-flex align-items-center position-relative">
+                    <input id="menu-search-input" type="text" class="w-100 input_noshadow">
+                    <i class="fas fa-search position-absolute fz_17"></i>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="menu_items">
+                    <ul>
+                        @*加入商品li*@
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

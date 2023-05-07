@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "PayInfo";
+}
+
+<div><h1>交易成功</h1></div>
+<div>將在<a id ="p1"></a>後回到主頁<a asp-controller="Home" asp-action="Index">返回首頁</a></div>
+<script type="text/javascript">  
+//獲取顯示秒數的元素，通過定時器來更改秒數。
+     
+    var num = 10;
+    function downTime(){
+		document.getElementById('p1').innerHTML=num;
+        if(num>0){
+        num--;
+        }else{
+        window.onload = "https://localhost:5001/Home/Index"
+        }
+        setTimeout("downTime()",1000);
+    }
+//通過window的location和history物件來控制網頁的跳轉。
+downTime();
+</script> 

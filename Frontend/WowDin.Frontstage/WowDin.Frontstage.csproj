@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repositories\Cart\**" />
+    <Compile Remove="Repositories\Order\**" />
+    <Compile Remove="Repositories\PartialView\**" />
+    <Compile Remove="Repositories\Search\**" />
+    <Compile Remove="Repositories\Shared_layout\**" />
+    <Compile Remove="Services\Cart\**" />
+    <Compile Remove="Services\PartialView\**" />
+    <Compile Remove="Services\Shared_layout\**" />
+    <Content Remove="Repositories\Cart\**" />
+    <Content Remove="Repositories\Order\**" />
+    <Content Remove="Repositories\PartialView\**" />
+    <Content Remove="Repositories\Search\**" />
+    <Content Remove="Repositories\Shared_layout\**" />
+    <Content Remove="Services\Cart\**" />
+    <Content Remove="Services\PartialView\**" />
+    <Content Remove="Services\Shared_layout\**" />
+    <EmbeddedResource Remove="Repositories\Cart\**" />
+    <EmbeddedResource Remove="Repositories\Order\**" />
+    <EmbeddedResource Remove="Repositories\PartialView\**" />
+    <EmbeddedResource Remove="Repositories\Search\**" />
+    <EmbeddedResource Remove="Repositories\Shared_layout\**" />
+    <EmbeddedResource Remove="Services\Cart\**" />
+    <EmbeddedResource Remove="Services\PartialView\**" />
+    <EmbeddedResource Remove="Services\Shared_layout\**" />
+    <None Remove="Repositories\Cart\**" />
+    <None Remove="Repositories\Order\**" />
+    <None Remove="Repositories\PartialView\**" />
+    <None Remove="Repositories\Search\**" />
+    <None Remove="Repositories\Shared_layout\**" />
+    <None Remove="Services\Cart\**" />
+    <None Remove="Services\PartialView\**" />
+    <None Remove="Services\Shared_layout\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Imgur.API" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\js\Layout\" />
+    <Folder Include="wwwroot\uploadfile\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\USER\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+</Project>

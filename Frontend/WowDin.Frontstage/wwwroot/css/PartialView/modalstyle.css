@@ -1,0 +1,15 @@
+.modal.fade .modal-dialog {
+    transform: scale(0);
+}
+.modal.fade.show .modal-dialog {
+    transform: scale(1);
+}
+
+#din_modal_header {
+    min-height: 50px;
+}
+
+#din_modal_closebtn {
+    top: 12px;
+    right: 15px;
+}

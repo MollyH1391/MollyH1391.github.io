@@ -1,0 +1,256 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Store
+
+@model StoreShopMenuViewModel
+
+@{
+    ViewData["Title"] = "菜單";
+}
+
+@section topCSS{
+<link href="~/css/Store/Menu.css" rel="stylesheet" />
+<style>
+    :root{
+        --menu-first-color: @Model.FirstColor;
+        --menu-second-color: @Model.SecondColor;
+    }
+</style>
+}
+
+@section topJS{
+    <script>
+        let menuList
+        let shopId = @Model.ShopId
+        let leaderId = @Model.LeaderId
+        let isAuthenticated = "@Html.Raw(User.Identity.IsAuthenticated)".toLowerCase()
+    </script>
+}
+
+@section endJS{
+    <script async src="~/js/Store/Menu_Products.js"></script>
+    <script>
+        console.log('start')
+        fetch(`/Store/GetMenuData/${shopId}`).then(response => {
+            if (response.status == 400) {
+                document.querySelector('#menu_spinner').innerText = "無菜單資料"
+                return
+            }
+            return response.json()
+        })
+            .then(result => {
+                console.log('then')
+                if (result != null) {
+                    menuList = JSON.parse(result)
+                }
+            })
+            .then((res) => {
+                console.log('insert start')
+                document.querySelector('#menu_spinner').classList.add('d-none')
+                menuList.forEach((menuClass, classIdx) => {
+                    InsertBorad(menuClass, classIdx)
+                })
+                SetSearch()
+            })
+    </script>
+
+    <script src="~/js/Store/Menu_Basic.js"></script>
+    <script src="~/js/Store/GroupBtn.js"></script>
+    <script src="~/js/Store/ProductDetailModalFunctions.js"></script>
+}
+
+<div class="menu_shadow menu_banner bg_pink text_white text-center fw-bold fz_16 py-1 mb-2 rounded_corner">
+    @Model.Span
+</div>
+<div class="menu_shadow menu_abstract rounded_corner">
+    <div class="row g-0 flex-lg-row-reverse">
+        <div class="col col-12 col-lg-8">
+            <!-- Slider main container -->
+            @if(Model.ShopFigures.Count() > 1)
+            {
+                <div class="swiper menu_fig_swiper">
+                <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                        <!-- Slides -->
+                        @foreach(var fig in Model.ShopFigures)
+                        {
+                            <div class="swiper-slide">
+                                <div class="menu_brand_fig">
+                                    <img src="@fig.Path" class="d-block" alt="@fig.Alt">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next text-white"></div>
+                    <div class="swiper-button-prev text-white"></div>
+                </div>
+            }
+            else
+            {
+                <div class="menu_fig_swiper">
+                    @foreach(var fig in Model.ShopFigures)
+                    {
+                        <div class="menu_brand_fig">
+                            <img src="@fig.Path" class="d-block" alt="@fig.Alt">
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="col col-12 col-lg-4">
+            <div class="row flex-column flex-lg-column-reverse h-100">
+                <div class="col flex-grow-0">
+                    <div class="menu_func_area d-flex align-items-center menu_first_color_bg">
+                        @if(Model.Promotions.Count() >= 1)
+                        {
+                            <div class="menu_function col">
+                                <button type="button" data-bs-toggle="modal"
+                                        data-bs-target="#menu_promotion_modal"
+                                        class="w-100 d-flex flex-column justify-content-evenly align-items-center py-3">
+                                    <div class="menu_func_icon bg_white rounded-circle d-flex justify-content-center align-items-center">
+                                        <i class="fas fa-tag fz_18 menu_first_color_text"></i>
+                                    </div>
+                                    <p class="text_white m-0 mt-2">優惠</p>
+                                </button>
+                            </div>
+                        }
+                        <div class="menu_function col">
+                            <button type="button" data-bs-toggle="modal"
+                                    data-bs-target="#menu_mealmethod_modal"
+                                    class="w-100 d-flex flex-column justify-content-evenly align-items-center py-3">
+                                <div class="menu_func_icon bg_white rounded-circle d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-utensils fz_18 menu_first_color_text"></i>
+                                </div>
+                                <p class="text_white m-0 mt-2">用餐方式</p>
+                            </button>
+                        </div>
+                        <div class="menu_function col">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#menu_search_modal"
+                                    class="w-100 d-flex flex-column justify-content-evenly align-items-center py-3">
+                                <div class="menu_func_icon bg_white rounded-circle d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-search fz_18 menu_first_color_text"></i>
+                                </div>
+                                <p class="text_white m-0 mt-2">搜尋</p>
+                            </button>
+                        </div>
+                        <div class="menu_function col">
+                            <button id="menu_group_btn" type="button" data-bs-toggle="modal" data-bs-target="#menu_group_modal"
+                                    class="w-100 d-flex flex-column justify-content-evenly align-items-center py-3">
+                                <div class="menu_func_icon bg_white rounded-circle d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-users fz_18 menu_first_color_text"></i>
+                                </div>
+                                <p class="text_white m-0 mt-2">揪團</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="menu_shop d-flex p-3 position-relative bg_white h-100">
+                        <div class="menu_logo rounded-circle overflow-hidden d-inline-block">
+                            <a href="/BrandStore/@Model.BrandId">
+                                <img src="@Model.BrandLogo" class="img w-100 h-100">
+                            </a>
+                        </div>
+                        <div class="col menu_shop_content ms-3">
+                            <h1 class="menu_shop_name fz_15 fw-bold mb-3">@Model.BrandName @Model.Name</h1>
+                            <div class="menu_shop_information scroll_none">
+                                <p class="card-text mb-0">店家資訊</p>
+                                
+                                @if(Model.StarAmount > 0)
+                                {
+                                    <div class="menu_stars icon_star d-inline-block">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Star)
+                                        {
+                                            <i class="fas fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-star star_light"></i>
+                                        }
+                                    }
+                                    </div>
+                                    <span class="menu_stars_value">@Model.Star</span>
+                                    <span class="menu_stars_total">(@Model.StarAmount)</span>    
+                                }
+                                
+                                <div class="menu_shop_formore d-lg-none">
+                                    <button id="menu_shop_formore_btn" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#menu_formore_modal" class="position-absolute">
+                                        <i class="fas fa-angle-down me-2"></i>
+                                        更多
+                                    </button>
+                                </div>
+                                <div class="menu_shop_more_content d-none d-lg-block">
+                                    <ul>
+                                        <li>
+                                            <i class="fas fa-clock text-center"> </i> @Model.OpenTimeSpan
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-phone text-center"></i>
+                                            <a href="tel:@Model.Phone"
+                                               class="menu_first_color_text">@Model.Phone</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-map-marker-alt text-center"></i>
+                                            <a id="menu_map" href="https://www.google.com/maps/place/@Model.FullAddress"
+                                               target="_blank" class="menu_first_color_text">@Model.FullAddress</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-dollar-sign text-center"></i> @Model.PayMethod
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-money-bill text-center"></i> @Model.PriceLimit
+                                            @if (Model.PreOrder == true)
+                                            {
+                                                <span class="text_pink d-block">
+                                                    (非訂餐時間僅提供預訂)
+                                                </span>
+                                            }
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-address-card text-center"></i>
+                                            @if(Model.HasSticker)
+                                            {
+                                                <span class="m-0">此門市支援專屬姓名貼紙</span> 
+                                            }
+                                            else
+                                            {
+                                                <span class="m-0">此門市不支援專屬姓名貼紙</span> 
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="menu_main">
+    <div id="menu_spinner" class="text-center d-flex align-items-center justify-content-center">
+        <span>菜單資料讀取中</span>
+        <div class="spinner-border text-dark ms-4" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_MenuMainPartial")
+</div>
+
+<div id="cartArea" class="position-fixed w-100 h-100">
+    @if (Model.ProductInCart != null)
+    {
+        @await Html.PartialAsync("_MenuCartPartial", Model.ProductInCart)
+    }
+</div>
+
+<!-- modals -->
+@await Html.PartialAsync("_MenuShopContentModalPartial")
+@await Html.PartialAsync("_MenuShopPromotionModalPartial")
+@await Html.PartialAsync("_MenuShopTakeMethodModalPartial")
+@await Html.PartialAsync("_ProductDetailModalPartial", Model.ProductDetailModal)
+@await Html.PartialAsync("_MenuShopSearchModalPartial")
+@await Html.PartialAsync("_GroupModalPartial")

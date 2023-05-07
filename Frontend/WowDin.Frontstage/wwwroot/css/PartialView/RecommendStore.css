@@ -1,0 +1,41 @@
+.brand_recommend_text{
+    padding: 0px 5px 0px 15px;
+}
+.brand_recommend_errorpic{
+    width: 53%;
+}
+.brand_recommend_title{
+    font-size: 18px;
+}
+.fa-arrow-alt-circle-right{
+    font-size: 22px;
+}
+.brand_recommend_more{
+    font-size: 16px;
+    font-weight: 400;
+}
+@media screen and (min-width:576px){
+    .brand_recommend_text{
+        padding: 0px;
+    }
+    .brand_recommend_errorpic{
+        width: 30%;
+    }
+}
+@media screen and (min-width:992px){
+    .brand_recommend_text{
+        padding: 0px;
+    }
+    .brand_recommend_title{
+        font-size: 30px;
+    }
+    .brand_recommend_more{
+        font-size: 22px;
+    }
+    .brand_recommend_errorpic{
+        width: 19%;
+    }
+    .brand_recommend_errortext{
+        font-size: 17px;
+    }
+}

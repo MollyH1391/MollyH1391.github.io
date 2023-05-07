@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "SearchZone";
+}
+
+
+<!-- 搜尋區塊 -->
+ <div class="row col-12 col-sm-12 col-lg-4 mx-auto p-0">
+    <div class="row searchzone bg_blue justify-content-center">
+        <div onclick="getSearchNearInfo()" type="button" class="searchzone_icon col-3 col-sm-3 col-lg-6 d-flex align-items-center flex-column">
+            <i class="fas fa-street-view rounded-circle text_blue bg_white d-flex justify-content-center align-items-center"></i>
+            <p class="mt-2 text_white">找附近</p>
+        </div>
+        <div type="button" class="searchzone_icon searchzone_borderleft col-3 col-sm-3 col-lg-6 d-flex align-items-center flex-column" data-bs-toggle="modal" data-bs-target="#searchzone_finddistrict_modal">
+            <i class="fas fa-compass rounded-circle text_blue bg_white d-flex justify-content-center align-items-center"></i>
+            <p class="mt-2 text_white">找區域</p>
+        </div>
+        <hr class="searchzone_baseline">
+        <div onclick="getSearchOrderedInfo()" type="button" class="searchzone_icon searchzone_borderleft col-3 col-sm-3 col-lg-6 d-flex align-items-center flex-column">
+            <i class="fas fa-history rounded-circle text_blue bg_white d-flex justify-content-center align-items-center"></i>
+            <p class="mt-2 text_white">曾點過</p>
+        </div>
+    </div>
+</div>

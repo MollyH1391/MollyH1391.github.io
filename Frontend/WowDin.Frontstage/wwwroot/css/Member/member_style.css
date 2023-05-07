@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700&display=swap');
+
+*{
+    /* line-height: 25px; */
+    letter-spacing: 0.8px;
+}
+#bg_color {
+    background-color: var(--din-bg-page);
+    
+}
+a:hover{
+    color: #9e9e9e;
+}
+.input_noshadow:hover {
+    box-shadow: none !important;
+    border-color: var(--din-input-border) !important;
+}
+
+.login_footer_link:hover{
+    color: var(--din-main-pink);
+}
+.login_forgetPassword:hover{
+    color: var(--din-icon-social);
+}
+.member_block_s{
+    max-width: 420px;
+}
+.member_block_m{
+    max-width: 760px;
+}
+.editpassword_btn{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border-radius: 0;
+    width: 100%;
+}
+.member_content_m{
+    max-width: 400px;
+}
+
+.fb_bg{
+    background-color: #0066ff;
+}
+.line_bg{
+    background-color: #00b900;
+}
+.line_color{
+    color: #00b900;
+}
+.w-35{
+    width: 35%;
+}
+.fs-12{
+    font-size: 12px;
+}
+.fs-13{
+    font-size: 13px;
+}
+.fs-14{
+    font-size: 14px;
+}
+.fs-15{
+    font-size: 15px;
+}
+.fs-16{
+    font-size: 16px;
+}
+.fs-h1{
+    font-size: 19px;
+}
+.h-1px{
+    height: 1px;
+}
+.photo_size{
+    width: 80px;
+    height: 80px;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+}
+
+.top--40{
+    top: -40px;
+}
+.member_icon_size{
+    width: 35px;
+    height: 35px;
+    right: -10px;
+    bottom: 5px;
+}
+.header_bg{
+    background-color: white;
+}
+.rounded-4{
+    border-radius: 30px;
+}
+.border-lightgray{
+    border-color: #9e9e9e;
+}
+.memberCodeTitle_top{
+    top: 25px;
+}
+.account_block{
+    width: 316px;
+    
+}
+.pointHistory_cardtitle_size{
+    width: 10px;
+    height: 50px;
+}
+.pointHistory_card{
+    height: 300px;
+}
+.pointHistory_cardtext_lh{
+    line-height: 1.5em !important;
+}
+.input_noshadow:focus{
+    box-shadow: none;
+    border-color: #ccc;
+}
+.badge_w{
+    width: 80px;
+}
+.progress_h{
+    height: 4px;
+}
+.store_membercard_bgheight{
+    height: 100vh;
+}
+.pill:hover{
+    color: white;
+}
+.plus_icon{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 80px;
+}
+.photo_membercard{
+    width: 80px;
+    height: 80px;
+}
+
+.modal_photo_color{
+    bottom: 0;
+}
+
+@media screen and (min-width: 576px) {
+    .header_bg{
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .editpassword_btn{
+        display: block;
+        position: static;
+        border-radius: 5px;
+        width: 50%;
+    }
+    .member_block_m{
+        min-width: 580px;
+    }
+}
+@media screen and (min-width: 992px){
+    .fs-13{
+        font-size: 16px;
+    }
+    .fs-15{
+        font-size: 18px;
+    }
+    .fs-h1{
+        font-size: 36px;
+    }
+    .store_membercard_bgheight{
+        height: 100vh;
+        /* height: 100%; */
+    }
+    .account_block{
+        width: 316px;
+        /* max-height: 600px; */
+    }
+}
+
+/* onoffswitch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #747474;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #0098ff;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/*modal*/
+.modal.fade .modal-dialog {
+    transform: scale(0)
+}
+
+.modal.fade.show .modal-dialog {
+    transform: scale(1)
+}
+
+
+#bg_color {
+    background-color: var(--din-bg-page);
+}

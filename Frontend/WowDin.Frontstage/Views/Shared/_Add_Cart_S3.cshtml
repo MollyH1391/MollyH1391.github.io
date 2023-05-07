@@ -1,0 +1,138 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel
+
+
+<div class="row justify-content-center mb-2">
+        <div class="col-12 col-sm-10 col-lg-8">
+            <div class="card rounded-1">
+                <div class="card-body pb-0">
+                    <div class="row py-2 px-3">
+                        <div class="col-12 ">
+                            <h4 class="fz_16 fw-bolder pb-2 ">確認訂單明細</h4>
+                            <div class="bgc bg_page p-2 rounded-3 my-2">
+                                <i class="d-inline-block fas fa-exclamation-circle text_pink"></i>
+                                <p class="d-inline-block mb-0 text_pink fw-bold">預計取餐時間會依門市狀況調整</p>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block">訂購門市</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p class="d-inline-block me-1">@Model.CartShopData.Brand</p>
+                                    <p class="d-inline-block">@Model.CartShopData.ShopName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">取餐人</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="userName" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">連絡電話</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="pickUpPhone" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">取餐方式</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="takeMethod" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">地址</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="showAddress" class="d-inline-block me-1">{{地址}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">預計取餐時間</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="deliveryTime" class="d-inline-block me-1">{{17:00}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">付款方式</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="payment" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">開立發票方式</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="receipt" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">統一編號</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="vatNum" class="d-inline-block me-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2 d-flex cart_details_border">
+                            <div class="row w-100">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <p class="d-inline-block ">應付金額</p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p id="step3FinalPrice" class="d-inline-block me-1">  </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-lg-8">
+            <div class="row">
+                <a id="backS2" href="#" class="col-6 pe-0">
+                    <button type="button" class="w-100 bg_white rounded-2 py-3 fw-bold">
+                            上一步
+                    </button>
+                </a>
+                <div class="col-6 ps-0">
+                    <button id="makeOrderBtn" type="button" class="w-100 bg_pink rounded-2 py-3 text_white fw-bold">送出訂單</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+

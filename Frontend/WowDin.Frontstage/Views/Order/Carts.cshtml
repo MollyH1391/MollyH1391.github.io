@@ -1,0 +1,41 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartsViewModel
+
+@{
+    ViewData["Title"] = "購物車";
+}
+
+<link href="~/css//Order/Order.css" rel="stylesheet">
+
+
+<script>
+    const cartList = @Html.Raw(@Model.CartListByUserJson)
+</script>
+
+
+<div class="row">
+
+    @if(Model.IsCartExist)
+    {
+        foreach(var c in Model.CartListByUserVM)
+        {
+            <div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center ">
+                <div id="cart_card cart_order_complete" class="card mb-3 w-100">
+                    <a href="/Order/CartDetail/@c.ShopDataVM.ShopId" class="text-decoration-none">
+                        @await Html.PartialAsync("_Cart_Card_Partial", c)
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 d-flex">
+            <img class="w-25 m-auto" src="~/img/Order/無訂單.png" alt="noorder">
+        </div>
+    }
+    
+</div>
+
+@section endJS{
+    <script src="~/js/Order/Cart_Cards.js"></script>
+}

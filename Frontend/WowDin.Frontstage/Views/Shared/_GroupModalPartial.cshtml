@@ -1,0 +1,32 @@
+﻿
+
+<div class="modal fade" id="menu_group_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="menu_modal_header p-3">
+                <div class="d-flex">
+                    <h3 class="fz_16 fw-bold m-0">揪團分享</h3>
+                    <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times-circle text_pink fz_18"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="bg_page p-2">
+                    <div class="menu_group_fig d-flex border-bottom p-3">
+                        <img src="~/img/Store/wow.png" class="ms-auto">
+                        <img id="group_QRcode" src="" class="me-auto">
+                    </div>
+                    <p class="text-center p-2 m-0 menu_first_color_text fw-bold">
+                        連結分享給其它人，<br>邀請大家加入訂單，一起團購！
+                    </p>
+                </div>
+                <input id="menu_web_address" type="text" class="px-2 my-2 w-100" value="">
+                <button id="menu_copy_address" type="button" onclick="copyToClipBoard()"
+                        class="py-3 mb-2 text-center menu_second_color_bg w-100 text_white rounded_corner_small">
+                    複製連結
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

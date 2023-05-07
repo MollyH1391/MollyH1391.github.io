@@ -1,0 +1,143 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel
+
+@{
+    ViewData["Title"] = "購物車明細";
+}
+
+@section topCSS{
+    <link href="~/css/PartialView/Searchzone.css" rel="stylesheet">
+	<link href="~/css//Order/Order.css" rel="stylesheet">
+    <link href="~/css/Store/menu.css" rel="stylesheet">
+}
+
+<style>
+    #appt-time:invalid {
+        border: 1px red solid;
+    }
+
+    #appt-time:valid+span:after {
+        position: absolute;
+        content: '✓';
+    }
+    .hide-error{
+        color: blue;
+    }
+    .required, .addressrequired, .timerequired, .payrequired, .receiptrequired, .userinforequired{
+        color: red
+    }
+</style>
+
+@Html.Partial("_ProductDetailModalPartial", @Model.ProductDetailModal)
+
+@Html.Partial("_GroupModalPartial")
+
+
+@section endJS{ 
+   <script src="~/js/Store/ProductDetailModalFunctions.js"></script>
+   <script src="~/js/Order/CartDetail.js"></script>
+   <script src="~/js/Store/GroupBtn.js"></script>  
+   <script src="~/js/Order/UpdateCartDetail.js"></script> 
+   <script src="~/js/Order/CreateOrder.js"></script>
+   <script src="~/js/Order/deliveryfee.js"></script>
+}
+<script>
+    const userList = @Html.Raw(@Model.ProductDetailsByCartJson)
+    const shopId = @Html.Raw(@Model.ShopId)
+    const userAccountId = @Html.Raw(@Model.UserAccountId)
+    const cartId = @Html.Raw(@Model.Cartid)
+    const OrderStamp = '@Html.Raw(@Model.OrderStamp)'
+    let shopPaymentType = '@Html.Raw(Model.CartShopData.ShopPaymentType)'
+    let shoptakeMethodType = '@Html.Raw(Model.CartShopData.ShopTakeMethodType)'
+</script> 
+
+
+
+
+    <section>
+        <div class="container my-2">
+            <div class="row justify-content-center">
+                <div class="col-1"></div>
+                <div class="col-10 col-sm-10 col-lg-8">
+                    <div class="row position-relative">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <span
+                                        class="d-inline-block cartDetails_step_num bg_blue text_white d-flex justify-content-center align-items-center">
+                                        <div class="cartDetails_step_numtxt fw-bold">
+                                            1
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p class="text_blue">確認明細</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="d-inline-block w-25 position-absolute cart_detail_hr" style="top: 25%; left: 20.5%;">
+
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <span id="num2"
+                                        class="d-inline-block cartDetails_step_num bg_stepNum text_white d-flex justify-content-center align-items-center">
+                                        <div class="cartDetails_step_numtxt fw-bold">
+                                            2
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p class="text_blue">選擇付款</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="d-inline-block w-25 position-absolute cart_detail_hr"
+                            style="top: 25%; right: 20.5%;">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <span id="num3"
+                                        class="d-inline-block cartDetails_step_num bg_stepNum text_white d-flex justify-content-center align-items-center">
+                                        <div class="cartDetails_step_numtxt fw-bold">
+                                            3
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p class="text_blue">確認結帳</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+            </div>
+            
+        @* CartS1*@
+        <div id="CartS1">
+            @Html.Partial("_Add_Cart_S1")
+        </div>
+        @*CartS1*@
+
+       @* CartS2*@
+       <div id="CartS2" class="d-none">
+           @Html.Partial("_Add_Cart_S2")
+       </div>
+        @*CartS2*@
+
+        @* CartS3*@
+       <div id="CartS3" class="d-none">
+           @Html.Partial("_Add_Cart_S3")
+       </div>
+        @*CartS3*@
+   
+    </section>
+
+   
+
+
+
+
+
+

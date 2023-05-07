@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "發生錯誤";
+    var customMsg = (string)TempData["ErrorMessage"];
+    var defualtMsg = (string)ViewData["Exception"];
+}
+
+@if(defualtMsg != null)
+{
+    <h1 class="fz_30">@ViewData["Exception"]</h1>
+
+}
+else
+{
+    <h1 class="fz_30">@TempData["ErrorMessage"]</h1>
+}
+
+<div class="mt-3">將在<a id ="sec"></a>後回到主頁<a asp-controller="Home" asp-action="Index" class="text_blue">返回首頁</a></div>
+
+@section endJS{
+<script type="text/javascript">  
+    var num = 10;
+    function downTime(){
+		document.getElementById('sec').innerHTML=num;
+        if(num>0){
+        num--;
+        }else{
+        window.location.href ='@Url.Action("Index", "Home")'
+        }
+        setTimeout("downTime()",1000);
+    }
+    downTime();
+ </script>
+}

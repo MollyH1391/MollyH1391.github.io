@@ -1,0 +1,91 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.ECpayViewModel
+@section topCSS{
+    <link href="~/css/Cart/cart_order.css"/>
+}
+
+    <div class="container my-2">
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body pb-0">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder pb-2 text-center">訂單成功送出</h4>
+                                    <p class="fz_16 mb-0 text_pink fw-bold text-center">現金付款</p>
+                                @*<p class="mb-0 text-center">請在以上時間確認門市是否接單</p>*@
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                <div class="cart_details_step4_table bg_blue w-75 rounded-1 px-3 py-3">
+                                    <p class="mb-0 text-center fw-bold text_white">如欲修改訂單，請直接電話聯絡門市</p>
+                                    <table class="bg_white w-100 rounded-2 text-center">
+                                        <tbody class="cart_details_step4_table">
+                                            <tr class="">
+                                                <td class="">
+                                                    <h5 class=" mt-0 mb-0">訂單編號</h5>
+                                                </td>
+                                                <td class="">
+                                                    <p class="mb-0"> @Model.OrderStamp
+                                                        <button>
+                                                            <i class="fas fa-copy text_blue"></i>
+                                                        </button>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">
+                                                    <h5 class="mt-0 mb-0">訂購門市</h5>
+                                                </td>
+                                                <td class="">
+                                                    <p class="mb-0">@Model.BrandName  @Model.ShopName</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">
+                                                    <h5 class="mt-0 mb-0">門市電話</h5>
+                                                </td>
+                                                <td class="">
+                                                    <p class="mb-0"> @Model.ShopPhone </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">
+                                                    <h5 class="mt-0 mb-0">取餐方式</h5>
+                                                </td>
+                                                <td class="">
+                                                    <p class="mb-0"> @Model.TakeMethod </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">
+                                                    <h5 class="mt-0 mb-0">預計取餐時間</h5>
+                                                </td>
+                                                <td class="">
+                                                    <p class="mb-0"> @Model.PickUpTime </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-2">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="row">
+                    <div class="col-12 ">
+                        <a id="gotoOrderDetail" asp-controller="Order" asp-action="OrderDetail" asp-route-id="@Model.OrderId" type="button" class="w-100 bg_blue rounded-2 py-3 text_white fw-bold text-center">查看訂單</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>

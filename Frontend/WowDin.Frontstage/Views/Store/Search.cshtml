@@ -1,0 +1,258 @@
+﻿@model SearchViewModel
+
+@{
+    ViewData["Title"] = "搜尋";
+}
+
+@{
+    var searchMethod = string.Empty;
+    switch (Model.Method.ToLower())
+    {
+        case "nearby":
+            searchMethod = "找附近";
+            break;
+        case "area":
+            searchMethod = $"找區域 - {Model.Address}";
+            break;
+        case "ordered":
+            searchMethod = "曾點過";
+            break;
+    }
+}
+
+<section class="row">
+    <div class="col-12 ps-5 pe-5 pb-3 d-flex justify-content-between">
+        <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb" class="text_card">
+            <ol class="breadcrumb mb-0 p-2">
+                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home icon_social "></i></a></li>
+                <li class="breadcrumb-item active position-relative" aria-current="page">
+                    <button type="button" id="search_bread_popupmenubtn" class="" din_show="false">
+                        @Html.Raw(searchMethod)
+                    </button>
+                    <div class=" btn-group rounded-3 position-absolute d-none" role="group"
+                         id="search_bread_popupmenu">
+                        <button type="button" id="search_popupmenu_nearby" class="btn bg_blue p-3">
+                            <i class="fas fa-street-view rounded-circle bg_white text_blue p-3 fs-2"></i><span class="d-block text_white pt-3">找附近</span>
+                        </button>
+                        <button type="button" id="search_popupmenu_area" class="btn bg_blue p-3"
+                                data-bs-toggle="modal" data-bs-target="#din_Modal">
+                            <i class="fas fa-compass rounded-circle bg_white text_blue p-3 fs-2"></i><span class="d-block text_white pt-3">找區域</span>
+                        </button>
+                        <button type="button" id="search_popupmenu_ordered" class="btn bg_blue p-3">
+                            <i class="fas fa-history rounded-circle bg_white text_blue p-3 fs-2"></i><span class="d-block text_white pt-3">曾點過</span>
+                        </button>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <button type="button" class=" pt-2 pb-2 ps-3 pe-3 rounded-1 d-lg-none" id="search_filter_btn"
+                data-bs-toggle="modal" data-bs-target="#din_Modal">
+            <i class="fas fa-sort-amount-down me-2"></i><span>篩選</span>
+        </button>
+    </div>
+</section>
+<section class="d-none d-lg-block">
+    <div class="bg_card_tag ps-5 pe-5 pt-3 pb-3" id="search_searchbar">
+        <form class="row" id="search_searchform">
+            <div class="col-12 col-lg-4 p-2">
+                <div class="d-lg-flex">
+                    <label for="search_brand" class="text-nowrap p-2">品牌</label>
+                    <div class="position-relative w-100 dropdown">
+                        <input type="text"
+                               class="form-control lh-lg rounded-3 input_noshadow dropdown-toggle border"
+                               id="search_brand" data-bs-toggle="dropdown" aria-expanded="false" placeholder="全部" autocomplete="off" value="@Html.Raw(Model.SelectedBrand)">
+                        <i class="search_brand_icon fas fa-search position-absolute text_card"></i>
+                        <ul class="dropdown-menu w-100" aria-labelledby="search_brand" id="search_brandlist">
+                            <partial name="_SearchBrandItemPartial" model="@Model.Brands" />
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 p-2">
+                <div class="d-lg-flex">
+                    <label for="search_category" class="text-nowrap p-2">餐點種類</label>
+                    <div class="dropdown w-100">
+                        <button type="button" class="btn dropdown-toggle border w-100 text-start lh-lg bg_white rounded-3"
+                                id="search_category" data-bs-toggle="dropdown" aria-expanded="false" style="min-height:40px;">
+                                <img src="" alt="" style="width:20px; display:none" class="me-2"><span id="search_category_text">@Html.Raw(Model.SelectedCategory)</span>
+                            
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="search_category">
+                            <li><button class="categoryitem dropdown-item" type="button" search_category_img="">全部</button></li>
+                            @foreach (var c in Model.Categories)
+                            {
+                                <li>
+                                    <button class="categoryitem dropdown-item" type="button" search_category_img="@c.Img">@Html.Raw(c.Name)</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 p-2">
+                <div class="d-lg-flex">
+                    <label for="search_evaluate" class="text-nowrap p-2">評價</label>
+                    <div class="dropdown w-100">
+                        <button type="button"
+                                class="btn dropdown-toggle border w-100 text-start lh-lg bg_white rounded-3"
+                                id="search_evaluate" data-bs-toggle="dropdown" aria-expanded="false" style="min-height:40px;">
+                            @Html.Raw(Model.SelectedEvaluate)
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="search_evaluate">
+                            <li><button class="evaluateitem dropdown-item" type="button">全部</button></li>
+                            <li><button class="evaluateitem dropdown-item" type="button">5分</button></li>
+                            <li><button class="evaluateitem dropdown-item" type="button">4以上</button></li>
+                            <li><button class="evaluateitem dropdown-item" type="button">3以上</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
+<section class="row pt-2" id="search_shopcardsbox">
+    <partial name="_SearchShopCardsPartial" model=Model.ShopCards />
+</section>
+
+<partial name="_ModalPartial" />
+
+<div class="d-none">
+    <form class="row" id="search_areaform">
+        <div class="col-12 p-2">
+            <p class="text_gray text-center">
+                只輸入縣市即可搜尋門市，<br />
+                輸入其他條件，搜尋更精確!
+            </p>
+        </div>
+        <div class="col-12">
+            <label for="search_select_city"><i class="fas fa-star-of-life text_pink me-2"></i>縣市區域</label>
+        </div>
+        <div class="col-6 p-2">
+            <div class="dropdown w-100">
+                <button type="button"
+                        class="btn dropdown-toggle border w-100 text-start lh-lg bg_white rounded-3 text_gray"
+                        id="search_select_city" data-bs-toggle="dropdown" aria-expanded="false">
+                    縣市
+                </button>
+                <ul class="dropdown-menu w-100" aria-labelledby="search_select_city" id="search_select_citylist">
+                </ul>
+            </div>
+        </div>
+        <div class="col-6 p-2">
+            <div class="dropdown w-100">
+                <button type="button"
+                        class="btn dropdown-toggle border w-100 text-start lh-lg bg_white rounded-3 text_gray"
+                        id="search_select_district" data-bs-toggle="dropdown" aria-expanded="false">
+                    區域
+                </button>
+                <ul class="dropdown-menu w-100 d-none" aria-labelledby="search_select_district" id="search_select_districtlist">
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 p-2">
+            <label for="search_input_address" class="p-2">地址</label>
+            <input type="text" class="form-control lh-lg rounded-3 input_noshadow border"
+                   id="search_input_address" placeholder="請輸入路名，如信義路" disabled="true">
+        </div>
+        @*        <div class="col-12 p-2">
+            <label for="search_input_remark" class="p-2">地址備註</label>
+            <input type="search" class="form-control lh-lg rounded-3 input_noshadow border"
+            id="search_input_remark" placeholder="公司 / 地標 / 樓層">
+            </div>
+        *@
+    </form>
+</div>
+<template id="search_select_dropdownitem">
+    <li><button class="dropdown-item" type="button"></button></li>
+</template>
+
+@section topCSS{
+<link rel="stylesheet" href="~/css/PartialView/modalstyle.css" />
+<link rel="stylesheet" href="~/css/PartialView/shopcardstyle.css" />
+<link rel="stylesheet" href="~/css/Store/searchstyle.css" />
+}
+
+@section endJS{
+<script src="~/js/Store/searchjs.js"></script>
+<script src="~/js/Store/searchfunc.js"></script>
+<script>
+    const modalHeader = document.getElementById('din_modal_header')
+    const modalLabel = document.getElementById('din_Modal_Label')
+    const modalBody = document.getElementById('din_modal_body')
+    const modalFooter = document.getElementById('din_modal_footer')
+    const searchFilterBtn = document.getElementById('search_filter_btn')
+    const searchShopCardsBox = document.getElementById('search_shopcardsbox')
+    const searchBrand = document.getElementById('search_brand')
+    const searchCategory = document.getElementById('search_category')
+    const searchCategoryText = document.getElementById('search_category_text')
+    const searchCategoryItems = document.querySelectorAll('.categoryitem.dropdown-item')
+    const searchEvaluate = document.getElementById('search_evaluate')
+    const searchEvaluateItems = document.querySelectorAll('.evaluateitem.dropdown-item')
+    const searchCategoryImg=searchCategory.querySelector('img')
+    var myModal = new bootstrap.Modal(document.getElementById('din_Modal'))
+    let searchModalSubmitBtn
+    let requestData={Method:'@Html.Raw(Model.Method.ToLower())',Lat:@Html.Raw(Model.Lat),Lng:@Html.Raw(Model.Lng),Address:'@Html.Raw(string.IsNullOrEmpty(Model.Address)?" ":Model.Address)',Brand:' ',Category:'全部',Evaluate:'全部'}
+    let isLogin ='@User.Identity.IsAuthenticated' 
+
+    searchCategoryItems.forEach(item => {
+        item.onclick = function () {
+            searchCategoryText.innerText = item.innerText
+            requestData.Category=searchCategoryText.innerText
+            let img=item.attributes.search_category_img.value
+            if(img){
+                searchCategoryImg.src=`/img/Store/Category/${img}`
+                searchCategoryImg.alt=item.innerText
+                searchCategoryImg.style.display='inline-block'
+            }else{
+                searchCategoryImg.src=''
+                searchCategoryImg.alt=''
+                searchCategoryImg.style.display='none'
+            }
+            if (window.innerWidth >= 992) {
+                transSearchForm(requestData)
+            } else {
+                searchModalSubmitBtn.disabled = false
+            }
+        }
+    })
+    searchEvaluateItems.forEach(item => {
+        item.onclick = function () {
+            searchEvaluate.innerText = item.innerText
+            requestData.Evaluate=searchEvaluate.innerText
+            if (window.innerWidth >= 992) {
+                transSearchForm(requestData)
+            } else {
+                searchModalSubmitBtn.disabled = false
+            }
+        }
+    })
+    searchFilterBtn.onclick = function () {
+        modalLabel.innerText = '篩選'
+        modalHeader.classList.remove('border-bottom-0')
+        modalBody.innerHTML = ''
+        modalBody.appendChild(searchSearchform)
+        createSubmitButton('確定', function () {
+            myModal.hide()
+            transSearchForm(requestData)
+        })
+    }
+
+    function setBrandItem() {
+        document.querySelectorAll('.branditem.dropdown-item')
+            .forEach(item => {
+                item.onclick = function () {
+                    searchBrand.value = item.innerText
+                    requestData.Brand=searchBrand.value
+                    if (window.innerWidth >= 992) {
+                        transSearchForm(requestData)
+                    } else {
+                        searchModalSubmitBtn.disabled = false
+                    }
+                }
+            })
+    }
+
+</script>
+}

@@ -1,0 +1,65 @@
+﻿@model ProductInCart
+
+@if (Model.MsgForGroup == null)
+{    <a href="/Order/CartDetail/@Model.ShopId" class="menu_cart position-fixed menu_second_color_bg p-3 text-white fw-bold">
+        <div class="row row-cols-3 row-cols-lg-2">
+            <div class="col d-lg-none">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="menu_item_amount">@Model.ProductsAmount</span>
+            </div>
+            <div class="col text-center">
+                <i class="fas fa-shopping-cart d-none d-lg-inline-block"></i>
+                <span>
+                    購物車
+                </span>
+            </div>
+            <div class="col text-end">
+                <span class="menu_current_money">@Model.TotalPrice</span>
+            </div>
+        </div>
+        @if(Model.ProductsAmount != 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none d-lg-block">@Model.ProductsAmount</span>
+        }
+    </a>
+}
+else
+{
+
+    @if (Model.IsLeader)
+    {
+        <a href="/Order/CartDetail/@Model.ShopId" class="menu_cart position-fixed menu_second_color_bg p-3 text-white fw-bold">
+            <div class="row row-cols-3 row-cols-lg-2">
+                <div class="col d-lg-none my-auto">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="menu_item_amount">@Model.ProductsAmount</span>
+                </div>
+                <div class="col text-center d-flex align-items-center">
+                    <i class="fas fa-shopping-cart d-none d-lg-inline-block my-auto"></i>
+                    <div class="col ps-lg-3">
+                        購物車
+                        <span class="d-block small fw-light">(@Model.MsgForGroup)</span>
+                    </div>
+                </div>
+                <div class="col text-end my-auto">
+                    <span class="menu_current_money">@Model.TotalPrice</span>
+                </div>
+            </div>
+            @if(Model.ProductsAmount != 0)
+            {
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none d-lg-block">@Model.ProductsAmount</span>
+            }
+        </a>
+    }
+    else
+    {
+        <div class="menu_cart position-fixed menu_second_color_bg p-3 text-white fw-bold">
+            <div class="row">            
+                <div class="col text-center">
+                    <span>@Model.MsgForGroup</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+

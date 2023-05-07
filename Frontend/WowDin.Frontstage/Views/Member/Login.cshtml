@@ -1,0 +1,79 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Member
+@model LoginDataModel
+
+@{
+    ViewData["Title"] = "會員登入";
+    var returnUrl = Context.Request.Query["ReturnUrl"];
+}
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v13.0&appId=7574574305918196&autoLogAppEvents=1" nonce="7lfwa7L5"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+
+<main class="bg_page vh-100 d-flex align-items-center justify-content-center">
+    <div class="member_block_s w-100 p-4 my-5 m-sm-auto">
+        <div class="bg-white text-center p-3 mb-4 rounded-3">
+            <h5 class="fs-15 fw-bold mb-4">歡迎使用WowDin！線上訂餐系統</h5>
+            <p class="text-secondary fs-13">請選擇登入/註冊方式，通過驗證後即可使用</p>
+            <a class="signup-btn btn bg_pink text-white" href="/Member/Signup">使用信箱註冊</a>
+        </div>
+        
+        <form class="form-section d-flex flex-column" method="post" asp-controller="Member" asp-action="Login" asp-route-returnUrl="@returnUrl">
+            <div class="input-group mb-4">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-envelope"></i></span>
+                <input name="Account" type="email" class="form-control border-start-0 input_noshadow email-input" placeholder="信箱" value="@Html.DisplayFor(model => model.Account)" required>
+            
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-key"></i></span>
+                <input name="Password" type="password" class="form-control border-start-0 border-end-0 input_noshadow password-input" placeholder="密碼" required>
+                <a class="input-group-text icon_social bg-white showBtn"><i class="fas fa-eye"></i></a>
+                <a class="input-group-text icon_social bg-white hideBtn"><i class="fas fa-eye-slash"></i></a>
+            </div>
+            <span class="text-end fs-12 text-secondary fw-normal mb-2">6-64位英數混合，英文需區分大小寫</span>
+            <span class="d-block mt-2 text_pink fw-bold">@ViewData["ErrorMessage"]</span>
+            <button id="submit_Se" class="btn bg_blue text-white submit-btn" type="submit">登入</button>
+        </form>
+        
+        <footer class="container d-flex flex-column">
+            <a asp-controller="Member" asp-action="ForgetPassword" class="text-center fs-13 icon_social my-2 login_forgetPassword">
+                <i class="fas fa-question-circle"></i>
+                忘記密碼
+            </a>
+            <span class="w-100 bg-black opacity-25 h-1px"></span>
+            <div class="row d-flex my-4">
+                <button class="btn col-3 fb_bg me-3 flex-grow-1" scope="public_profile,email" onclick="checkLoginState();">
+                    <img class="w-25 py-1" src="~/img/Member/login_fb_icon.svg" alt="facebook">
+                </button>
+                <a href="@ViewData["LineAuth"]" class="btn col-3 line_bg flex-grow-1">
+                    <img class="w-25 py-1" src="~/img/Member/login_line_icon.svg" alt="line">
+                </a>
+            </div>
+            <div class="text-center fs-13 text-secondary">
+                <span>登入即代表您同意</span>
+                <a href="/Home/UserTerm" class="text_pink login_footer_link fw-bold"> 使用者條款 </a>
+                <span>和</span>
+                <a href="/Home/PrivacyTerm" class="text_pink login_footer_link fw-bold"> 隱私權條款 </a>
+            </div>
+        </footer>
+    </div>
+</main>
+
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}
+
+@section topJS{
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+}
+
+@section endJS{
+    <script src="~/js/Member/ShowPassword.js"></script>
+    <script src="~/js/Member/FacebookLogin.js"></script>
+    
+}
+

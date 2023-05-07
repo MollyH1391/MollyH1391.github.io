@@ -1,0 +1,8 @@
+﻿@model List<string>
+
+<li><button class="branditem dropdown-item" type="button">全部</button></li>
+@foreach (var b in Model)
+{
+    <li><button class="branditem dropdown-item" type="button">@Html.Raw(b)</button></li>
+}
+

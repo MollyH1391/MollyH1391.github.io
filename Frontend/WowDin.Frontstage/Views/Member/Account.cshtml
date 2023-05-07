@@ -1,0 +1,177 @@
+﻿@model MemberAccountViewModel
+
+@{
+    ViewData["Title"] = "會員資料";
+}
+
+    @Html.AntiForgeryToken()
+
+<div id="app" v-cloak>
+    <!-- 修改會員資料modal -->
+    <div class="modal fade" id="edit_modal" aria-labelledby="edit_modalLabel" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h3 class="modal-title" id="din_ModalLabel">編輯會員</h3>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="fas fa-times-circle text_pink fz_18"></i></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 表單 -->
+                    <form method="post" asp-controller="Member" asp-action="Account" class="member_content_m mx-auto d-flex flex-column">
+                        <input name="UserAccountId" value="@Html.DisplayFor(model => model.UserAccountId)" hidden/>
+                        <input name="Photo" :value="currentImgUrl" hidden/>
+                        <!-- 頭像 -->
+                        @*<a href="#" class="d-block photo_membercard rounded-circle overflow-hidden mx-auto position-relative mb-3">
+                                <img class="w-100" src="/img/Member/@Html.DisplayFor(model => model.Photo)" alt="phtot">
+                                <div class="bg-dark opacity-50 photo_membercard position-absolute top-0"></div>
+                                <i class="fas fa-plus position-absolute text-white plus_icon opacity-100"></i>
+                        </a>*@
+                        <label for="file-upload" class="d-block photo_membercard rounded-circle overflow-hidden mx-auto position-relative mb-3">
+                                <img class="w-100" name="Photo" value="currentImgUrl" :src="currentImgUrl" alt="phtot">
+                                <div class="bg-dark opacity-50 photo_membercard position-absolute top-0"></div>
+                                <i class="fas fa-plus position-absolute text-white plus_icon opacity-100"></i>
+                        </label>
+                        <input id="file-upload" type="file" ref="imgFile" v-on:change="uploadImg()" accept=".jpg, .jpeg, .png" hidden/>
+                        <div class="text-danger small mt-1 text-center">
+                            {{ uploadBusyMsg }}
+                            {{ imgErrorMsg }}
+                        </div>
+                        <!-- 真實姓名 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">
+                                <span class="text_pink">＊</span>
+                                真實姓名
+                            </p>
+                            <div class="input-group">
+                                <input name="RealName" type="text" class="form-control input_noshadow" value="@Html.DisplayFor(model => model.RealName)">
+                            </div>
+                            <span asp-validation-for="RealName" class="text-danger"></span>
+                        </div>
+                        <!-- 暱稱 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">
+                                <span class="text_pink">＊</span>
+                                暱稱
+                            </p>
+                            <div class="input-group">
+                                <input name="NickName" type="text" class="form-control input_noshadow" value="@Html.DisplayFor(model => model.NickName)">
+                            </div>
+                            <span asp-validation-for="NickName" class="text-danger"></span>
+                        </div>
+                        <!-- 手機號碼 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">
+                                手機號碼
+                            </p>
+                            <div class="input-group">
+                                <input name="Phone" type="tel" class="form-control input_noshadow" value="@Html.DisplayFor(model => model.Phone)">
+                            </div>
+                            <span class="d-block text-end fs-12 text-secondary fw-normal">只支援台灣手機號碼</span>
+                            <span asp-validation-for="NickName" class="text-danger"></span>
+                        </div>
+                        <!-- 性別 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">性別</p>
+                            <div class="form-check d-inline-block me-3">
+                                <input asp-for="Sex" class="form-check-input" type="radio" name="sex" value="1" id="female">
+                                <label asp-for="Sex" class="form-check-label" for="female">
+                                    女
+                                </label>
+                            </div>
+                            <div class="form-check d-inline-block me-3">
+                                <input asp-for="Sex" class="form-check-input" type="radio" name="sex" value="0" id="male">
+                                <label asp-for="Sex" class="form-check-label" for="male">
+                                    男
+                                </label>
+                            </div>
+                            <div class="form-check d-inline-block">
+                                <input asp-for="Sex" class="form-check-input" type="radio" name="sex" value="2" id="none">
+                                <label asp-for="Sex" class="form-check-label" for="none">
+                                    不提供
+                                </label>
+                            </div>
+                        </div>
+                        <!-- 生日 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">生日</p>
+                            <input name="Birthday" type="date" class="form-control input_noshadow" value="@Html.Raw(Model.Birthday)">
+                        </div>
+                        <!-- 居住地 -->
+                        <div class="form_section mb-2">
+                            <p class="fz_15 my-2">居住地</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <select name="City" class="form-select city_select">
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <select name="Distrinct" class="form-select district_select" disabled>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        @*提交*@
+                        <div class="modal-footer border-top-0">
+                            <button type="submit" class="w-100 btn bg_pink text-white p-4">確認</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="bg_page vh-100 pt-3 d-flex align-items-center justify-content-center">
+        <div class="account_block bg-white rounded-4 overflow-hidden shadow">
+            <div class="position-relative">
+                <img class="w-100" src="~/img/Member/member_card.png" alt="member_card">
+                <div class="photo_size mx-auto position-absolute">
+                    <div class="w-100 rounded-circle overflow-hidden">
+                        <img class="w-100" src="@Html.DisplayFor(model => model.Photo)" alt="phtot">
+                    </div>
+                    <div id="member_icon_bg" class="member_icon_size rounded-circle d-flex justify-content-center position-absolute"><img id="member_icon" class="w-50" src="" alt="loginType"></div>
+                </div>
+            </div>
+            <div class="d-flex ms-3 justify-content-center my-1 mt-5 mb-4">
+                <div class="text">
+                    <span class="fs-13 me-1">@Html.DisplayFor(model => model.NickName)</span>
+                    <button data-bs-toggle="modal" data-bs-target="#edit_modal" class="editBtn"><i class="fas fa-pen text-secondary"></i></button>
+                </div>
+            </div>
+            <div class="content px-5">
+                <div class="border border-1 border-lightgray rounded-4 d-flex align-items-center text-decoration-none text-dark mx-auto mb-3 px-3 py-2">
+                    <img class="me-2" src="/img/Member/points_icon.svg" alt="point">
+                    <p class="mb-0">消費次數</p>
+                    <span class="ms-auto">@Html.DisplayFor(model => model.Point)次</span>
+                </div>
+                <a asp-controller="Activity" asp-action="Coupon" class="border border-1 border-lightgray rounded-4 d-flex align-items-center text-decoration-none text-dark mx-auto px-3 py-2 mb-5">
+                    <img class="me-2" src="/img/Member/tickets_icon.svg" alt="point">
+                    <p class="mb-0">我的券匣</p>
+                    <span class="ms-auto">@Html.DisplayFor(model => model.CouponAmount)張</span>
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}
+
+@section endJS{
+    <script>
+        let loginType = @Html.DisplayFor(model => model.LoginType)
+        let sexType = @Html.DisplayFor(model => model.Sex)
+        let city = '@Html.Raw(Model.City)'
+        let district = '@Html.Raw(Model.Distrinct)'
+        let photo = '@Html.DisplayFor(model => model.Photo)'
+    </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/js/Member/uploadImg.js"></script>
+    <script src="~/js/Member/userData.js"></script>
+    
+}

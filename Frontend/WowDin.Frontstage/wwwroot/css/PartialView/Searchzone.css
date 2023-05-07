@@ -1,0 +1,199 @@
+/*swiper*/
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper {
+    border-radius: 0px;
+}
+/* 搜尋區塊 */
+.searchzone_baseline {
+    display: none;
+}
+
+.searchzone {
+    margin: auto;
+    padding: 5px 0px 5px 0px;
+    border-radius: 0px;
+}
+
+.searchzone_borderleft {
+    border-left: 1px solid hsla(0,0%,87.5%,0.95);
+}
+
+.searchzone_icon {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.searchzone_icon i {
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+}
+
+.searchzone_icon p {
+    font-size: 15px;
+}
+/* Modal模組元件 */
+.modal.fade .modal-dialog {
+    transform: scale(0)
+}
+
+.modal.fade.show .modal-dialog {
+    transform: scale(1)
+}
+/* 找區域Modal */
+.form-select {
+    color: rgba(0, 0, 0, 0.70);
+    border: 0.5px solid rgba(0, 0, 0, 0.513);
+    height: 40px;
+    width: 110%;
+}
+
+.searchzone_finddistrict_select:focus {
+    border-color: rgba(0, 0, 0, 0.513);
+    outline: 0;
+    box-shadow: none;
+}
+
+.searchzone_finddistrict_select option:hover {
+}
+
+.searchzone_finddistrict_select:hover,
+.searchzone_finddistrict_input input:hover {
+    border: 0.5px solid black;
+}
+
+.searchzone_finddistrict_input input {
+    height: 40px;
+    color: rgba(0, 0, 0, 0.70);
+    border: 0.5px solid rgba(0, 0, 0, 0.513);
+    border-radius: 5px;
+    text-indent: 8px;
+    line-height: 28px;
+    letter-spacing: 0.13118px;
+}
+
+.searchzone_finddistrict_btn {
+    width: 93%;
+    border-radius: 5px;
+    height: 65px;
+}
+
+.searchzone_finddistrict_commonaddress {
+    margin-left: 30px;
+}
+
+.form-check-input {
+    width: 1.25em;
+    height: 1.23em;
+}
+
+.form-check-input:checked {
+    width: 1.25em;
+    height: 1.23em;
+    background-color: var(--din-main-blue);
+    border-color: var(--din-main-blue);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.5rem rgba(13, 109, 253, 0.23)
+}
+
+.form-check-input:hover {
+    box-shadow: 0 0 0 0.5rem rgba(0, 0, 0, 0.13);
+}
+
+.form-check-input:checked:hover {
+    box-shadow: 0 0 0 0.5rem rgba(13, 109, 253, 0.23)
+}
+/* 找品牌Modal */
+.searchzone_findbrand_input-group {
+    position: relative;
+    display: inline;
+}
+
+    .searchzone_findbrand_input-group input {
+        border: 0.5px solid rgba(0, 0, 0, 0.513);
+        height: 40px;
+        border-radius: 5px;
+        text-indent: 8px;
+    }
+
+.searchzone_findbrand_input-icon {
+    position: absolute;
+    right: 14px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.513);
+    top: calc(50% - 0.5em);
+}
+
+.searchzone_findbrand_storelogo {
+    width: 70px;
+    height: 66px;
+    background-image: none;
+    overflow: hidden;
+}
+/* 聯絡我Modal */
+.searchzone_contact_btn {
+    width: 86%;
+    border-radius: 5px;
+    height: 65px;
+}
+
+.searchzone_contact_baseline {
+    margin-left: 30px;
+    width: 90%;
+}
+
+@media screen and (min-width:576px){
+    /* swiper */
+    .swiper {
+        border-radius: 5px 5px 0px 0px;
+    }
+    /* 搜尋區塊 */
+    .searchzone {
+        padding: 20px 0px 20px 0px;
+        border-radius: 0px 0px 5px 5px;
+    }
+}
+@media screen and (min-width:992px){
+    .searchzone_baseline {
+        display: flex;
+    }
+    /* swiper */
+    .swiper {
+        border-radius: 5px 0px 0px 5px;
+    }
+
+    .searchzone {
+        margin: unset;
+        padding: 40px 45px 40px 45px;
+        border-radius: 0px 5px 5px 0px;
+    }
+    /* 搜尋區塊 */
+    .searchzone_borderleft {
+        border-left: none;
+    }
+
+    .searchzone_icon i {
+        font-size: 30px;
+        width: 62px;
+        height: 62px;
+    }
+
+    .searchzone_baseline {
+        border: 1px solid white;
+        width: 95%;
+    }
+}

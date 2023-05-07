@@ -1,0 +1,164 @@
+﻿@model BrandStoreViewModel
+
+
+@{
+    ViewData["Title"] = "品牌頁";
+}
+
+@{
+    var videoPath = Model.Brands.Video == "" ? "https://www.youtube.com/embed/Osw3c0FX45o" : Model.Brands.Video;
+}
+
+<!-- SearchZone -->
+<div class="row mb-4">
+    @if (Model.SearchZoneList.Count() > 1)
+    {
+        <!-- Swiper -->
+        <div class="swiper mySwiper col-12 col-sm-12 col-lg-8">
+            <div class="swiper-wrapper">
+                @foreach (var brandfig in Model.SearchZoneList)
+                {
+                    <div class="swiper-slide"><img src="@brandfig.BrandAdImgPath"></div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next text_white"></div>
+            <div class="swiper-button-prev text_white"></div>
+        </div>
+    }
+     else
+    {
+        <div class="col-12 col-sm-12 col-lg-8 p-0">
+            @foreach(var fig in Model.SearchZoneList)
+            {
+                <div style="height: 100%;">
+                    <img src="@fig.BrandAdImgPath" class="w-100 swiper border" style="height: 100%;">
+                </div>
+            }
+        </div>
+    }
+    @await Html.PartialAsync("_SearchZonePartial")
+</div>
+    
+
+<!-- 品牌介紹 -->
+<div class="brand_introduce row mb-5 position-relative">
+    <div class="row col-6 m-auto mt-4 justify-content-between p-0">
+        <h2 class="col-6 fw-bold text_blue fz_30 p-0">品牌介紹</h2>
+        <div class="col-6 icon_star d-inline text-end pe-5">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= double.Parse(@Model.Brands.BrandStar))
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-star star_light"></i>
+                    }
+                }
+                <p class="fz_15 text_score d-inline-block">&nbsp;@Model.Brands.BrandStar<span>(@Model.Brands.BrandStarAmount)</span></p>
+        </div>
+        <hr class="brand_introduce_baseline">
+        <div class="col-12">
+             <p class="brand_introduce_text">@Model.Brands.Description</p>
+        </div>
+        <div class="position-absolute brand_introduce_button bottom-0 col-6 row justify-content-center">
+            @foreach (var media in Model.WebsiteList)
+            {
+                @await Html.PartialAsync("_BrandStoreMediaPartial", media)
+            }
+        </div>
+    </div>
+    <div class="col-6 p-0">
+        <iframe class="brand_introduce_youtube" width="560" height="315" src="@videoPath" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+<!-- 附近推薦店家 -->
+<div class="px-sm-0 justify-content-center">
+    @await Html.PartialAsync("_RecommendStorePartial")
+    <div class="recommendcontainer row">
+    
+    </div>
+</div>
+<!--找區域 Modal -->
+<div class="modal fade" id="searchzone_finddistrict_modal" tabindex="-1" aria-labelledby="finddistrictModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header mx-3">
+                <h5 class="modal-titles fw-bold mx-auto mt-2 fz_17" id="finddistrictModalLabel">找區域</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fas fa-times-circle text_pink fz_18"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-evenly">
+                    <p class="text-center mb-4 text_score">只輸入縣市即可搜尋門市，<br>輸入其他條件，搜尋更精確!</p>
+                    <p class="mb-2 icon_category ms-4"><span class="text_pink">＊</span>縣市區域</p>
+                    <div class="col-5 ps-0 me-3">
+                         <select class="city searchzone_finddistrict_select form-select me-1 city_select"></select>
+                    </div>
+                    <div class="col-5 ps-0 me-2">
+                        <select class="district searchzone_finddistrict_select form-select district_select"></select>
+                    </div>
+                    <div class="searchzone_finddistrict_input d-flex flex-column mt-4 px-4">
+                        <p class="mb-2 icon_category">地址</p>
+                        <input class="address" type="text" placeholder="請輸入路名，如信義路">
+                    </div>
+                    <button onclick="getSearchAreaInfo()" class="searchzone_finddistrict_btn px-3 mt-4 bg_pink text_white fz_18">搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--聯絡我 Modal 首頁的成為我們的合作夥伴 -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content w-75">
+            <div class="modal-header mx-3">
+                <h5 class="modal-title fw-bold mt-2 fz_17 mx-auto" id="contactModalLabel">官方客服</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times-circle text_pink fz_18"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column align-items-center">
+                    <img src="~/img/Store/Brand/NidinLine_QRcode.png" alt="">
+                    <p class="fz_17">ID: @@wowdin</p>
+                    <p class="mt-4">
+                        1. 手機登入LINE，點選「加入好友」
+                        <br>
+                        2. 掃描上方行動條碼或輸入ID「@@wowdin」
+                        <br>
+                        3. 將Wowdin加入好友獲得更即時的服務
+                    </p>
+                    <button onclick="window.open('https://liff.line.me/1645278921-kWRPP32q/?accountId=438fwutz')" class="searchzone_contact_btn px-1 mt-1 bg_notify_btn text_white fz_16">加為好友</button>
+                    <p class="text_pink mt-3 fw-bold">週一至週五 9:30-12:00、13:30-18:30</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section topCSS{
+    <link rel="stylesheet" href="~/css/Store/BrandStore.css" />
+    <link rel="stylesheet" href="~/css/PartialView/RecommendStore.css" />
+    <link rel="stylesheet" href="~/css/PartialView/Searchzone.css" />
+    <link rel="stylesheet" href="~/css/PartialView/shopcardstyle.css" />
+}
+
+@section endJS{ 
+    <script src="~/js/Store/BrandStore.js"></script>
+    <script src="~/js/Store/searchfunc.js"></script>
+    <script>
+        const brandName='@Html.Raw(Model.Brands.BrandName)'
+        let isLogin='@User.Identity.IsAuthenticated'
+    //window onload
+    window.onload = function () {
+        getCitySource()
+        citySelect.onchange = citySelectChange
+        citySelect.addEventListener('change', state)
+        getBrandShops(brandName, recommendcontainer)
+    }    
+    </script>
+   
+    }

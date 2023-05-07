@@ -1,0 +1,92 @@
+﻿@model SignupDataModel
+
+@{
+    ViewData["Title"] = "會員註冊";
+}
+
+<main class="bg_page vh-100 d-flex align-items-center justify-content-center">
+    <div class="member_block_s w-100 p-4 my-5 m-sm-auto">
+        <div class="bg-white text-center p-3 mb-4 rounded-3">
+            <h5 class="fs-15 fw-bold mb-4">歡迎使用你訂！線上訂餐系統</h5>
+            <p class="text-secondary fs-13">請選擇登入/註冊方式，通過驗證後即可使用</p>
+            <a class="login-btn btn bg_blue text-white" href="/Member/Login">使用信箱登入</a>
+        </div>
+        <form class="form-section d-flex flex-column" method="post" asp-controller="Member" asp-action="Signup">
+            <div class="input-group mb-4">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-envelope"></i></span>
+                <input name="Email" type="email" class="form-control border-start-0 input_noshadow" placeholder="信箱" value="@Html.DisplayFor(model => model.Email)" required>
+            </div>
+
+            <div class="input-group mb-4">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-user-circle"></i></span>
+                <input name="Realname" type="text" class="form-control border-start-0 input_noshadow" placeholder="真實姓名" value="@Html.DisplayFor(model => model.Realname)" required minlength="2" maxlength="64">
+            </div>
+
+            <div class="input-group mb-4">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-user-circle"></i></span>
+                <input name="Nickname" type="text" class="form-control border-start-0 input_noshadow" placeholder="暱稱" value="@Html.DisplayFor(model => model.Nickname)" required maxlength="10">
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-phone"></i></span>
+                <input name="Phone" type="tel" class="form-control border-start-0 input_noshadow" placeholder="手機" value="@Html.DisplayFor(model => model.Phone)" required>
+            </div>
+            <span asp-validation-for="Phone" class="d-block text_pink mb-3"></span>
+
+            <div class="input-group">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-key"></i></span>
+                <input name="Password" type="password" class="form-control border-start-0 border-end-0 input_noshadow" placeholder="密碼" required minlength="6" maxlength="64">
+                <button class="input-group-text icon_social bg-white showBtn"><i class="fas fa-eye"></i></button>
+                <button class="input-group-text icon_social bg-white hideBtn"><i class="fas fa-eye-slash"></i></button>
+            </div>
+            <span class="text-end fs-12 text-secondary fw-normal">6-64位英數混合，英文需區分大小寫</span>
+            <span asp-validation-for="Password" class="d-block text_pink mb-3"></span>
+
+            <div class="input-group">
+                <span class="input-group-text icon_social bg-white"><i class="fas fa-key"></i></span>
+                <input name="PasswordCheck" type="password" class="form-control border-start-0 border-end-0 input_noshadow" placeholder="再次輸入密碼" required minlength="6" maxlength="64">
+                <button class="input-group-text icon_social bg-white showBtn"><i class="fas fa-eye"></i></button>
+                <button class="input-group-text icon_social bg-white hideBtn"><i class="fas fa-eye-slash"></i></button>
+            </div>
+            <span class="text-end fs-12 text-secondary fw-normal">6-64位英數混合，英文需區分大小寫</span>
+            <span asp-validation-for="PasswordCheck" class="d-block text_pink mb-3"></span>
+
+            <span class="d-block mt-2 text_pink fw-bold">@ViewData["ErrorMessage"]</span>
+            <button class="btn bg_pink text-white" type="submit">註冊</button>
+
+        </form>
+        <footer class="container d-flex flex-column">
+            <a asp-controller="Member" asp-action="ForgetPassword" class="text-center fs-13 icon_social my-2 login_forgetPassword">
+                <i class="fas fa-question-circle"></i>
+                忘記密碼
+            </a>
+            <span class="w-100 bg-black opacity-25 h-1px"></span>
+            <div class="row d-flex my-4">
+                <a href="#" class="btn col-3 fb_bg me-3 flex-grow-1">
+                    <img class="w-35 py-1" src="~/img/Member/login_fb_icon.svg" alt="facebook">
+                </a>
+                <a href="#" class="btn col-3 bg-white me-3 flex-grow-1">
+                    <img class="w-35 py-1" src="~/img/Member/login_google_icon.svg" alt="google">
+                </a>
+                <a href="#" class="btn col-3 line_bg flex-grow-1">
+                    <img class="w-35 py-1" src="~/img/Member/login_line_icon.svg" alt="line">
+                </a>
+            </div>
+            <div class="text-center fs-13 text-secondary">
+                <span>登入即代表您同意</span>
+                <a href="/Home/UserTerm" class="text_pink login_footer_link fw-bold"> 使用者條款 </a>
+                <span>和</span>
+                <a href="/Home/PrivacyTerm" class="text_pink login_footer_link fw-bold"> 隱私權條款 </a>
+            </div>
+        </footer>
+    </div>
+</main>
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}
+
+@section endJS{
+    <script src="~/js/Member/ShowPassword.js"></script>
+
+}

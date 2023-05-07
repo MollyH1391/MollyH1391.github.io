@@ -1,0 +1,243 @@
+.ad-block{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+.ad-img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+/* 推薦店家 */
+.brand_recommend_errorpic {
+    width: 53%;
+}
+.brand_recommend_title{
+    font-size: 18px;
+}
+.fa-arrow-alt-circle-right{
+    font-size: 22px;
+}
+.brand_recommend_more{
+    font-size: 16px;
+    font-weight: 400;
+}
+.card_logo{
+    width: 70px; 
+    height: 70px; 
+    top: 10px; 
+    left: 10px;
+}
+.card_category{
+    width: 20px;
+}
+/* swiper */
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+}
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.swiper{
+    border-radius: 0px;
+}
+/* 搜尋區塊 */
+.searchzone_baseline{
+    display: none;
+}
+.searchzone{
+    margin: auto;
+    padding: 5px 0px 5px 0px;
+    border-radius: 0px;
+}
+.searchzone_borderleft{
+    border-left: 1px solid hsla(0,0%,87.5%,0.95);
+}
+.searchzone_icon{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.searchzone_icon i{
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+}
+.searchzone_icon p{
+    font-size: 15px;
+}
+/* 找區域Modal */
+.searchzone_finddistrict_dropdown_btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    color: rgba(0, 0, 0, 0.70);
+    border: 0.5px solid rgba(0, 0, 0, 0.513);
+    height: 40px;
+}
+.searchzone_finddistrict_dropdown_btn:hover,
+.searchzone_finddistrict_imput input:hover{
+    border: 0.5px solid black;
+}
+.searchzone_finddistrict_input input{
+    height: 40px;
+    color: rgba(0, 0, 0, 0.70);
+    border: 0.5px solid rgba(0, 0, 0, 0.513);
+    border-radius: 5px;
+    text-indent: 8px;
+    line-height: 28px;
+    letter-spacing: 0.13118px; 
+}
+.searchzone_finddistrict_btn{
+    width: 93%;
+    border-radius: 5px;
+    height: 65px;
+}
+/* 找品牌Modal */
+.searchzone_findbrand_input-group{
+    position: relative;
+    display:inline;
+}
+.searchzone_findbrand_input-group input {
+    border: 0.5px solid rgba(0, 0, 0, 0.513);
+    height: 40px;
+    border-radius: 5px;
+    text-indent: 8px;
+} 
+.searchzone_findbrand_input-icon { 
+    position: absolute; 
+    right: 14px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.513);
+    top: calc(50% - 0.5em);
+}
+.searchzone_findbrand_storeimg{
+    width: 66px;
+    height: 66px;
+    background-image: url(https://ap-south-1.linodeobjects.com/nidin-production/brand/icons/487_2044dc4389efc363.jpg);
+    background-size: contain;
+}
+/* 聯絡我Modal */
+.searchzone_contact_btn{
+    width: 60%;
+    border-radius: 5px;
+    height: 65px;
+}
+.searchzone_contact_baseline{
+    margin-left: 30px;
+    width: 90%;
+}
+/* Modal模組元件 */
+.modal.fade .modal-dialog {
+    transform: scale(0)
+}
+.modal.fade.show .modal-dialog {
+    transform: scale(1)
+}
+
+/* 廣告區域 */
+.outer-container,.content {
+    width: 100%; 
+    height: 100px;
+}
+.outer-container {
+    position: relative;
+    overflow: hidden;
+}
+.inner-container {
+    position: absolute; 
+    left: 0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+/* 新手教學 */
+.home_teach{
+    display: none;
+}
+
+@media screen and (min-width:576px){
+    .swiper{
+        border-radius: 5px 5px 0px 0px;
+    }
+    .searchzone{
+        margin: auto;
+        padding: 20px 0px 20px 0px;
+        border-radius: 0px 0px 5px 5px;
+    }
+    .outer-container,.content {
+        height: 150px;
+    }
+    /* 推薦店家 */
+    .brand_recommend_errorpic{
+        width: 30%;
+    }
+}
+
+@media screen and (min-width:992px){
+    .searchzone_baseline{
+        display: flex;
+    }
+    /* swiper */
+    .swiper{
+        border-radius: 5px 0px 0px 5px;
+    }
+    .searchzone{
+        padding: 40px 45px 40px 45px;
+        border-radius: 0px 5px 5px 0px;
+    }
+    /* 搜尋區塊 */
+    .searchzone_borderleft{
+        border-left: none;
+    }
+    .searchzone_icon i{
+        font-size: 30px;
+        width: 62px;
+        height: 62px;
+    }
+    .searchzone_baseline{
+        border: 1px solid white;
+        width: 95%;
+    }
+    /* 廣告區域 */
+    .outer-container {
+        position: static;
+        overflow: visible;
+    }
+    .inner-container {
+        position: static;
+        overflow-y: visible;
+        overflow-x: visible;
+    }
+    /* 推薦店家 */
+    .brand_recommend_title{
+        font-size: 30px;
+    }
+    .fa-arrow-alt-circle-right,
+    .brand_recommend_more{
+        font-size: 22px;
+    }
+    .brand_recommend_errorpic{
+        width: 19%;
+    }
+    .brand_recommend_errortext{
+        font-size: 17px;
+    }
+    /* 新手教學 */
+    .home_teach{
+        display: flex;
+    }
+}    

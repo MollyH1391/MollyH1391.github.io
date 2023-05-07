@@ -1,0 +1,9 @@
+#bg_color {
+    background-color: var(--din-bg-page);
+}
+
+.term { 
+    border-radius: 5px;
+    font-weight: 400;
+    padding: 16px 16px;
+}

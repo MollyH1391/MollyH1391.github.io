@@ -1,0 +1,12 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel
+
+	 @foreach(var cd in Model.ProductDetailsByCart)
+    {
+                                
+        <div id="productListByUser" userid="@cd.UserAcountId">
+            @await Html.PartialAsync("_CartDetail_GroupBuyList", cd)
+        </div>
+    }
+
+
+

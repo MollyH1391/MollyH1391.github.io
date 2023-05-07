@@ -1,0 +1,141 @@
+.container_wid{
+    width: 50%;
+}
+
+.response_bg_wrap{
+    padding-top: 30px;
+}
+
+.hr{
+    width: 100%;
+    border-style: none;
+    border-top-style: outset;
+    border-color: rgba(0,0,0,0.12);
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.form{
+    font-weight: bold;
+    width: 66%;
+}
+.form span{
+    color:#ff6482;
+    font-size: 22px;
+    font-family: Noto Sans TC,sans-serif;
+    content: 10px;
+}
+.form_select {
+    width: 100%;
+    padding: 6px 5px;
+    border-radius: 3px;
+    border-color: var(--din-input-border);
+}
+
+.ti {
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+
+.formred{
+    border-color: #c51e3f;
+    border-width: 2px;
+}
+
+.remark{
+    font-size: 6px;
+}
+.write-frame:hover{
+    border-color: #000000;
+}
+
+#label_hover_name:hover {
+    border-color: var(--din-input-border);
+}
+
+#label_hover_phone:hover {
+    border-color: var(--din-input-border);
+}
+
+.write-row {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+.warn{
+    color: #c51e3f;
+}
+.form .is-invalid{
+    border-width: 2px;
+    border-color: #c51e3f;
+}
+
+.form .is-invalid:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: var(--din-input-border);
+    border-color: #c51e3f;
+}
+
+.form #label_hover:hover {
+    border-color: var(--din-input-border);
+}
+
+.send {
+    width: 100%;
+    font-weight: bold;
+    padding: 16px;
+    border-radius: 3px;
+    position: relative;
+}
+
+#bg_color {
+    background-color: var(--din-bg-page);
+}
+
+/* @media screen and (min-width:576px){
+    .send{
+        position: fixed;
+        bottom: 0;
+        left:0;
+        right: 0;
+        line-height: 55px;
+    }
+}
+
+@media screen and (min-width:992px){
+    .send{
+        padding: 16px;
+        border-radius: 3px;
+        position: relative;
+    }
+} */
+
+@media screen and (max-width:992px){
+    .send {
+        position: fixed;
+        bottom: 88px;
+        left: 0;
+        right: 0;
+        line-height: 30px;
+        border-radius: 0px;
+    }
+    .ti{
+        font-size: 15px;
+    }
+    .form{
+        margin-bottom: 30px;
+    }
+    .container_wid{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:576px){
+    .container_wid{
+        width: 95%;
+    }
+    .form{
+        width:90%;
+    }
+}

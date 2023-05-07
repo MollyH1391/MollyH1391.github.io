@@ -1,0 +1,78 @@
+﻿@using WowDin.Frontstage.Models.ViewModel
+@model ResponseViewModel
+
+@{
+    ViewData["Title"] = "意見回饋";
+}
+
+<div class="response_bg_wrap bg_page">
+    <div class="container container_wid">
+        <div class="row write-row">
+            <div class="col-12">
+                <h5 class="mt-4 text-center ti">意見回饋</h5>
+                <hr class="mb-5">
+                <div class="table-space row justify-content-around s">
+
+                    <div class="form mb-4">
+                        <label class="mb-1">
+                            <span>∗</span>
+                            暱稱
+                        </label>
+                        <input type="text" id="label_hover_name"  class="form-control input_noshadow" value="@Model.Name" readonly>
+                    </div>
+
+                    <div class="form mb-4">
+                        <label class="mb-1">
+                            <span>∗</span>
+                            手機號碼
+                        </label>
+                        <input type="tel" id="label_hover_phone"  class="form-control  input_noshadow" value="@Model.Phone" readonly>
+                        
+                    </div>
+
+                    <div class="form mb-4">
+                        <label class="mb-1">
+                            <span>∗</span>
+                            品牌
+                        </label>
+                        <select id="brands" class="d-block form_select" onchange="renew(this.selectedIndex)">
+                        </select>
+                    </div>
+
+                    <div class="form mb-4">
+                        <label class="mb-1">
+                            <span>∗</span>
+                            門市
+                        </label>
+                        <select id="shops" class="d-block form_select">
+                            <option>--請選擇門市--</option>
+                        </select>
+                    </div>
+
+
+
+
+                    <div class="form">
+                        <div class="mb-3 mt-4">
+                            <textarea class="form-control input_noshadow write-frame" id="exampleFormControlTextarea1" rows="5" placeholder="意見回饋"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-around mb-4 mt-3">
+                <div class="col-4 text-center">
+                    <button class="bg_pink text_white send "onclick="displayMessage()">送出回饋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topCSS{
+    <link href="~/css/Home/Response.css" rel="stylesheet" />
+}
+
+@section endJS{ 
+    <script src="~/js/Member/ResponsePage.js"></script>
+}

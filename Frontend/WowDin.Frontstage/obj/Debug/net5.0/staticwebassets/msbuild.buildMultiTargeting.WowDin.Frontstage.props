@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\WowDin.Frontstage.props" />
+</Project>

@@ -1,0 +1,55 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Member;
+
+@{
+    ViewData["Title"] = "點數歷史";
+}
+
+@model IEnumerable<MemberMyPointViewModel>
+    ;
+    <main class="bg_page vh-100 pt-3 d-flex align-items-center justify-content-center">
+        <div class="account_block bg-white rounded-4 overflow-hidden shadow">
+            <div class="position-relative">
+                <img class="w-100" src="/img/Member/member_card.png" alt="member_card">
+                <div class="photo_size rounded-circle bg-info mx-auto position-absolute">
+                    <div class="member_icon_size rounded-circle fb_bg d-flex justify-content-center position-absolute"><img class="w-50" src="/img/Member/login_fb_icon.svg" alt="facebook"></div>
+                </div>
+            </div>
+            <div class="d-flex  justify-content-center mt-1">
+                <span class="fs-13 me-1">王小明</span>
+            </div>
+
+            <div class="d-flex text_blue justify-content-between fw-bold px-5 mt-4">
+                <h5 class="fs-16 ">目前點數</h5>
+                <p class="mb-0 fs-16">@ViewData["point"]</p>
+            </div>
+
+            <div class="pointHistory_card px-5 mt-4 overflow-auto">
+
+
+
+
+                @foreach (MemberMyPointViewModel index in Model)
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="pointHistory_cardtitle_size bg_blue me-2 rounded-1"></div>
+                        <div class="d-flex flex-column">
+                            <p class="mb-0 fs-15 pointHistory_cardtext_lh">@Html.DisplayName(index.ConsumeType)</p>
+                            <span class="fs-12 text_gray pointHistory_cardtext_lh">訂單編號: @Html.DisplayName(index.OrderId.ToString()) </span>
+                            <span class="fs-12 text_gray pointHistory_cardtext_lh">@Html.DisplayName(index.Date.ToString())</span>
+                        </div>
+                        <span class="text_blue ms-auto">@Html.DisplayName(index.PointAmount.ToString())</span>
+                    </div>
+
+                }
+
+
+
+
+
+            </div>
+        </div>
+    </main>
+
+    @section topCSS {
+        <link href="~/css/Member/member_style.css" rel="stylesheet" />
+    }

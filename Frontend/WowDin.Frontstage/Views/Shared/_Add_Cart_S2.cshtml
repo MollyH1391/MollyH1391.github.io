@@ -1,0 +1,215 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel
+
+ @*CartS2*@
+    <div class="container my-2">
+        
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8 d-flex justify-content-center">
+                <div class="cart_details_step2Brief d-flex align-items-center bg_blue rounded-2 px-3 py-3">
+                    <span id="showFinalQuantity" class="fz_16 badge text_blue bg_white d-inline-block px-3 py-3 me-3"> </span>
+                    <p class="fz_16 mb-0 fw-bold d-inline-block text_white">應付金額</p>
+                    <p id="showFinalPrice" class="fz_16 mb-0 fw-bold d-inline-block text_white ms-auto">  </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">取餐人資料</h4>
+                                <p class=" my-1 userinforequired d-none">請填寫取餐人資料</p>
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <h6 class="cart_details_inputTxt ">姓名</h6>
+                                <div class="input-group my-2 ">
+                                    <input id="name" type="text" value="@Model.UserName" class="form-control input_noshadow py-3 rounded-3 "
+                                        aria-label="">
+                                </div>
+                                
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <h6 class="cart_details_inputTxt">電話</h6>
+                                <div class="input-group my-2 ">
+                                    <input id="phone" type="text" value="@Model.Phone" class="form-control input_noshadow py-3 rounded-3"
+                                            oninput="if(value.length>10)value=value.slice(0,10)" 
+                                            onkeyup="this.value=this.value.replace(/\D/g,'')" 
+                                            onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <h4 class="fz_16 fw-bolder mb-2">給店家留言</h4>
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <button class="w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#cart_details_note">
+                                    <div class="input-group">
+                                        <input id="showmessage" type="text"
+                                            class="form-control cart_details_mapInput input_noshadow py-3 bg_white"
+                                            value="" aria-label="Disabled input" disabled readonly>
+                                        <div class="input-group-text cart_details_map">
+                                            <i class="fas fa-angle-right fz_18 text_blue"></i>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
+        <div class="modal fade" id="cart_details_note" tabindex="-1" aria-labelledby="din_ModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="menu_modal_header p-3">
+                    <div class="d-flex">
+                        <h3 class="fz_16 fw-bold m-0">給店家留言</h3>
+                        <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="fas fa-times-circle text_pink fz_18"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body pt-0">
+                    <input id="messageInput" type="text" class="p-2 mt-2 mb-5 w-100"
+                           onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5\w]/g,'')" : this.value=this.value.replace(/[^\u4e00-\u9fa5\w]/g,'')>
+                    <button id="messageBtn" type="button"  data-bs-dismiss="modal" aria-label="Close"
+                        class="py-3 mb-2 text-center bg_pink w-100 text_white rounded-2 fz_16 fw-bold">
+                        儲存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- modal -->
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder ">付款方式</h4>
+                                <p class=" my-1 payrequired d-none">請選擇付款方式</p>
+                            </div>
+                            <div id="showCash" class="col-12 my-2">
+                                <div class="form-check">
+                                    <input value="現金" class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-cash" checked>
+                                    <label class="form-check-label" for="flexRadio-cash">
+                                        現金
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="showCredit" class="col-12 my-2">
+                                <div class="form-check">
+                                    <input value="刷卡" class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-card">
+                                    <label class="form-check-label" for="flexRadio-card">
+                                        刷卡
+                                    </label>
+                                </div>
+                            </div>
+                            @*<div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-linepay">
+                                    <label class="form-check-label" for="flexRadio-linepay">
+                                        Line Pay
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-jkopay">
+                                    <label class="form-check-label" for="flexRadio-jkopay">
+                                        街口支付
+                                    </label>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">發票方式</h4>
+                                <p class=" my-1 receiptrequired d-none">請選擇發票方式</p>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input value="紙本發票" class="form-check-input" type="radio" name="flexRadio-receipt"
+                                        id="flexRadio-paper" checked>
+                                    <label class="form-check-label" for="flexRadio-paper">
+                                        紙本發票
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input value="統編" class="form-check-input" type="radio" name="flexRadio-receipt"
+                                        id="flexRadio-vat">
+                                    <label class="form-check-label" for="flexRadio-vat">
+                                        統編
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="vatRow" class="row justify-content-center mb-2 d-none">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">統一編號</h4>
+                            </div>
+                            <div class="col-12">
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <input id="VAT" type="text" class="form-control input_noshadow py-3 rounded-3 text_gray" placeholder="請輸入統一編號" 
+                                               oninput="if(value.length>8)value=value.slice(0,8)" 
+                                               onkeyup="this.value=this.value.replace(/\D/g,'')" 
+                                               onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-2">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="row">
+                    <a class="col-6 pe-0">
+                        <button id="continueBtn" type="button" class=" w-100 bg_white rounded-2 py-3 fw-bold ">
+                            
+                            繼續加購
+                           
+                        </button>
+                    </a>
+                    <a href="#" class="col-6 ps-0">
+                        <button id="checkDetail" type="button" class=" w-100 bg_pink rounded-2 py-3 text_white fw-bold">
+                            
+                                下一步
+                           
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+ @*CartS2*@

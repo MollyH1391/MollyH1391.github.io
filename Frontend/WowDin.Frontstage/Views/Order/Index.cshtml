@@ -1,0 +1,35 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.OrdersViewModel
+
+@{
+    ViewData["Title"] = "訂單";
+}
+
+	<link href="~/css//Order/Order.css" rel="stylesheet">
+
+
+
+<div class="row">
+
+	@if(Model.IsOrderExist)
+	{
+		foreach (var od in Model.OrderListByUser)
+		{
+			<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center ">
+				<div id="cart_card cart_order_complete" class="card mb-3 w-100">
+					<a href="/Order/OrderDetail/@od.OrderId" class="text-decoration-none">
+						@await Html.PartialAsync("_Order_Card_Partial", od)
+					</a>
+				</div>
+			</div>
+		}
+	}
+	else
+	{
+		<div class="col-12 d-flex">
+            <img class="w-25 m-auto" src="~/img/Order/無訂單.png" alt="noorder">
+        </div>
+	}
+
+</div>
+
+

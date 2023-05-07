@@ -1,0 +1,14 @@
+.card_logo{
+    width: 70px; 
+    height: 70px; 
+    top: 10px; 
+    left: 10px;
+}
+
+.brandcard_tag{
+    font-size: 10px;
+}
+
+.card_category{
+    width: 20px;
+}

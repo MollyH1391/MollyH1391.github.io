@@ -1,0 +1,30 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.OrderDetailsViewModel.OrderDetailData
+
+
+<div class="col-2 col-sm-1 col-lg-1 p-0 d-flex position-relative mt-2">
+    <img class=" rounded-circle m-auto cart_order_details_Img"
+        src="@Model.Photo" alt="memberImg">
+    @*<span class="badge bg_blue rounded-pill position-absolute order_details_page_bill">收款</span>*@
+</div>
+<div class="col-5 col-sm-6 col-lg-6 d-flex align-items-center mt-2">
+    <h6 class="fw-bold mb-0 ps-3">@Model.NickName</h6>
+</div>
+<div class="col-5 col-sm-5 col-lg-5 d-flex align-items-center justify-content-center mt-2">
+    <h6 class="ms-auto mb-0">$ @Model.TotalPriceByUser 元/ @Model.TotalQuantityByUser 份</h6>
+</div>
+<div class="col-12">
+
+    @foreach(var p in Model.ProductDataList)
+    {
+          @await Html.PartialAsync("_OrderDetail_Groupby_ProductList", p)
+    }
+
+    @*<div class="row p-2">
+        <div class="col-12 col-sm-12 col-lg-12 bg_page rounded-3 py-2">
+            <p class="text_gray mb-0">
+                <i class="fas fa-user-circle"></i>
+                @Model.NickName
+            </p>
+        </div>
+    </div>*@
+</div>

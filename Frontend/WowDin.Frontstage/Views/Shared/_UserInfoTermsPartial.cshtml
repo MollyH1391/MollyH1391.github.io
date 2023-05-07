@@ -1,0 +1,34 @@
+﻿@{
+    var isLogin = User.Identity.IsAuthenticated;
+}
+
+@if (isLogin)
+{
+    <li class="m-3 text-center">
+        <button onclick=SwitchTerms()>返回上一頁</button>
+    </li>
+    <li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="UserTerm"><i class="fas fa-user-tag"></i>使用者條款</a>
+    </li>
+    <li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="PrivacyTerm"><i class="fas fa-user-secret"></i>隱私權條款</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="CreditTerm"><i class="fas fa-credit-card"></i>信用卡條款</a>
+    </li>*@
+}
+else
+{
+    <li class="m-3 text-center">
+        <button onclick="SwitchTerms()">返回上一頁</button>
+    </li>
+    <li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="UserTerm"><i class="fas fa-user-tag"></i>使用者條款</a>
+    </li>
+    <li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="PrivacyTerm"><i class="fas fa-user-secret"></i>隱私權條款</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a asp-controller="Home" asp-action="CreditTerm"><i class="fas fa-credit-card"></i>信用卡條款</a>
+    </li>*@
+   } 

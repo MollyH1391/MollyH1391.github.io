@@ -1,0 +1,110 @@
+﻿@model ProductDetailModal
+
+<div class="modal fade" id="menu_item_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="menu_modal_header p-3">
+                <div class="d-flex">
+                    <h3 class="fz_16 fw-bold m-0"></h3>
+                    <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="fas fa-times-circle text_pink fz_18"></i></button>
+                </div>
+            </div>
+            <div class="modal-body pt-0">
+                @if(@Model.HasSticker){
+                    <label for="menu_item_modal_input" class="d-block">請輸入暱稱</label>
+                    <div class="mt-2 d-flex align-items-center position-relative">
+                        <input id="menu_item_modal_input" type="text" class="w-100" placeholder="避免使用特殊符號，最多10個字">
+                        <i class="fas fa-user-circle position-absolute text_gray"></i>
+                    </div>
+                    <span class="text_gray d-block text-end">此門市支援專屬姓名貼紙</span>
+                }
+
+                <div id="menu_modal_product_img" class="w-100">
+                    
+                </div>
+                <div class="custom-body">
+
+                </div>
+                <template id="radioGroupTemp">
+                    <div class="menu_item_selection_set_radio mb-3">
+                        <span class="custom-title d-block">Title</span>
+                        <div id="one" class="group-body row row-cols-3" role="group"
+                            aria-label="Basic radio toggle button group">
+                            <!-- 選項加入 -->
+                        </div>
+                    </div>
+                </template>
+                <template id="radioTemp">
+                    <div class="col my-2">
+                        @*<button class="position-none bg_blue btn menu_first_color_bg rounded_corner w-100" name="btnradioOne" autocomplete="off"></button>*@
+                        <input type="radio" class="btn-check" name="btnradioOne" autocomplete="off">
+                        <label class="btn menu_first_color_bg rounded_corner w-100">
+                            Radio
+                        </label>
+                    </div>
+                </template>
+                <template id="checkboxGroupTemp">
+                    <div class="menu_item_selection_set_checkbox">
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <span id="panelsStayOpen-headingOne">
+                                <button class="custom-title accordion-button p-0" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                    aria-controls="panelsStayOpen-collapseOne">
+                                    Title
+                                </button>
+                            </span>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="panelsStayOpen-headingOne">
+                                <div class="accordion-body p-0">
+                                    <div class="group-body row row-cols-3 align-items-center" role="group"
+                                        aria-label="Basic checkbox toggle button group">
+                                        <!-- 選項加入 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template id="checkboxTemp">
+                    <div class="col my-2">
+                        @*<button class="position-none bg_blue btn menu_first_color_bg w-100 rounded_corner" autocomplete="off"></button>*@
+                        <input type="checkbox" class="btn-check" autocomplete="off">
+                        <label class="btn menu_first_color_bg w-100 rounded_corner">Checkbox 1</label>
+                    </div>
+                </template>
+            </div>
+            <div class="menu_modal_footer p-3 border-top">
+                <div class="row row-cols-2">
+                    <div class="col">
+                        <span>總金額：</span><span id="menu_modal_dollar"></span><span>元</span>
+                        <div class="input-group">
+                            <button id="reduce-quentity" class="btn btn-outline-dark input_noshadow" type="button">-</button>
+                            <input id="product-quentity" type="text" class="text-center form-control input_noshadow" value="1" disabled>
+                            <button id="add-quentity" class="btn btn-outline-dark input_noshadow" type="button">+</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        @*<input id="go_to_cart" type="submit"
+                                class="py-2 fw-bold text-center menu_second_color_bg text_white w-100 h-100 rounded_corner_small"
+                                value=@Model.BtnText />*@
+                        @if (Model.BtnEnable)
+                        {
+                            <input id="go_to_cart" type="submit"
+                                class="py-2 fw-bold text-center menu_second_color_bg text_white w-100 h-100 rounded_corner_small"
+                                value=@Model.BtnText />
+                        }
+                        else
+                        {
+                            <input id="go_to_cart" type="submit"
+                                class="py-2 fw-bold text-center menu_second_color_bg text_white w-100 h-100 rounded_corner_small"
+                                value=@Model.BtnText disabled />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Store/OrderProduct.js"></script>

@@ -1,0 +1,97 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Member
+@model MemberMembercardViewModel;
+
+@{
+    ViewData["Title"] = "會員卡";
+}
+
+<main class="store_membercard_bgheight bg_page pt-3 d-flex align-items-center justify-content-center py-3">
+    <div class="account_block bg-white rounded-4 overflow-hidden shadow">
+        <div class="position-relative">
+            <img class="w-100" src="@Html.DisplayFor(model => model.CardImgUrl)" alt="member_card">
+            <div class="photo_size mx-auto position-absolute">
+                <div class="w-100 rounded-circle overflow-hidden">
+                    <img class="w-100" src="@Html.DisplayFor(model => model.Photo)" alt="phtot">
+                </div>
+                <div id="member_icon_bg" class="member_icon_size rounded-circle d-flex justify-content-center position-absolute"><img id="member_icon" class="w-50" src="" alt="loginType"></div>
+            </div>
+        </div>
+        <div class="mt-3 mb-1 text-end px-4">
+            <button data-bs-toggle="modal" data-bs-target="#direction_modal" class="badge rounded-pill border border-1 text_gray fw-normal text-decoration-none">說明</button>
+        </div>
+        <div class="d-flex ms-3 justify-content-center my-1">
+            <div class="text">
+                <span class="fs-13 me-1">@Html.DisplayFor(model => model.NickName)</span>
+            </div>
+        </div>
+        <div class="content px-5">
+            <!-- 商店會員卡新增 -->
+            <span type="button" class="badge fs-14 fw-normal bg_blue badge_w d-flex mx-auto align-items-center mt-2 py-2" data-bs-toggle="modal" data-bs-target="#direction_modal">
+                <i class="fas fa-crown"></i>
+                @Html.DisplayFor(model => model.CardTypeName)
+            </span>
+            <div class="progress progress_h mx-auto mt-3 mb-1">
+                <div class="progress-bar" role="progressbar" style="width: @Html.DisplayFor(model => model.Point)%" aria-valuenow="@Html.DisplayFor(model => model.Point)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div data-bs-toggle="modal" data-bs-target="#direction_modal" class="d-flex justify-content-between fs-14 mb-3 text_gray">
+                <span>@Html.DisplayFor(model => model.CardTypeName)</span>
+                <span>@Html.DisplayFor(model => model.Point) / @Html.DisplayFor(model => model.Range)</span>
+                <span>@Html.DisplayFor(model => model.NextCardTypeName)</span>
+            </div>
+            <div class="border border-1 border-lightgray rounded-4 d-flex align-items-center text-decoration-none text-dark mx-auto mb-3 px-3 py-2">
+                <img class="me-2" src="~/img/Member/points_icon.svg" alt="point">
+                <p class="mb-0">消費次數</p>
+                <span class="ms-auto">@Html.DisplayFor(model => model.Point)次</span>
+            </div>
+            <a asp-controller="Activity" asp-action="Coupon" class="border border-1 border-lightgray rounded-4 d-flex align-items-center text-decoration-none text-dark mx-auto px-3 py-2 mb-5">
+                <img class="me-2" src="~/img/Member/tickets_icon.svg" alt="point">
+                <p class="mb-0">我的券匣</p>
+                <span class="ms-auto">@Html.DisplayFor(model => model.CouponAmount)張</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+
+<!-- 會員權益Modal -->
+<div class="modal fade" id="direction_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 bg_pink">
+                <h3 class="modal-title text-white fw-bold fs-5" id="din_ModalLabel">會員權益</h3>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fas fa-times-circle text-white fz_18"></i></button>
+            </div>
+            <div class="modal-body">
+                <h5>【點數回饋】消費金額滿30元獲1點點數</h5>
+                <p>
+                    ‧點數計算方式:採小數點後一位無條件捨去<br>
+                    （例：消費總金額$430，除以$30等於14.3，該筆消費獲點14點）;「扣除各項折扣後」之最終金額計算。
+                </p>
+                <h5>【點數使用】10點扣點數=每杯折抵10元。</h5>
+                <p>
+                    ‧點數優惠未包含非單杯飲品類商品（含罐裝家庭號鮮奶、瓶裝小資瓶鮮奶、瓶裝小迷無加糖豆漿、品牌商品）。<br>
+                    ‧得與「其他折扣」方式重複使用。<br>
+                    ‧每杯飲料都可以用10點折扣10元,不限杯數（一次使用以10點為單位做兌換）。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}
+
+@section endJS{
+    <script>
+        let loginType = @Html.DisplayFor(model => model.LoginType)
+        let sexType = @Html.DisplayFor(model => model.Sex)
+        let city = '@Html.Raw(Model.City)'
+        let district = '@Html.Raw(Model.Distrinct)'
+    </script>
+    <script src="~/js/Member/userData.js"></script>
+
+    
+}
+

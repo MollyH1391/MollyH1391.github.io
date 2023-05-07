@@ -1,0 +1,177 @@
+﻿@using WowDin.Frontstage.Models.ViewModel.Member
+@using WowDin.Frontstage.Common.ModelEnum
+@model CouponViewModel;
+
+@{
+    ViewData["Title"] = "我的券夾";
+    var code = ViewData["code"] ?? "";
+}
+
+@section topCSS
+{
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/css/Member/Coupon_style.css" rel="stylesheet"/>
+    <link href="~/css/PartialView/modalstyle.css" rel="stylesheet"/>
+}
+
+<div class="container">
+    <div class="col-12 col-lg-8 m-auto mt-4">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">兌換專區</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">我的券夾</button>
+            </div>
+        </nav>
+        <div class="col-md-12 tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="card mt-3">
+                    <div class="card-header text-center">
+                        優惠兌換專區
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title text-center">請在下面輸入折扣碼，領取各種優惠</h5>
+                            <form name="myModal" class="input-group mb-3 mt-3">
+                                <input id="coupon_input" type="text" name="getText" value="@code" class="form-control" placeholder="請輸入折扣碼" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <button id="couponCheck" type="button" class="btn btn-primary" onclick="GetCoupon()" >兌換</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row tab-pane fade mt-4 m-auto" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                @*<nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">首頁</a></li> 
+                                <li class="breadcrumb-item"><a href="#">我的券夾</a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                </nav>*@
+                <div class="row ">
+                    <div class="col-12">
+                        <div class="col-12">
+                            <div class="row g-3 align-items-center hide-in-ads mt-3 mb-3">
+                                <div class="col-auto">
+                                    <label id="coupon_brand" for="inputPassword6" class="col-form-label">品牌</label>
+                                </div>
+                                <div class="col-auto" id="select">
+                                    <select id="brand_selector" class="brand form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                                        <option>全部</option>
+                                        @foreach(var bra in Model.Brands)
+                                        {
+                                            <option value="1">@bra</option>
+                                        }
+                                        
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <label id="coupon_status" for="inputPassword6" class="col-form-label">狀態</label>
+                                </div>
+                                <div class="col-auto" id="select">
+                                    <select id="status_selector" class="status form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                                        @for(int i = 0; i < Model.Status.Count(); i++)
+                                        {
+                                            <option value="@i">@Model.Status[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-3 display-in-mobile">
+                    <div class="col-md mb-3">
+                        <div class="form-floating">
+                            <select class="brand form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                                <option>全部</option>
+                                @foreach(var bra in Model.Brands)
+                                {
+                                    <option value="1">@bra</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md mb-3">
+                        <div class="form-floating">
+                            <select class="status form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+                                @for(int i = 0; i < Model.Status.Count(); i++)
+                                {
+                                    <option value="@i">@Model.Status[i]</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav nav-tabs d-lg-flex justify-content-between" id="nav-tab" role="tablist">
+                    <div class="nav nav-tabs">
+                        <button class="nav-link active" tabindex="0" id="nav-discount-tab" data-bs-toggle="tab" data-bs-target="#nav-discount" type="button" role="tab" aria-controls="nav-discount" aria-selected="true">優惠券</button>
+                        <button class="nav-link" tabindex="-1" id="nav-voucher-tab" data-bs-toggle="tab" data-bs-target="#nav-voucher" type="button" role="tab" aria-controls="nav-voucher" aria-selected="false">單品折價券</button>
+                    </div>
+                    <!-- <div class=" d-grid gap-2 d-md-flex " >
+                        <button class="hide-in-ads btn btn-primary me-md-2 mb-3 justify-content-flex-end  show active disabled" tabindex="0" id="nav-discount-btn" data-bs-toggle="tab" data-bs-target="#nav-discount" type="button" role="tab" aria-controls="nav-discount" aria-selected="true" >折價券轉贈</button>
+                    </div> -->
+                </div>
+            </nav>
+            <div class="col-md-auto tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active"tabindex="-1"  id="nav-discount" role="tabpanel" aria-labelledby="nav-discount-tab">
+                    <span class="text-muted">每筆訂單限用1張折價券，不與其他優惠併用。使用優惠券消費之商品如經取消或銷退者，優惠券視同已使用，恕不得要求保留或轉換為現金， 優惠券恕不找零，請於有效期限內使用優惠券，逾期視同自動作廢，不得申請補發。 品牌/門市擁有做最後說明調整的權利。</span>
+                    <!-- <div class=" d-grid gap-2 d-md-flex justify-content-md- align-content-start mb-2 mt-2">
+                        <button class="display-in-mobile btn btn-primary me-md-2" id="nav-discount-tab" data-bs-toggle="tab" data-bs-target="#nav-discount" type="button" role="tab" aria-controls="nav-discount" aria-selected="true"><i class="fas fa-gift"></i>折價券轉贈</button>
+                    </div> -->
+                    <div class="container my-3 col-sm-12" id="tab">
+                        <div class="row" id="discount_container">
+                                @foreach(var cou in Model.CouponsForDiscount)
+                                {
+                                    <div class="discount_coupon col-sm-6 mt-3">
+                                        @Html.Partial("_CouponCard", cou)
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="nav-voucher" role="tabpanel" aria-labelledby="nav-voucher-tab">
+                    <span class="text-muted">每筆訂單限用1張折價券，不與其他優惠併用。使用折價券消費之商品如經取消或銷退者，折價券視同已使用，恕不得要求保留或轉換為現金， 折價券恕不找零，請於有效期限內使用折價券，逾期視同自動作廢，不得申請補發。 品牌/門市擁有做最後說明調整的權利。</span>
+                    @*<div class=" d-grid gap-2 d-md-flex justify-content-md-center align-content-center mb-2 mt-2">
+                        <button class="display-in-mobile btn btn-primary" id="nav-voucher-tab" data-bs-toggle="tab" data-bs-target="#nav-voucher" type="button" role="tab" aria-controls="nav-voucher" aria-selected="false">折價券</button>
+                    </div>*@
+                    <div class="container my-3 col-sm-12" id="tab">
+                        <div class="row" id="voucher_container" >
+                                @foreach(var cou in Model.CouponsForVoucher)
+                                {
+                                    <div class="voucher_coupon col-sm-6 mt-3">
+                                        @Html.Partial("_CouponCard", cou)
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="coupon_modal" class="modal fade" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header position-relative border-bottom-0"
+                 id="din_modal_header">
+                <h3 class="modal-title fw-bold" id="din_Modal_Label"></h3>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                        class=" position-absolute" id="din_modal_closebtn">
+                    <i class="fas fa-times-circle text_pink fz_18 "></i>
+                </button>
+            </div>
+            <div class="modal-body pb-5" id="din_modal_body">
+            </div>
+            <div class="modal-footer border-top-0" id="din_modal_footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section endJS{
+    @*<script src="~/js/Member/Coupon.js"></script>*@
+    <script src="~/js/Member/Coupon-v2.js"></script>
+}

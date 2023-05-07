@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "訊息";
+}
+
+<main class="bg_page vh-100 p-3 px-sm-5 d-sm-flex align-items-sm-center justify-content-sm-center">
+    <div class="member_block_m bg-white mx-3 mx-sm-auto rounded_corner shadow-sm py-4 px-2">
+        <h1 class="text-center h5 fw-bold">WowDin訊息提示</h1>
+        <span class="d-block w-100 bg-secondary opacity-25 h-1px my-3"></span>
+        <h2 class="text-center">@TempData["Message"]</h2>
+    </div>
+</main>
+
+@section topCSS{
+    <link href="~/css/Member/member_style.css" rel="stylesheet"/>
+}

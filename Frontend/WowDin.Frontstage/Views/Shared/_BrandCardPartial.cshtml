@@ -1,0 +1,34 @@
+﻿@model BrandCardViewModel.BrandCardDataList
+
+<div class="col-12 col-sm-6 col-lg-4 p-3">
+    <a href="/BrandStore/@Model.BrandId" class="card border-0">
+        <div class="position-relative">
+            <img src="@Model.CardImgUrl" class="card-img-top rounded_corner" alt="@Model.BrandName">
+            <img src="@Model.BrandLogo" class="card_logo rounded-circle position-absolute " alt="@Model.BrandName">
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap">
+                <h3 class="fz_17 text-black mb-auto mt-auto me-2">@Model.BrandName</h3>
+                @if (Model.Srar != "0.0")
+                {
+                    <div class="text_card bg_card_tag rounded-3 p-1 me-2 d-inline-block fw-bold"><i class="fas fa-star icon_star brandcard_tag"></i> <span class=" brandcard_tag">@Model.Srar</span></div>
+                }
+            </div>
+            <div class="d-flex">
+                <div class="me-auto pt-3 pb-2 text_card ">
+                    <p class="d-inline">
+                        @Model.BrandSlogan
+                    </p>
+                </div>
+                @foreach (var c in Model.Categories)
+                {
+                    <div class="mt-auto p-2">
+                        <img src="~/img/Store/Category/@c.CategoryFig" class="card_category" alt="@c.CategoryName">
+                    </div>
+                }
+            </div>
+        </div>
+    </a>
+</div>
+
+

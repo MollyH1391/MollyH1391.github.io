@@ -1,0 +1,38 @@
+/* 品牌介紹*/
+.brand_introduce {
+    display: none;
+}
+.brand_introduce_text {
+    width: 96%;
+    height: 170px;
+    overflow: auto;
+    white-space: pre-line;
+}
+
+.star_light {
+    color: #FDDCA8;
+}
+
+.brand_introduce_mediapic {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.brand_introduce_icontext {
+    font-size: 10px;
+}
+
+.brand_introduce_baseline {
+    width: 95%;
+}
+
+.brand_introduce_youtube {
+    width: 100%;
+}
+
+@media screen and (min-width:992px) {
+    .brand_introduce{
+        display: flex;
+    }
+}

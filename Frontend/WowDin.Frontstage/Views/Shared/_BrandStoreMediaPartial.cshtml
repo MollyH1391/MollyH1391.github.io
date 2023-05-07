@@ -1,0 +1,11 @@
+﻿@model BrandStoreViewModel.WebsitebDataList
+
+<a type="button" class="col-2" href="@Model.Path">
+    @{
+        var media = Model.MediaLogo == "null" ? Model.Webpic : $"/img/Store/Brand/{Model.MediaLogo}";
+        var nameposition = Model.PlatformId == 3 ? "ps-2" : "ps-1";
+    }
+  
+    <img class="brand_introduce_mediapic border" src="@media">
+    <p class="brand_introduce_icontext @nameposition">@Model.Name</p>
+</a> 

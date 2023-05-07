@@ -1,0 +1,51 @@
+﻿@model CouponContentVM
+
+
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header position-relative border-bottom-0"
+            id="din_modal_header">
+            <h3 class="modal-title fw-bold" id="coupon_type">獲得 @Model.BrandName 的 @Model.Type !</h3>
+            <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                    class=" position-absolute" id="din_modal_closebtn">
+                <i class="fas fa-times-circle text_pink fz_18 "></i>
+            </button>
+        </div>
+        <div class="modal-body pb-5 px-4" id="coupon_modal_body">
+            <div class="col d-flex justify-content-center">
+                <img src=@Model.BrandLogo width="100px" height="100px" alt="brandlogo"  class="rounded-circle" />
+            </div>
+            <h2 class="coupon_title bg_page rounded_corner_small py-2 my-4 text-center">@Model.Title</h2>
+            <div class="row flex-column justifi-content-evenly">
+                <div class="col my-2">
+                    <span class="d-block">活動期間:  </span>
+                    <span id="coupon_time">@Model.TimeSpan</span>
+                    <span class="coupon_status badge bg-success ms-2">
+                        剩下 
+                        <span id="coupon_rest_time">
+                            @Model.RestTime
+                        </span> 天
+                    </span>
+                </div>
+                <div class="col my-2">
+                    <span class="d-block">活動內容: </span>
+                    <p class="m-0">
+                        @Model.Description
+                    </p>
+                </div>
+                <div class="col my-2">
+                    <span class="d-block">適用門市: </span>
+                    <ul id="coupon_shop_list">
+                        @foreach(var shop in Model.Shops)
+                        {
+                            <li class="d-inline">@shop</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            

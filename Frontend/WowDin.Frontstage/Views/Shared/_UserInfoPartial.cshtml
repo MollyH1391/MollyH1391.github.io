@@ -1,0 +1,48 @@
+﻿@{
+    var isLogin = User.Identity.IsAuthenticated;
+}
+
+@if (isLogin)
+{
+    <li class="m-3 text-center">
+        <a asp-controller="Activity" asp-action="Coupon"><i class="fas fa-ticket-alt"></i>兌換專區</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a href="#"><i class="fas fa-bullhorn"></i>通知設定</a>
+    </li>*@
+    <li class="m-3 text-center">
+        <a asp-controller="Store" asp-action="BrandZone"><i class="fas fa-store"></i>品牌專區</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a href="#"><i class="far fa-credit-card"></i>信用卡</a>
+    </li>*@
+    <li class="m-3 text-center">
+        <a href="#" onclick="SwitchTerms()"><i class="fas fa-list-alt"></i>相關條款</a>
+    </li>
+    <li class="m-3 text-center">
+        <a asp-controller="Member" asp-action="ResponsePage"><i class="far fa-comment-dots"></i>意見回饋</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a href="#"><i class="fas fa-info-circle"></i>官方客服</a>
+    </li>*@
+    <li class="m-3 text-center">
+        <a href="/Member/Logout"><i class="fas fa-user"></i>登出</a>
+    </li>
+}
+else
+{
+    <li class="m-3 text-center">
+        <a asp-controller="Store" asp-action="BrandZone"><i class="fas fa-store"></i>品牌專區</a>
+    </li>
+    <li class="m-3 text-center">
+        <a href="#" onclick="SwitchTerms()"><i class="fas fa-list-alt"></i>相關條款</a>
+    </li>
+    @*<li class="m-3 text-center">
+        <a href="#"><i class="fas fa-info-circle"></i>官方客服</a>
+    </li>*@
+    <li class="m-3 text-center">
+        <a href="/Member/Login"><i class="fas fa-user"></i>登入</a>
+    </li>
+}
+
+<script src="~/js/_layout.js"></script>

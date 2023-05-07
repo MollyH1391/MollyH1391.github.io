@@ -1,0 +1,25 @@
+﻿@model List<ShopCardViewModel>
+
+    @if (Model == null)
+    {
+        <div class="d-flex flex-column align-items-center p-5">
+            <img src="~/img/PartialView/recommend_errorpic(1).png" alt="無法確定你的位置" width="200px" class="p-2">
+            <p class="p-2 fz_16 fw-bold">無法確定你的位置，請開啟定位功能或找區域搜尋！</p>
+            <p class="p-2 fz_16 fw-bold">也可選擇品牌，查看品牌下所有門市</p>
+        </div>
+    }
+    else if (Model.Count() > 0)
+    {
+        foreach (var sc in Model)
+        {
+            await Html.RenderPartialAsync("_ShopCardPartial", sc);
+        }
+    }
+    else
+    {
+        <div class="d-flex flex-column align-items-center p-5">
+            <img src="~/img/PartialView/recommend_errorpic(2).png" alt="無法確定你的位置" width="200px" class="p-2">
+            <p class="p-2 fz_16 fw-bold">Sorry！我們找不到符合條件的門市</p>
+        </div>
+    }
+

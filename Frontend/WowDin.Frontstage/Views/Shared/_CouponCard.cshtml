@@ -1,0 +1,91 @@
+﻿@model CouponDetail
+
+<div class="btn bg-white rounded mb-3 d-flex justify-content-between" class="coupon" data-bs-toggle="modal" data-bs-target="#coupon_modal_@Model.CouponId">
+    <div class="p-3">
+        <div class="info icon-container ">
+            <div class="icon-container_box">
+                <img src=@Model.BrandLogo width="54px" height="54px" alt="brandlogo"  class="rounded-circle"/>
+            </div>
+        </div>
+    </div>
+    <div class="py-3 w-100 text-start p-2 ">
+        <div>
+            <h5 class="shop_name fs-5 fw-bold">@Model.ShopName</h5>
+            <h6 class="fs-6">@Model.Title</h6>
+            <p class="text-muted mb-0">@Model.TimeSpan</p>
+            @if(@Model.Status == "可使用")
+            {
+                <span class="badge bg-success">@Model.RestTime</span>
+            }
+            @if(@Model.Status == "可使用"){
+                <span class="coupon_status badge bg-success">@Model.Status</span>
+            }
+            else if(@Model.Status == "已使用"){
+                <span class="coupon_status badge bg-info">@Model.Status</span>
+            }
+            else{
+                <span class="coupon_status badge bg-secondary">@Model.Status</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="coupon_modal_@Model.CouponId" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h3 class="modal-title fw-bold" id="coupon_type">@Model.ShopName</h3>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                        class=" position-absolute" id="din_modal_closebtn">
+                    <i class="fas fa-times-circle text_pink fz_18 "></i>
+                </button>
+            </div>
+            <div class="modal-body px-4">
+                <div class="m-auto text-center">
+                    <div class="col d-flex justify-content-center">
+                        <img src=@Model.BrandLogo width="100px" height="100px" alt="brandlogo"  class="rounded-circle" />
+                    </div>
+                    <h2 class="coupon_title bg_page rounded_corner_small py-2 my-4">@Model.Title</h2>
+                    @if(@Model.Status == "可使用")
+                    {
+                        <span class="badge bg-success">@Model.RestTime</span>
+                    }
+                    @if(@Model.Status == "可使用"){
+                        <span class="coupon_status badge bg-success">@Model.Status</span>
+                    }
+                    else if(@Model.Status == "已使用"){
+                        <span class="coupon_status badge bg-info">@Model.Status</span>
+                    }
+                    else{
+                        <span class="coupon_status badge bg-secondary">@Model.Status</span>
+                    }
+                </div>
+                
+                <div class="row flex-column justifi-content-evenly">
+                    <div class="col my-2">
+                        <span class="d-block">活動期間:  </span>
+                        <span id="coupon_time">@Model.TimeSpan</span>
+                    </div>
+                    <div class="col my-2">
+                        <span class="d-block">活動內容: </span>
+                        <p class="m-0">
+                            @Model.Description
+                        </p>
+                    </div>
+                    <div class="col my-2">
+                        <span class="d-block">適用門市: </span>
+                        <span class="d-inline">@Model.ShopName</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0">
+                @if(Model.Status == "可使用")
+                {
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a class="btn btn-secondary m-auto" href="/Menu/@Model.ShopId">趕緊來用</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@model BrandCardViewModel
+
+@{
+    ViewData["Title"] = "品牌專區";
+}
+
+<div class="row mx-auto">
+    @foreach (var bc in Model.BrandCardList)
+    {
+        @await Html.PartialAsync("_BrandCardPartial", bc)
+    }
+</div>
+
+@section topCSS{
+    <link href="~/css/PartialView/brandcardstyle.css" rel="stylesheet" />
+}
+

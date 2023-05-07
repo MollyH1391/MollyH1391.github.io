@@ -1,0 +1,171 @@
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = "首頁";
+    string url;
+}
+
+<!-- SearchZone -->
+<div class="row mb-4">
+
+    <!-- Swiper -->
+    <div class="swiper mySwiper col-12 col-sm-12 col-lg-8">
+        <div class="swiper-wrapper">
+            @foreach (var pic in Model.BigPictures)
+            {
+                //連結到cupon，判斷是否為null，是導到brandId，否導到coupon
+                @if (pic.Code == null)
+                {
+                    url = $"/BrandStore/{@pic.BrandId}";
+                }
+                else
+                {
+                    url = $"/Activity/Coupon/{@pic.Code}";
+                }
+                <div class="swiper-slide"><a href="@url"><img src="@pic.PictureFile"></a></div>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next text_white"></div>
+        <div class="swiper-button-prev text_white"></div>
+    </div>
+    @await Html.PartialAsync("_SearchZonePartial")
+</div>
+<!-- 廣告區域 -->
+<section class="container-xl outer-container px-sm-0">
+    <div class="inner-container d-flex justify-content-center">
+        <div class="content row flex-nowrap">
+
+            @foreach (var pic in Model.Smallpictures)
+            {
+                //連結到cupon
+                <div class="col-8 col-lg-4">
+                    <a href="/BrandStore/@pic.BrandId" class="w-100 h-100 d-inline-block overflow-hidden rounded-3 border border-1 border-light shadow-sm">
+                        <img class="w-100 h-100" src="@pic.PictureFile">
+                    </a>
+                </div>
+
+            }
+        </div>
+    </div>
+</section>
+
+<!--找區域 Modal -->
+<div class="modal fade" id="searchzone_finddistrict_modal" tabindex="-1" aria-labelledby="finddistrictModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header mx-3">
+                <h5 class="modal-titles fw-bold mx-auto mt-2 fz_17" id="finddistrictModalLabel">找區域</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times-circle text_pink fz_18"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-evenly">
+                    <p class="text-center mb-4 text_score">只輸入縣市即可搜尋門市，<br>輸入其他條件，搜尋更精確!</p>
+                    <p class="mb-2 icon_category ms-4"><span class="text_pink">＊</span>縣市區域</p>
+                    <div class="col-5 ps-0 me-3">
+                        <select class="city searchzone_finddistrict_select form-select me-1 city_select"></select>
+                    </div>
+                    <div class="col-5 ps-0 me-2">
+                        <select class="district searchzone_finddistrict_select form-select district_select"></select>
+                    </div>
+                    <div class="searchzone_finddistrict_input d-flex flex-column mt-4 px-4">
+                        <p class="mb-2 icon_category">地址</p>
+                        <input class="address" type="text" placeholder="請輸入路名，如信義路">
+                    </div>
+                    <button onclick="getSearchAreaInfo()" class="searchzone_finddistrict_btn px-3 mt-4 bg_pink text_white fz_18">搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--找品牌 Modal -->
+<div class="modal fade" id="searchzone_findbrand_modal" tabindex="-1" aria-labelledby="findbrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-titles fw-bold mx-auto mt-2 fz_17" id="findbrandModalLabel">找品牌</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times-circle text_pink fz_18"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="searchzone_findbrand_input-group">
+                    <i class="searchzone_findbrand_input-icon fas fa-search"></i>
+                    <input type="text" class="w-100">
+                </div>
+                <div class="row">
+                    <div class="searchzone_findbrand_logo row col-12">
+                        @foreach (var findbrand in Model.BrandLists)
+                        {
+                            <a class="col-4" href="/BrandStore/@findbrand.BrandId">
+                                <img class="searchzone_findbrand_storelogo rounded-circle mt-5 mx-5" src="@findbrand.Logo" alt="">
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--聯絡我 Modal 首頁的成為我們的合作夥伴 -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content w-75">
+            <div class="modal-header mx-3">
+                <h5 class="modal-title fw-bold mt-2 fz_17 mx-auto" id="contactModalLabel">官方客服</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times-circle text_pink fz_18"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column align-items-center">
+                    <img src="~/img/Store/Brand/NidinLine_QRcode.jpg" alt="">
+                    <p class="fz_17">ID: @@wowdin</p>
+                    <p class="mt-4">
+                        1. 手機登入LINE，點選「加入好友」
+                        <br>
+                        2. 掃描上方行動條碼或輸入ID「@@wowdin」
+                        <br>
+                        3. 將Wowdin加入好友獲得更即時的服務
+                    </p>
+                    <button onclick="window.open('https://page.line.me/250zzgdi?openQrModal=true')" class="searchzone_contact_btn px-1 mt-1 bg_notify_btn text_white fz_16">加為好友</button>
+                    <p class="text_pink mt-3 fw-bold">週一至週五 9:30-12:00、13:30-18:30</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 附近推薦店家 -->
+<section class="container-xl mt-5">
+    <div class="px-sm-0 justify-content-center">
+        @await Html.PartialAsync("_RecommendStorePartial")
+        <div class="recommendcontainer row">
+            <div id="search_spinner" class="text-center d-flex align-items-center justify-content-center">
+                <span>搜尋中</span>
+                <div class="spinner-border text-dark ms-4" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+@section topCSS{
+    <link href="~/css/Home/Index.css" rel="stylesheet" />
+    <link href="~/css/PartialView/Searchzone.css" rel="stylesheet" />
+    <link href="~/css/PartialView/RecommendStore.css" rel="stylesheet" />
+    <link href="~/css/PartialView/shopcardstyle.css" rel="stylesheet" />
+}
+@section endJS{
+    <script src="~/js/Home/Index.js"></script>
+    <script src="~/js/Store/searchfunc.js"></script>
+    <script>
+            let isLogin='@User.Identity.IsAuthenticated'
+    </script>
+}

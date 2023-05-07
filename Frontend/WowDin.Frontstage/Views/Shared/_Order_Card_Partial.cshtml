@@ -1,0 +1,130 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.OrdersViewModel.OrderDataVM
+@{
+    var groupBuy = Model.OrderDetailData.IsGroupBuy == true ? "揪團" : "";
+    var isCommented = Model.IsCommented;
+    var orderState = @Model.OrderStateEnum;
+    var orderStateText = "將於約定時間備餐";
+    var color = "bg_blue";
+
+    if (orderState == "完成")
+    {
+        color = "bg_state_success";
+    }
+    else if (orderState == "揪團失敗" || orderState == "訂單取消" || orderState == "門市取消訂單")
+    {
+        color = "bg_pink";
+    }
+    else
+    {
+        color = "bg_blue";
+    }
+}
+            @if (orderState == "完成")
+            {
+                if (isCommented)
+                {
+                    <div class="card-header @color">
+                        <div class="row text-center">
+                            <div class="col-12 fz_18">
+                                @orderState
+                            </div>
+                            <div class="col-12 fz_16">
+                                評價完成
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card-header @color">
+                        <div class="row text-center">
+                            <div class="col-12 fz_18">
+                                @orderState
+                            </div>
+                            <div class="col-12 fz_16">
+                                  @orderStateText
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="card-header @color d-flex justify-content-center">
+                    <div class="row text-center">
+                        <div class="col-12 fz_18 mt-auto mb-auto">
+                            @orderState
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="card-body text-center">
+                <div class="row card-title align-items-center">
+                    <div class="col-3 col-sm-3 col-lg-3">
+                        
+                        <span class="badge order_detail_groupbuy fz_15 p-2">@groupBuy</span>
+                        
+                    </div>
+                    <div class="col-2 col-sm-2 col-lg-2"></div>
+                    <div class="col-7 col-sm-7 col-lg-7 text-end text-black order_detail_date">
+                        @Model.OrderDate
+                    </div>
+                </div>
+                <div class="row card-body py-1">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <img src="@Model.ShopData.BrandImg" class="w-75 order_detail_brandLogo" alt="brand-logo">
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row card-text ">
+                    <div class="col-12">
+                        <h5 class="text-center text-black fz_15">@Model.OrderDetailData.TotalQuantityByOrder 項商品</h5>
+                    </div>
+                </div>
+                <div class="row card-text ">
+                    <div class="col-12">
+                        <h5 class="text-center d-inline-block text-black fz_15">
+                            @Model.ShopData.Brand
+                        </h5>
+                        <h5 class="text-center d-inline-block text-black fz_15">
+                            @Model.ShopData.ShopName
+                        </h5>
+                    </div>
+                </div>
+                <div class="row card-text ">
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row card-text ">
+                    <div class="col-12">
+                        <h5 class="text-center fw-bold text-black fz_16">共 @Model.OrderDetailData.TotalPriceByOrder 元</h5>
+                    </div>
+                </div>
+            @if(orderState == "完成")
+            {
+
+                if (isCommented)
+                {
+                    <div class="row card-text ">
+                        <div class="col-12">
+                            <span class="badge rounded-pill bg_pink py-2 px-3 mt-3">查看評價</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row card-text">
+                        <div class="col-12">
+                            <span class="badge rounded-pill bg_pink py-2 px-3 mt-3">前往評價</span>
+                        </div>
+                    </div>
+                }
+            }
+            
+
+
+            </div>
+        
+    

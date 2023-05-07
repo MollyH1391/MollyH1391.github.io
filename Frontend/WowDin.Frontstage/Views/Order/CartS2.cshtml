@@ -1,0 +1,249 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel
+@section topCSS{
+    <link href="~/css/Store/menu.css" rel="stylesheet">
+	<link href="~/css//Order/Order.css" rel="stylesheet">
+}
+
+
+
+<body class="bg_page">
+    <div class="container my-2">
+        
+        <div class="row justify-content-center">
+            <div class="col-1"></div>
+            <div class="col-10 col-sm-7 col-lg-7">
+                <div class="row position-relative">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <span
+                                    class="d-inline-block cartDetails_step_num text_white d-flex justify-content-center align-items-center">
+                                    <div class="cartDetails_step_numtxt fw-bold">
+                                        1
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                <p class="text_blue">確認明細</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="d-inline-block w-25 position-absolute cart_detail_hr" style="top: 25%; left: 20.5%;">
+
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <span
+                                    class="d-inline-block cartDetails_step_num text_white d-flex justify-content-center align-items-center">
+                                    <div class="cartDetails_step_numtxt fw-bold">
+                                        2
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                <p class="text_blue">選擇付款</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="d-inline-block w-25 position-absolute cart_detail_hr"
+                        style="top: 25%; right: 20.5%;">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <span
+                                    class="d-inline-block cartDetails_step_num text_white d-flex justify-content-center align-items-center">
+                                    <div class="cartDetails_step_numtxt fw-bold">
+                                        3
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                <p class="text_blue">確認結帳</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8 d-flex justify-content-center">
+                <div class="cart_details_step2Brief d-flex align-items-center bg_blue rounded-2 px-3 py-3">
+                    <span class="fz_16 badge text_blue bg_white d-inline-block px-3 py-3 me-3">{{}}份</span>
+                    <p class="fz_16 mb-0 fw-bold d-inline-block text_white">應付金額</p>
+                    <p class="fz_16 mb-0 fw-bold d-inline-block text_white ms-auto">${{}}元</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <form class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">取餐人資料</h4>
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <h6 class="cart_details_inputTxt">姓名</h6>
+                                <div class="input-group my-2 ">
+                                    <input type="text" class="form-control input_noshadow py-3 rounded-3 disabled"
+                                        aria-label="">
+                                </div>
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <h6 class="cart_details_inputTxt">電話</h6>
+                                <div class="input-group my-2 ">
+                                    <input type="text" class="form-control input_noshadow py-3 rounded-3"
+                                        aria-label="">
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <h4 class="fz_16 fw-bolder mb-2">給店家留言</h4>
+                            </div>
+                            <div class="col-12 my-2 position-relative">
+                                <button class="w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#cart_details_note">
+                                    <div class="input-group">
+                                        <input type="text"
+                                            class="form-control cart_details_mapInput input_noshadow py-3 bg_white"
+                                            value="" aria-label="Disabled input" disabled readonly>
+                                        <div class="input-group-text cart_details_map">
+                                            <i class="fas fa-angle-right fz_18 text_blue"></i>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
+        <div class="modal fade" id="cart_details_note" tabindex="-1" aria-labelledby="din_ModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="menu_modal_header p-3">
+                    <div class="d-flex">
+                        <h3 class="fz_16 fw-bold m-0">給店家留言</h3>
+                        <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="fas fa-times-circle text_pink fz_18"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body pt-0">
+                    <input type="text" class="p-2 mt-2 mb-5 w-100">
+                    <button type="button"
+                        class="py-3 mb-2 text-center bg_pink w-100 text_white rounded-2 fz_16 fw-bold">
+                        儲存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- modal -->
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">付款方式</h4>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-cash">
+                                    <label class="form-check-label" for="flexRadio-cash">
+                                        現金
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-card">
+                                    <label class="form-check-label" for="flexRadio-card">
+                                        刷卡
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-linepay">
+                                    <label class="form-check-label" for="flexRadio-linepay">
+                                        Line Pay
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadio-payment"
+                                        id="flexRadio-jkopay">
+                                    <label class="form-check-label" for="flexRadio-jkopay">
+                                        街口支付
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="card rounded-1">
+                    <div class="card-body">
+                        <div class="row py-2 px-3">
+                            <div class="col-12 ">
+                                <h4 class="fz_16 fw-bolder">統一編號</h4>
+                            </div>
+                            <div class="col-12">
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <input type="text" class="form-control input_noshadow py-3 rounded-3 text_gray" placeholder="請輸入統一編號" aria-label="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-2">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-lg-8">
+                <div class="row">
+                    <div class="col-6 pe-0">
+                        <button type="button" class=" w-100 bg_white rounded-2 py-3 fw-bold ">繼續加購</button>
+                    </div>
+                    <div class="col-6 ps-0">
+                        <button type="button" class=" w-100 bg_pink rounded-2 py-3 text_white fw-bold">下一步</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+@section endJS{
+    @*using Vue*@
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+         let app = new Vue({
+              el: '#app',
+              data:{
+
+              }
+         })
+    </script>
+
+}
+

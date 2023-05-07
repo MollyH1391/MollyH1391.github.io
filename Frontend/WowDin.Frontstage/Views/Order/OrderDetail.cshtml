@@ -1,0 +1,445 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.OrderDetailsViewModel
+@section topCSS{
+	<link href="~/css/Order/Order.css" rel="stylesheet">
+}
+@{
+    var isDelivery = Model.Order.isDelivery;
+    var orderState = Model.Order.OrderStateEnum;
+    var color = "bg_blue";
+    if (orderState == "完成")
+    {
+        color = "bg_state_success";
+    }
+    else if (orderState == "揪團失敗" || orderState == "訂單取消" || orderState == "門市取消訂單")
+    {
+        color = "bg_pink";
+    }
+    else
+    {
+        color = "bg_blue";
+    }
+
+    var storeAddress = $"{Model.Shop.City}{Model.Shop.District}{Model.Shop.Address}";
+}
+
+
+
+<style>
+    #ratingValue {
+        position: absolute;
+        z-index: -1;
+    }
+    .spanbg_blue{
+        background-color:  #0098ff;
+    }
+    .order_details_rateBtn:hover{
+        color: white;
+    }
+</style>
+
+<script>
+    const orderId = @Html.Raw(@Model.OrderId)
+    let commented = '@Html.Raw(@Model.isCommented)'
+    let completed = '@Html.Raw(@Model.orderIsComplete)'
+    let isCommented
+    let iscompleted
+    switch(commented){
+        case "True":
+            isCommented = true
+            break
+        case "False":
+            isCommented = false
+            break
+        default:
+            isCommented = false
+    }
+    switch(completed){
+        case "True":
+            iscompleted = true
+            break
+        case "False":
+            iscompleted = false
+            break
+        default:
+            iscompleted = false
+    }
+</script>
+
+<body class="bg_page">
+    <section class="mb-5">
+        <div class="container my-3">
+            <div class="row card rounded-1 flex-row justify-content-center mx-2 order_details_page">
+                <div class="card-body col-12 col-sm-12 col-lg-5 order_details_border">
+                    <div class="row bg-white rounded-2 m-2 d-flex align-items-center">
+                        <a href="/Store/ShopMenu/@Model.Shop.ShopId" class="col-2 col-sm-2 col-lg-2 p-0">
+                            <img class=" w-100 cart_detail_brandLogo m-auto" src="@Model.Shop.Path"
+                            alt="BrandLogo">
+                        </a>
+                        <a href="/Store/ShopMenu/@Model.Shop.ShopId" class="col-10 col-sm-10 col-lg-10">
+                            <h6 class="fz_15 fw-bold bg_page p-2 rounded-3 my-2 text-center w-100">@Model.Shop.Brand @Model.Shop.ShopName</h6>
+                        </a>
+                    </div>
+                    <div class="row bg-white rounded-2 m-2">
+                        <div class="col-2"></div>
+                        <div class="col-10">
+                            <h6 class="">店家資訊</h6>
+                            <a class="d-block" href="tel:@Model.Shop.Phone">
+                                <i class="fas fa-phone"></i>
+                                <h6 class="d-inline-block">@Model.Shop.Phone</h6>
+                            </a>
+                            <a target="_blank" class="d-block" href="https://www.google.com/maps/place/@storeAddress">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h6 class="d-inline-block">@Model.Shop.City @Model.Shop.District @Model.Shop.Address</h6>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <ul class="list-group order_details_list rounded-0">
+                                <li class="list-group-item bg_blue">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="mb-0 text_white fw-bold px-5"></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <p class="mb-0 text-center">訂單編號</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <p class="mb-0">@Model.OrderStamp</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0">訂單狀態</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="badge @color d-inline-block py-2">@Model.Order.OrderStateEnum</span>
+
+                                            @*<button type="button" class="text_blue fw-bold mx-4 pt-2"
+                                                data-bs-toggle="modal" data-bs-target="#order_details_modal">
+                                                進度
+                                            </button>*@
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <p class="mb-0 text-center">取餐人</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <p class="mb-0">@Model.Customer.NickName</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <p class="mb-0 text-center">聯絡電話</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <p class="mb-0">@Model.Customer.Phone</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <p class="mb-0 text-center">取餐方式</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <p class="mb-0">@Model.Order.TakeMethod</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row ">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">取餐地址</p>
+                                        </div>
+                                        @{
+                                            var takeMethod = Model.Order.TakeMethod == "自取" ? $"{Model.Shop.Brand} {Model.Shop.ShopName} 自取" :
+                                            $"{Model.Order.City} {Model.Order.District} {Model.Order.Address}";
+                                        }
+                                       
+                                            <div class="col-7 ">
+                                                <p class="mb-0">@takeMethod</p>
+                                            </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">預計取餐時間</p>
+                                        </div>
+                                        <div class="col-7">
+                                            <p class="mb-0 d-inline-block">@Model.Order.PickUpTime</p>
+                                            <p class="mb-0 d-inline-block"></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row ">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">付款方式</p>
+                                        </div>
+                                        <div class="col-7 ">
+                                            <p class="mb-0">@Model.Order.PaymentType</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row ">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">開立發票方式</p>
+                                        </div>
+                                        <div class="col-7 ">
+                                            <p class="mb-0">@Model.Order.ReceiptType</p>
+                                            <p class="mb-0">@Model.Order.VatNum</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row ">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">付款金額</p>
+                                        </div>
+                                        <div class="col-7 ">
+                                            <p class="mb-0">$ @Model.FinalPrice</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="row ">
+                                        <div class="col-5 d-flex justify-content-center align-items-center">
+                                            <p class="mb-0 text-center">訂單建立時間</p>
+                                        </div>
+                                        <div class="col-7 ">
+                                            <p class="mb-0">@Model.Order.OrderDate</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body col-12 col-sm-12 col-lg-7 orderDetail_groupby_list">
+                    <div class="row bg-white rounded-2 m-2 ">
+
+                        @foreach(var od in Model.OrderDetails)
+                        {
+                            @await Html.PartialAsync("_OrderDetail_Groupby_List", od)
+                        }
+
+                    </div>
+                    <div class="row bg-white rounded-2 m-2 ">
+                        <div class="col-12 my-2 d-flex justify-content-between cart_details_border">
+                            <p class="d-inline-block">商品 x @Model.QuantityTotal</p>
+                            <p class="d-inline-block">$ @Model.PriceTotal</p>
+                        </div>
+                        <div class="col-12 mt-2 d-flex justify-content-between cart_details_border">
+                            <p class="d-inline-block text_pink fw-bold">總金額</p>
+                            <p class="d-inline-block text_pink fw-bold">$ @Model.PriceTotal</p>
+                        </div>
+                        <div class="col-12 my-2 d-flex justify-content-between cart_details_border">
+                            <p class="d-inline-block text_pink fw-bold">@Model.Order.Coupon</p>
+                            <p class="d-inline-block text_pink fw-bold">- @Model.Discount</p>
+                        </div>
+                        @if (isDelivery)
+                        {
+                            <div class="col-12 my-2 d-flex justify-content-between cart_details_border">
+                                <p class="d-inline-block text_pink fw-bold">外送費</p>
+                                <p class="d-inline-block text_pink fw-bold">+ @Model.Order.DeliveryFee</p>
+                            </div>
+                        }
+
+                        <div class="col-12 mt-2 d-flex justify-content-between cart_details_border">
+                            <p class="d-inline-block text_pink fw-bold">應付金額</p>
+                            <p id="odFinalPrice" class="d-inline-block text_pink fw-bold">$ @Model.FinalPrice</p>
+                        </div>
+                    </div>
+                    <div class="row bg-white rounded-2 m-2 ">
+                        <div class="col-12 d-flex pt-3">
+                            @if(orderState == "訂單建立")
+                            {
+                                <button id="OrderCancelBtn" type="button" class="btn btn-danger m-auto w-50" data-bs-toggle="modal" data-bs-target="#askToCancelOrder">
+                                    取消訂單
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="row bg-white rounded-2 m-2 ">
+                        <div class="col-12">
+                            <div class="row p-2">
+                                <div class="col-12 col-sm-12 col-lg-12 bg_page rounded-3 py-2 mt-2">
+
+                                        @if(@Model.isCommented)
+                                        {
+                                            <label class="d-block fw-bold text-center" for="floatingTextarea2">評價此次訂購</label>
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <span class="commentStars d-inline-block text_pink fw-bold mt-auto mb-auto position-absolute"> @Model.Comments.Star </span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="showCommentStar icon_star row justify-content-center">
+                                                        @*append stars*@
+                                                    </div>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea readonly class="form-control input_noshadow" name="Comment1"
+                                                        id="floatingTextarea" style="height: 100px"> @Model.Comments.Comment1 </textarea>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div id="showCommentArea" class="row justify-content-center d-none">
+                                                <div class="col-6">
+                                                    <div class="icon_star row justify-content-center">
+                                                        <div class="col-1 text-center px-0 mx-1">
+                                                            <i class="fas fa-star fz_16 order_details_page_stars star_opacity"></i>
+                                                        </div>
+                                                        <div class="col-1 text-center px-0 mx-1">
+                                                            <i class="fas fa-star fz_16 order_details_page_stars star_opacity"></i>
+                                                        </div>
+                                                        <div class="col-1 text-center px-0 mx-1">
+                                                            <i class="fas fa-star fz_16 order_details_page_stars star_opacity"></i>
+                                                        </div>
+                                                        <div class="col-1 text-center px-0 mx-1">
+                                                            <i class="fas fa-star fz_16 order_details_page_stars star_opacity"></i>
+                                                        </div>
+                                                        <div class="col-1 text-center px-0 mx-1">
+                                                            <i class="fas fa-star fz_16 order_details_page_stars star_opacity"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <input name="Star" readonly type="text" id="ratingValue" class=" d-inline-block fw-bold mt-auto mb-auto">
+                                                    @*<span name="Star" id="ratingValue" class=" d-inline-block text_pink fw-bold mt-auto mb-auto"></span>*@
+                                                    @*<span class=" d-inline-block text_pink fw-bold mt-auto mb-auto">顆星</span>*@
+                                                    <p id="starvalueWarn" class="d-none">請點星星評價</p>
+
+                                                </div>
+                                                <div id="commentBtns" class="col-12 d-flex flex-wrap justify-content-center">
+                                                    @*append commentbtns*@
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea class="form-control input_noshadow" name="Comment1"
+                                                        id="floatingTextarea" style="height: 100px"
+                                                    ></textarea>
+                                                </div>
+                                                <div class="row justify-content-center my-2">
+                                                    <div class="col-12 ">
+                                                        <button id="submitBtn" type="submit" class="w-100 bg_blue rounded-2 py-3 text_white fw-bold ">
+                                                            評價訂單
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            
+
+                                            
+                                        }
+                                        
+
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!--Cancel Modal -->
+<div class="modal fade" id="askToCancelOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" action="/Order/OrderCancelled" class="w-100">
+          <div class="modal-body">
+            <p class="mb-0 text_pink fz_18 text-center fw-bold">確定要取消這筆訂單嗎?</p>
+            <input readonly id="hideOrderId" name="OrderId" type="text"/>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+              
+                <div id="checktoCancelOrder" class="d-flex">
+                
+                    <button type="submit" class="btn btn-danger rounded-2 text_white fw-bold m-auto">
+                        確定取消
+                    </button>
+                </div>
+          </div>
+       </form>
+    </div>
+  </div>
+</div>
+
+    <!--progress modal -->
+    <div class="modal fade" id="order_details_modal" tabindex="-1" aria-labelledby="din_ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="menu_modal_header p-3">
+                    <div class="d-flex">
+                        <h3 class="fz_16 fw-bold m-0">訂單進度</h3>
+                        <button type="button" class="ms-auto" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="fas fa-times-circle text_pink fz_18"></i></button>
+
+                    </div>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="row justify-content-center">
+                        <div class="col-10 my-2">
+                            <i class="text_gray fas fa-check-circle"></i>
+                            <p class="mb-0 d-inline-block px-2">已送出訂單</p>
+                        </div>
+                        <div class="col-10 my-2">
+                            <i class="text_gray fas fa-check-circle"></i>
+                            <p class="mb-0 d-inline-block px-2">門市已接單</p>
+                        </div>
+                        <div class="col-10 my-2">
+                            <i class="text_gray fas fa-check-circle"></i>
+                            <p class="mb-0 d-inline-block px-2">商品準備中</p>
+                        </div>
+                        <div class="col-10 my-2">
+                            <i class="text_gray fas fa-check-circle"></i>
+                            <p class="mb-0 d-inline-block px-2">商品準備運送</p>
+                        </div>
+                        <div class="col-10 my-2">
+                            <i class="text_gray fas fa-check-circle"></i>
+                            <p class="mb-0 d-inline-block px-2">門市處理完成</p>
+                        </div>
+                        <div class="col-10 my-2">
+                            <p class="mb-0">外送人員將於約定時間到達，敬請留意訊息。歡迎評價給予回饋喔！</p>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="w-100 rounded-2 py-3 mt-3 text_white fw-bold fz_15"
+                                style="background-color: var(--din-bg-notify-btn);">
+                                使用LINE接收通知
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+@section endJS{
+   <script src="~/js/Order/OderDetail.js"></script>
+}
+

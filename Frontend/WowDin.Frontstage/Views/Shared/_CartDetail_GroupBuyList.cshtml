@@ -1,0 +1,36 @@
+﻿@model WowDin.Frontstage.Models.ViewModel.Order.CartDetailViewModel.ProductDetailsByCartVM
+
+
+<div class="row py-2 px-3 ordersbyUser">
+    <div class="col-1 col-sm-1 col-lg-1 p-0 d-flex my-2">
+        <img class="w-100 rounded-circle m-auto cart_detail_brandLogo" src="@Model.Photo"
+            alt="memberImg">
+    </div>
+    <div class="col-6 col-sm-6 col-lg-6 d-flex align-items-center">
+        <h6 class="fw-bold"> @Model.NickName </h6>
+    </div>
+    <div
+        class="col-5 col-sm-5 col-lg-5 d-flex align-items-center justify-content-center position-relative">
+        <h6 class="ms-auto">  
+            $ 
+            <span id="buying_content_sum_dollar"> 
+                @Model.ProductDetailsByUserData.Select(p => p.Price).Sum().ToString("#.#") 
+            </span>
+            元  / 
+            <span id="buying_content_sum_amount"> 
+                @Model.ProductDetailsByUserData.Select(q => q.Quantity).Sum() 
+            </span> 份
+        </h6>
+        @*<button>
+            <i class=" fas fa-angle-up"></i>
+        </button>*@
+    </div>
+    <div class="col-12 bg_page rounded-3">
+
+        @foreach(var cd in @Model.ProductDetailsByUserData)
+        {
+            @await Html.PartialAsync("_CartDetail_GroupBuy_ProductList",cd)
+        }
+
+    </div>
+</div>

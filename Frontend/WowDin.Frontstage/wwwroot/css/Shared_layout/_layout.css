@@ -1,0 +1,137 @@
+:root {
+    --layout-header-height: 68px;
+    --layout-small-footer-height: 75px;
+    --layout-large-footer-height: 180px;
+}
+
+header {
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    height: var(--layout-header-height);
+}
+
+#main {
+    padding-bottom: 100px;
+    background-color: #bdb76b;
+    
+}
+
+#footer-small {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    height: var(--layout-small-footer-height)
+}
+
+#footer-small .btn:focus {
+    border: none;
+}
+
+#footer-small .btn:active {
+    background-color: gainsboro;
+}
+
+#footer-small p {
+    background-color: transparent;
+}
+
+#footer-large {
+    width: 100%;
+    height: var(--layout-large-footer-height);
+}
+
+ul li{
+    list-style-type: none;
+}
+
+.bg-light :hover{
+    background-color:gainsboro;
+}
+
+.nav-item :hover,
+.nav-item :active{
+    background-color:gainsboro;
+}
+
+.layout_dropdown_item :hover {
+    background-color: gainsboro;
+}
+
+
+.layout_more{
+    position: fixed;
+    padding-top: 70px;
+    width: 100%;
+    height: 100%;
+    z-index: 8;
+}
+
+.layout_terms {
+    position: fixed;
+    padding-top: 70px;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+}
+
+.social-icon{
+    font-size: 20px;
+}
+
+[role="main"] {
+    padding-top: 100px;
+    padding-bottom: calc( var(--layout-small-footer-height) + 50px );
+}
+
+.dropdown-item:active {
+    background-color: gainsboro;
+}
+
+@media (min-width:992px) {
+    [role="main"] {
+        padding-bottom: 50px;
+        min-height: calc(100vh - var(--layout-large-footer-height));
+    }
+}
+
+#layout_term_dropdown > ul.layout_terms_lg {
+    left: 75%;
+    top: 40px;
+}
+
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0%;
+    left: 100%;
+    margin-top: -3px;
+}
+
+.dropdown-menu > li > a:after {
+    transform: rotate(-90deg);
+    transition: 0s;
+}
+
+.navbar-nav li:not(#layout_term_dropdown):hover > ul.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0%;
+    left: 100%;
+    margin-top: -3px;
+}
+
+.dropdown-menu > li > a:hover:after {
+    transform: rotate(-90deg);
+    transition: 1s;
+}

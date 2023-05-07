@@ -1,0 +1,69 @@
+﻿@model ShopCardViewModel
+@{
+    var isLogin = User.Identity.IsAuthenticated;
+}
+
+<div class="col-12 col-sm-6 col-lg-4 p-3">
+    <a href="/Menu/@Model.ShopId" class="card border-0">
+        <div class="position-relative">
+            <img src="@Model.ShopFig" class="card-img-top rounded_corner" alt="@Html.Raw(Model.ShopName)">
+            <img src="@Model.BrandLogo" class="card_logo rounded-circle position-absolute " alt="@Html.Raw(Model.BrandName)">
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h3 class="fz_17 text-black">@Html.Raw(Model.BrandName) @Html.Raw(Model.ShopName)</h3>
+                @if (isLogin)
+                {
+                    @if (Model.IsFavorite)
+                    {
+                        <button class="shopcard_favorite_btn btn p-0 mb-auto" din_favorite="true" din_shopid="@Model.ShopId">
+                            <i class="fas fa-heart fs-1 text-danger"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="shopcard_favorite_btn btn p-0 mb-auto" din_favorite="false" din_shopid="@Model.ShopId">
+                            <i class="far fa-heart fs-1 text_gray"></i>
+                        </button>
+                    }
+                }
+            </div>
+            <div>
+                <span class="text_card bg_card_tag rounded-3 p-1 d-inline-block fw-bold shopcard_tag">
+                    @Model.OpenTime ~
+                    @Model.CloseTime
+                </span>
+                @if (Model.Distance != "0.0")
+                {
+                    <span class="text_card bg_card_tag rounded-3 p-1 d-inline-block fw-bold shopcard_tag">@Model.Distance 公里</span>
+                }
+
+                @if(Model.Star != "0.0")
+                {
+                    <div class="text_card bg_card_tag rounded-3 p-1 d-inline-block fw-bold">
+                        <i class="fas fa-star icon_star shopcard_tag "></i> <span class=" shopcard_tag">@Model.Star</span>
+                    </div>
+                }
+            </div>
+            <div class="d-flex">
+                <div class="me-auto pt-3 pb-2 text_card ">
+                    <p class="d-inline">
+                        @Html.Raw(Model.Address)
+                    </p>
+                </div>
+                @foreach (var c in Model.Categories)
+                {
+                    <div class="mt-auto p-2">
+                        <img src="~/img/Store/Category/@c.CategoryFig" class="card_category" alt="@Html.Raw(c.CategoryName)">
+                    </div>
+                }
+                @if (Model.IsDelivery)
+                {
+                    <div class="mt-auto p-2">
+                        <img src="~/img/Store/delivery.svg" class="card_category">
+                    </div>
+                }
+            </div>
+        </div>
+    </a>
+</div>
