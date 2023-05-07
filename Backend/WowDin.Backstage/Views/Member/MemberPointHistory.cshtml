@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "會員消費紀錄";
+}
+
+<h1 class="h3 mb-2 text-gray-800 fw-bold">消費紀錄</h1>
+
+<!-- Tables -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ UserNickName }}</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>消費日期</th>
+                        <th>點數紀錄</th>
+                        <th>消費分店</th>
+                        <th>消費類型</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>消費日期</th>
+                        <th>點數紀錄</th>
+                        <th>消費分店</th>
+                        <th>消費類型</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td>2022/04/17</td>
+                        <td>+6</td>
+                        <td>八里店</td>
+                        <td>線上消費</td>
+                    </tr>
+                                        
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section endJS {
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/js/demo/datatables-demo.js"></script>
+}
+
+@section topCSS {
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}

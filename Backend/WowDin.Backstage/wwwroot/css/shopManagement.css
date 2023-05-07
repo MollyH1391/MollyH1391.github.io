@@ -1,0 +1,12 @@
+﻿.btn:focus {
+    box-shadow: none !important;
+}
+
+.deliveryBtn {
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+.deliveryBtn:hover {
+    opacity: 1;
+}

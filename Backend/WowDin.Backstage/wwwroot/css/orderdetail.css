@@ -1,0 +1,9 @@
+#modal-xl___BV_modal_backdrop_ {
+    background-color: white;
+    opacity: 50%;
+}
+
+#recordSelected {
+    z-index:-2;
+}
+

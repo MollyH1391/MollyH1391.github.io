@@ -1,0 +1,386 @@
+﻿@{
+    ViewData["Title"] = "廣告刊登";
+    var baseUrl = (string)ViewData["BaseUrl"];
+    var brandId = (int)ViewData["BrandId"];
+}
+
+@section topCSS{
+    <style>
+        .product_img_modal_wrap{
+            min-width: 500px;
+            min-height: 100px;
+            border: 1px dashed gray;
+            overflow: hidden;
+            /* background-color: #000; */
+        }
+        .product_img_detail{
+            align-content: center;
+            width: 100%;
+        }
+        .ad_img_wrap{
+            width: 300px;
+        }
+        .ad_img{
+            width: 100%;
+        }
+        
+    </style>
+    
+}
+
+@section endJS {
+    <script>
+        const API_BASE_URL = "@baseUrl"
+        const brandId = @brandId
+    </script> 
+
+    <script src="~/js/Coupon/Advertise.js"></script>
+}
+
+<div id="app" v-cloak>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">廣告刊登</h6>
+        </div>
+        <div class="row p-4">
+            <div class="col-12">
+                <b-row class="my-4 justify-content-end align-items-center">
+                    <b-col lg="12" class="my-1">
+                        <b-button v-b-modal.modal-create variant="success" class="p-2">
+                            <b-icon icon="plus-square" aria-hidden="true"></b-icon>
+                            新增廣告
+                        </b-button>
+                    </b-col>
+                    
+                </b-row>
+                <b-tabs content-class="pt-2 pb-2 px-2" fill v-model="tabIndex">
+                    <b-tab active>
+                        <template #title>
+                            <b-icon icon="check-square-fill" aria-hidden="true"></b-icon>
+                            <strong>刊登中</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="publishedCurrentPage" :total-rows="publishedTotalRows" :per-page="perPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table
+                            :items="publishedItems" 
+                            :fields="fields" 
+                            :current-page="publishedCurrentPage" 
+                            :per-page="perPage" 
+                            :filter="filter" 
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+                                <template #cell(img)="row">
+                                    <div class="ad_img_wrap">
+                                        <img class="ad_img img rounded_corner" :src="row.item.img" :alt="row.item.advertiseId">
+                                    </div>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <p class="px-4">{{ row.item.message }}</p>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+                    <b-tab>
+                        <template #title>
+                            <b-icon icon="check-square-fill" aria-hidden="true"></b-icon>
+                            <strong>申請中</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="pendingCurrentPage" :total-rows="pendingTotalRows" :per-page="perPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table
+                            :items="pendingItems" 
+                            :fields="fields" 
+                            :current-page="pendingCurrentPage" 
+                            :per-page="perPage" 
+                            :filter="filter" 
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+                                <template #cell(img)="row">
+                                    <div class="ad_img_wrap">
+                                        <img class="ad_img img rounded_corner" :src="row.item.img" :alt="row.item.advertiseId">
+                                    </div>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <p class="px-4">{{ row.item.message }}</p>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+                    <b-tab>
+                        <template #title>
+                            <b-icon icon="check-square-fill" aria-hidden="true"></b-icon>
+                            <strong>下架中</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="removedCurrentPage" :total-rows="removedTotalRows" :per-page="perPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table
+                            :items="removedItems" 
+                            :fields="removedFields" 
+                            :current-page="removedCurrentPage" 
+                            :per-page="perPage" 
+                            :filter="filter" 
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+                                <template #cell(img)="row">
+                                    <div class="ad_img_wrap">
+                                        <img class="ad_img img rounded_corner" :src="row.item.img" :alt="row.item.advertiseId">
+                                    </div>
+                                </template>
+                                <template #cell(action)="row">
+                                    <b-button v-on:click="reSubmit(row.item)" variant="info">再次申請</b-button>
+                                    
+                                </template>
+                                <template #cell(message)="row">
+                                    <b-button v-if="row.item.message!=null" v-on:click="row.toggleDetails">查看詳細</b-button>
+                                    <p v-else="row.item.message!=null">-沒有訊息-</p>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <p class="px-4">{{ row.item.message }}</p>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+                    <b-tab>
+                        <template #title>
+                            <b-icon icon="check-square-fill" aria-hidden="true"></b-icon>
+                            <strong>拒絕申請</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="rejectedCurrentPage" :total-rows="rejectedTotalRows" :per-page="perPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table
+                            :items="rejectedItems" 
+                            :fields="rejectedFields" 
+                            :current-page="rejectedCurrentPage" 
+                            :per-page="perPage" 
+                            :filter="filter" 
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+                                <template #cell(img)="row">
+                                    <div class="ad_img_wrap">
+                                        <img class="ad_img img rounded_corner" :src="row.item.img" :alt="row.item.advertiseId">
+                                    </div>
+                                </template>
+                                <template #cell(message)="row">
+                                    <b-button v-if="row.item.message!=null" v-on:click="row.toggleDetails">查看詳細</b-button>
+                                    <p v-else="row.item.message!=null">-沒有訊息-</p>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <p class="px-4">{{ row.item.message }}</p>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+                </b-tabs>
+                
+
+                <!-- Create modal -->
+                <b-modal id="modal-create" ref="modal" size="xl" title="申請廣告" v-on:show="resetModal" v-on:ok="submitAd" scrollable centered >
+                    <template v-slot:modal-ok>
+                        確定
+                    </template>
+                    <template v-slot:modal-cancel>
+                        取消
+                    </template>
+                    <form ref="form" class="row px-4" v-on:submit.stop.prevent="checkForm">
+                        <div class="col col-12">
+                            <b-form-group label="廣告圖片"
+                                label-for="name-input"
+                                :state="formCheck.adFig.check"
+                                :invalid-feedback="formCheck.adFig.errorMsg"
+                                >
+                                <div class="">
+                                    <div class="row align-items-center">
+                                        <div class="col col-6">
+                                            <b-overlay :show="figure.figureLoading" rounded="lg" opacity="0.6">
+                                                <template #overlay>
+                                                    <div class="d-flex align-items-center">
+                                                        <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                        <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                        <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                    </div>
+                                                </template>
+                                                <b-form-file 
+                                                id="figure_selector"
+                                                v-model="figure.uploadFigure" 
+                                                placeholder="選擇檔案"
+                                                size="sm"
+                                                browse-text="瀏覽"
+                                                accept="image/jpeg, image/png, image/gif"
+                                                ></b-form-file>
+                                            </b-overlay>
+                                        </div>
+                                    </div>
+                                    <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                                    <p class="m-0 small text-primary">{{ figure.uploadResult }}</p>
+                                </div>
+                                <div class="product_img_modal_wrap text-center rounded_corner_small mb-2 d-flex align-items-center justify-content-center text-center">
+                                    <img v-if="figure.hasFigure" id="ad_fig_creating" class="product_img_modal" :src="newAd.adFig">
+                                    <span v-else="figure.hasFigure" class="text-secondary">目前沒有圖片</span>
+                                </div>
+                                        
+                                    
+                                
+                            </b-form-group>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <b-form-group label="廣告位置"
+                                        label-for="type-input"
+                                        >
+                                        <b-form-radio-group 
+                                            id="type-input"
+                                            v-model="newAd.isSearchZone"
+                                            :options="adTypeOptions"
+                                            button-variant="outline-primary"
+                                            size="sm"
+                                            name="radio-btn-outline"
+                                            buttons
+                                            required
+                                            >
+                                        </b-form-radio-group>
+                                        <span class="ml-2">建議圖片尺寸: {{ recommandWidth }} × {{ recommandHeight }}</span>
+                                        <span>
+                                            <i v-if="figure.valid" class="fas fa-check-double text-success"></i>
+                                        </span>
+                                        <span id="figure_warning">
+                                            <i v-if="figure.hasFigure && !figure.valid" class="fas fa-exclamation-triangle text-warning"></i>
+                                        </span>
+                                        <b-tooltip target="figure_warning" triggers="hover" placement="right">
+                                            可能無法完整顯示全部內容
+                                        </b-tooltip>
+                                    </b-form-group>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <b-form-group label="優惠"
+                            label-for="codeType-input">
+                                <b-button v-b-modal.choose-coupon>連結優惠券</b-button>
+                                <span v-if="selectedCouponId!=0" class="ml-2">目前選擇: {{ selectedCoupon }}</span>
+                                <span v-else="selectedCouponId!=0" class="ml-2">未連結至優惠券
+                            </b-form-group>
+                            
+                        </div>
+                    </form>
+                </b-modal>
+
+                <b-modal id="choose-coupon" title="選擇優惠券" size="lg" v-on:ok="setCoupon" scrollable>
+                    <template v-slot:modal-ok>
+                        確定
+                    </template>
+                    <template v-slot:modal-cancel>
+                        取消
+                    </template>
+                    <b-form-group 
+                        label="將廣告連結至以下優惠">
+                    </b-form-group>
+                    <b-table
+                            :items="couponsItems" 
+                            :fields="couponFields" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>
+                                        <b-form-radio v-model="selectedCouponId" name="coupon-radios" :value="row.item.id"></b-form-radio>
+                                    </span>
+                                </template>
+                            </b-table>
+                    
+                </b-modal>
+
+            </div>
+        </div>
+    </div>
+</div>
+

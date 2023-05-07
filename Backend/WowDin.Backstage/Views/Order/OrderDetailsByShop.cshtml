@@ -1,0 +1,576 @@
+﻿
+@section topCSS{
+
+    <link href="~/css/_settings.css" rel="stylesheet">
+
+    <link href="~/css/orderdetail.css" rel="stylesheet">
+}
+
+@{
+    ViewData["Title"] = "訂單管理";
+    var shopId = (int)ViewData["ShopId"];
+}
+
+@section endJS {
+    <script>
+        const shopId = @shopId
+    </script>
+
+    <script src="~/js/OrderDetails/orderdetails_store.js"></script>
+        
+}
+
+
+
+<div v-cloak id="orderdetailVue" class="container p-0">
+    <div class="row mb-3 justify-content-between">
+        <div class="col-3 d-flex">
+            <b-button onclick="backToBranOrder()" class="fz_18 mr-auto">回品牌訂單</b-button>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <h2 class="py-2 px-3 rounded bg_blue text_white fz_30 fw-bold d-inline-block">{{ shop }}</h2>
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row mb-3">
+        <b-card class="col-12" no-body>
+            <b-tabs card fill>
+                <b-tab title="未接單" class="fz_18">
+                    <div class="row justify-content-start mb-3">
+                        <div class="col-2">
+                            <div>
+                                <b-button variant="info" id="show-btn" v-on:click="$bvModal.show('bv-modal-accept')" class="w-100 fz_18">全部接單</b-button>
+
+                                  <b-modal centered id="bv-modal-accept" hide-footer>
+                                       <p class="fz_18 text_pink font-weight-bold text-center"> 確定要全部接單? </p>
+                                    <b-button variant="info" class="mt-3" block v-on:click="acceptAll_hide()">確定</b-button>
+                                  </b-modal>
+                            </div>
+                        </div>
+                       
+                        <div class="col-2">
+                            <div>
+                                <b-button variant="danger" id="show-btn" v-on:click="$bvModal.show('bv-modal-cancel')" class="w-100 fz_18">全部取消</b-button>
+
+                                  <b-modal centered id="bv-modal-cancel" hide-footer>
+                                       <p class="fz_18 text_pink font-weight-bold text-center"> 確定要全部取消? </p>
+                                    <b-button variant="danger" class="mt-3" block v-on:click="cancelAll_hide()">確定</b-button>
+                                  </b-modal>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="w-100 table text-center">
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>訂單建立時間</th>
+                                <th>會員</th>
+                                <th>取餐時間</th>
+                                <th>取餐方式</th>
+                                <th>發票方式</th>
+                                <th>原價</th>
+                                <th>優惠券</th>
+                                <th>折扣</th>
+                                <th>總價</th>
+                                <th>詳細</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(order, index) in showDataList">
+                                <td class="align-middle">{{order.orderStamp}}</td>
+                                <td class="align-middle">{{order.orderDate}}</td>
+                                <td class="align-middle">{{order.userName}}</td>
+                                <td class="align-middle">{{order.pickUpTime}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.takeMethod == '外送'" class="badge badge-pill badge-success p-2">{{order.takeMethod}}</span>
+                                    <span v-else class="badge badge-pill badge-warning p-2">{{order.takeMethod}}</span>
+                                </td>
+                                <td class="align-middle">
+                                    {{order.receiptType}}
+                                    <br>
+                                    <span v-if="order.vatnumber != ''" class="text_pink text-center">
+                                            {{order.vatnumber}}
+                                    </span>
+                                </td>
+                                <td class="align-middle">{{order.totalPrice}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.coupon != '無折扣'" class="badge badge-info p-2">{{order.coupon}}</span>
+                                    <span v-else class="">{{order.coupon}}</span>
+                                </td>
+                                <td class="align-middle">{{order.discount}}</td>
+                                <td class="align-middle">{{order.finalPrice}}</td>
+                                <td class="align-middle">
+                                    <div>
+                                        <template>
+                                            <div>
+                                                <b-button :v-b-modal="'modalxl_' + order.orderId"  id="show-btn" v-on:click="showModal(order.orderId)">詳細</b-button>
+
+                                                <b-modal static :id="'modalxl_' + order.orderId" size="xl" hide-footer title="">
+                                                    <div class="d-block text-center">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <h4 class="w-25 py-2 fw-bold bg_page rounded">訂單編號: {{order.orderStamp}}</h4>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <h5 class="text_pink">取餐時間: {{order.pickUpTime}} </h5>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <div v-if="order.takeMethod == '外送'">
+                                                                    <h5 class="text_pink text-center">外送地址: {{order.city}} {{order.district}} {{order.address}}</h5>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <h5 class="text_pink text-center">自取</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 放產品資料 -->
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>產品名稱</th>
+                                                                    <th>數量</th>
+                                                                    <th>單價</th>
+                                                                    <th>備註</th>
+                                                                    <th>會員</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="orderdetail in order.orderDetailsList">
+                                                                    <td class="align-middle">{{orderdetail.productName}}</td>
+                                                                    <td class="align-middle">{{orderdetail.quantity}}</td>
+                                                                    <td class="align-middle">{{orderdetail.unitPrice}}</td>
+                                                                    <td class="align-middle">{{orderdetail.note}}</td>
+                                                                    <td class="align-middle">{{orderdetail.userName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-5 d-flex ">
+                                                            <b-button class="m-auto w-75" variant="warning" block
+                                                                v-on:click="hideModal_accept(order, index)">確定接單
+                                                            </b-button>
+                                                        </div>
+                                                        <div class="col-5 d-flex">
+                                                            <b-button class="m-auto w-75" variant="danger" block
+                                                                v-on:click="hideModal_cancel(order, index)">取消訂單
+                                                            </b-button>
+                                                        </div>
+                                                    </div>
+                                                </b-modal>
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row my-2">
+                        <div class="col-12 d-flex justify-content-center">
+
+                            <div class="row my-2">
+                                <div class="col-12 d-flex justify-content-center">
+
+                                    <b-pagination 
+                                        v-model="currentPage" 
+                                        pills 
+                                        :total-rows="total"
+                                        :per-page="perPage"
+                                    >
+                                    </b-pagination>
+            
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </b-tab>
+                <b-tab title="已接單" class="fz_18">
+                    <div class="row justify-content-start mb-3">
+                        <div class="col-2">
+                            <div>
+                                <b-button variant="warning" id="show-btn" v-on:click="$bvModal.show('bv-modal-complete')" class="fz_18 w-100">全部完成</b-button>
+
+                                  <b-modal centered id="bv-modal-complete" hide-footer>
+                                       <p class="fz_18 text_pink font-weight-bold text-center"> 確定訂單已全部完成? </p>
+                                    <b-button variant="warning" class="mt-3" block v-on:click="completeAll_hide()">確定</b-button>
+                                  </b-modal>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>訂單建立時間</th>
+                                <th>會員</th>
+                                <th>取餐時間</th>
+                                <th>取餐方式</th>
+                                <th>發票方式</th>
+                                <th>原價</th>
+                                <th>優惠券</th>
+                                <th>折扣</th>
+                                <th>總價</th>
+                                <th>詳細</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(order, index) in orderdetailListO_Accept">
+                                <td class="align-middle">{{order.orderStamp}}</td>
+                                <td class="align-middle">{{order.orderDate}}</td>
+                                <td class="align-middle">{{order.userName}}</td>
+                                <td class="align-middle">{{order.pickUpTime}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.takeMethod == '外送'" class="badge badge-pill badge-success p-2">{{order.takeMethod}}</span>
+                                    <span v-else class="badge badge-pill badge-warning p-2">{{order.takeMethod}}</span>
+                                </td>
+                                <td class="align-middle">
+                                    {{order.receiptType}}
+                                    <br>
+                                    <span v-if="order.vatnumber != ''" class="text_pink text-center">
+                                            {{order.vatnumber}}
+                                    </span>
+                                </td>
+                                <td class="align-middle">{{order.totalPrice}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.coupon != '無折扣'" class="badge badge-info p-2">{{order.coupon}}</span>
+                                    <span v-else class="">{{order.coupon}}</span>
+                                </td>
+                                <td class="align-middle">{{order.discount}}</td>
+                                <td class="align-middle text_pink">{{order.finalPrice}}</td>
+                                <td class="align-middle">
+                                    <div>
+                                        <template>
+                                            <div>
+                                                <b-button v-b-modal="`modalxl_${index}_${order.orderId}`"  id="show-btn" v-on:click="showModal(index, order.orderId)">詳細</b-button>
+
+                                                <b-modal static :id="`modalxl_${index}_${order.orderId}`" size="xl" hide-footer title="">
+                                                    <div class="d-block text-center">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <h4 class="w-25 py-2 fw-bold bg_page rounded">訂單編號: {{order.orderStamp}}</h4>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <h5 class="text_pink">取餐時間: {{order.pickUpTime}} </h5>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <div v-if="order.takeMethod == '外送'">
+                                                                    <h5 class="text_pink text-center">外送地址: {{order.city}} {{order.district}} {{order.address}}</h5>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <h5 class="text_pink text-center">自取</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 放產品資料 -->
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>產品名稱</th>
+                                                                    <th>數量</th>
+                                                                    <th>單價</th>
+                                                                    <th>備註</th>
+                                                                    <th>會員</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="orderdetail in order.orderDetailsList">
+                                                                    <td class="align-middle">{{orderdetail.productName}}</td>
+                                                                    <td class="align-middle">{{orderdetail.quantity}}</td>
+                                                                    <td class="align-middle">{{orderdetail.unitPrice}}</td>
+                                                                    <td class="align-middle">{{orderdetail.note}}</td>
+                                                                    <td class="align-middle">{{orderdetail.userName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-12 d-flex ">
+                                                            <b-button class="m-auto w-50" variant="warning" block
+                                                                v-on:click="hideModal_complete(order, index)">已完成
+                                                            </b-button>
+                                                        </div>
+                                                    </div>
+                                                </b-modal>
+
+                                            </div>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </b-tab>
+                <b-tab title="已完成" class="fz_18">
+
+                    <div class="row justify-content-end mb-3">
+                        <div class="col-6">
+                            @*<p class="my-2 ms-1 fz_18 fw-bold">搜尋</p>*@
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">請輸入關鍵字</span>
+                              </div>
+                              <input type="text" class="form-control" v-model="filter" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>訂單建立時間</th>
+                                <th>會員</th>
+                                <th>取餐時間</th>
+                                <th>取餐方式</th>
+                                <th>發票方式</th>
+                                <th>原價</th>
+                                <th>優惠券</th>
+                                <th>折扣</th>
+                                <th>總價</th>
+                                <th>詳細</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(order, index) in showDataList_Complete">
+                                <td v-html="highlightMatches_Complete(order.orderStamp)" class="align-middle">{{order.orderStamp}}</td>
+                                <td v-html="highlightMatches_Complete(order.orderDate)" class="align-middle">{{order.orderDate}}</td>
+                                <td v-html="highlightMatches_Complete(order.userName)" class="align-middle">{{order.userName}}</td>
+                                <td v-html="highlightMatches_Complete(order.pickUpTime)" class="align-middle">{{order.pickUpTime}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.takeMethod == '外送'" class="badge badge-pill badge-success p-2">{{order.takeMethod}}</span>
+                                    <span v-else class="badge badge-pill badge-warning p-2">{{order.takeMethod}}</span>
+                                </td>
+                                <td class="align-middle">
+                                    {{order.receiptType}}
+                                    <br>
+                                    <span class="text_pink text-center">
+                                            {{order.vatnumber}}
+                                    </span>
+                                </td>
+                                <td class="align-middle">{{order.totalPrice}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.coupon != '無折扣'" class="badge badge-info p-2">{{order.coupon}}</span>
+                                    <span v-else class="">{{order.coupon}}</span>
+                                </td>
+                                <td class="align-middle">{{order.discount}}</td>
+                                <td class="align-middle">{{order.finalPrice}}</td>
+                                <td class="align-middle">
+                                    <div>
+                                        <template>
+                                            <div>
+                                                <b-button v-b-modal="`modalxl_${index}_${order.orderId}`"  id="show-btn" v-on:click="showModal(index, order.orderId)">詳細</b-button>
+
+                                                <b-modal static :id="`modalxl_${index}_${order.orderId}`" size="xl" hide-footer title="">
+                                                    <div class="d-block text-center">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <h4 class="w-25 py-2 fw-bold bg_page rounded">訂單編號: {{order.orderStamp}}</h4>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <h5 class="text_pink">取餐時間: {{order.pickUpTime}} </h5>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <div v-if="order.takeMethod == '外送'">
+                                                                    <h5 class="text_pink text-center">外送地址: {{order.city}} {{order.district}} {{order.address}}</h5>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <h5 class="text_pink text-center">自取</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 放產品資料 -->
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>產品名稱</th>
+                                                                    <th>數量</th>
+                                                                    <th>單價</th>
+                                                                    <th>備註</th>
+                                                                    <th>會員</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="orderdetail in order.orderDetailsList">
+                                                                    <td class="align-middle">{{orderdetail.productName}}</td>
+                                                                    <td class="align-middle">{{orderdetail.quantity}}</td>
+                                                                    <td class="align-middle">{{orderdetail.unitPrice}}</td>
+                                                                    <td class="align-middle">{{orderdetail.note}}</td>
+                                                                    <td class="align-middle">{{orderdetail.userName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </b-modal>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row my-2">
+                        <div class="col-12 d-flex justify-content-center">
+
+                            <b-pagination 
+                                v-model="currentPage" 
+                                pills 
+                                :total-rows="total_Complete"
+                                :per-page="perPage"
+                            >
+                            </b-pagination>
+                            
+                        </div>
+                    </div>
+
+                </b-tab>
+                <b-tab title="已取消" class="fz_18">
+
+                    <div class="row justify-content-end mb-3">
+                        <div class="col-6">
+                            @*<p class="my-2 ms-1 fz_18 fw-bold">搜尋</p>*@
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">請輸入關鍵字</span>
+                              </div>
+                              <input type="text" class="form-control" v-model="filter_cancel" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>訂單建立時間</th>
+                                <th>會員</th>
+                                <th>取餐時間</th>
+                                <th>取餐方式</th>
+                                <th>發票方式</th>
+                                <th>總價</th>
+                                <th>優惠券</th>
+                                <th>折扣</th>
+                                <th>總價</th>
+                                <th>詳細</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(order, index) in showDataList_Cancel">
+                                <td v-html="highlightMatches_Cancel(order.orderStamp)" class="align-middle">{{order.orderStamp}}</td>
+                                <td v-html="highlightMatches_Cancel(order.orderDate)" class="align-middle">{{order.orderDate}}</td>
+                                <td v-html="highlightMatches_Cancel(order.userName)" class="align-middle">{{order.userName}}</td>
+                                <td v-html="highlightMatches_Cancel(order.pickUpTime)" class="align-middle">{{order.pickUpTime}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.takeMethod == '外送'" class="badge badge-pill badge-success p-2">{{order.takeMethod}}</span>
+                                    <span v-else class="badge badge-pill badge-warning p-2">{{order.takeMethod}}</span>
+                                </td>
+                                <td class="align-middle">
+                                    {{order.receiptType}}
+                                    <br>
+                                    <span v-if="order.vatnumber != ''" class="text_pink text-center">
+                                            {{order.vatnumber}}
+                                    </span>
+                                </td>
+                                <td class="align-middle">{{order.totalPrice}}</td>
+                                <td class="align-middle">
+                                    <span v-if="order.coupon != '無折扣'" class="badge badge-info p-2">{{order.coupon}}</span>
+                                    <span v-else class="">{{order.coupon}}</span>
+                                </td>
+                                <td class="align-middle">{{order.discount}}</td>
+                                <td class="align-middle">{{order.finalPrice}}</td>
+                                <td class="align-middle">
+                                    <div>
+                                        <template>
+                                            <div>
+                                                <b-button v-b-modal="`modalxl_${index}_${order.orderId}`"  id="show-btn" v-on:click="showModal(index, order.orderId)">詳細</b-button>
+
+                                                <b-modal static :id="`modalxl_${index}_${order.orderId}`" size="xl" hide-footer title="">
+                                                    <div class="d-block text-center">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <h4 class="w-25 py-2 fw-bold bg_page rounded">訂單編號: {{order.orderStamp}}</h4>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <h5 class="text_pink">取餐時間: {{order.pickUpTime}} </h5>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <div v-if="order.takeMethod == '外送'">
+                                                                    <h5 class="text_pink text-center">外送地址: {{order.city}} {{order.district}} {{order.address}}</h5>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <h5 class="text_pink text-center">自取</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 放產品資料 -->
+                                                        <table class="table text-center">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>產品名稱</th>
+                                                                    <th>數量</th>
+                                                                    <th>單價</th>
+                                                                    <th>備註</th>
+                                                                    <th>會員</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="orderdetail in order.orderDetailsList">
+                                                                    <td class="align-middle">{{orderdetail.productName}}</td>
+                                                                    <td class="align-middle">{{orderdetail.quantity}}</td>
+                                                                    <td class="align-middle">{{orderdetail.unitPrice}}</td>
+                                                                    <td class="align-middle">{{orderdetail.note}}</td>
+                                                                    <td class="align-middle">{{orderdetail.userName}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </b-modal>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row my-2">
+                        <div class="col-12 d-flex justify-content-center">
+
+                             <b-pagination 
+                                v-model="currentPage" 
+                                pills 
+                                :total-rows="total_Cancel"
+                                :per-page="perPage"
+                            >
+                            </b-pagination>
+                            
+                        </div>
+                    </div>
+
+                </b-tab>
+            </b-tabs>
+        </b-card>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script> <!-- toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> <!-- Axios -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
+
+

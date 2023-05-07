@@ -1,0 +1,34 @@
+﻿.btn:focus {
+    box-shadow: none !important;
+}
+
+.brand_logo {
+    width: 70px;
+    height: 70px;
+    top: 10px;
+    left: 10px;
+}
+
+.brand_category {
+    width: 20px;
+}
+
+.brand_img,
+.shop_img {
+    max-width: 300px;
+}
+
+.brand_img[draggable="true"],
+.shop_img[draggable="true"] {
+    cursor: grab;
+}
+
+.brand_img:active,
+.shop_img:active {
+    cursor: grabbing;
+}
+
+.brand_imgalt,
+.shop_imgalt {
+    max-width: 300px;
+}

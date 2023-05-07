@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "菜單管理";
+    var baseUrl = (string)ViewData["BaseUrl"];
+    var brandId = (int)ViewData["BrandId"];
+}
+
+@section topCSS {
+    <link href="~/css/MenuManage.css" rel="stylesheet">
+}
+
+@section topJS {
+    <!-- CDNJS :: Sortable (https://cdnjs.com/) --> 
+    <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+    <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
+}
+
+@section endJS {
+    <script>
+        const API_BASE_URL = "@baseUrl"
+        const brandId = @brandId
+    </script>
+    
+    <script src="~/js/Menu/MenuManage.js" type="module"></script>
+        
+}
+
+<div id="app" v-cloak>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">菜單管理</h6>
+        </div>
+        
+        <div class="menu_top_row row px-4 pt-2 align-items-end">
+            <div class="col">
+                <b-form-select id="shop_selector" v-model="currentShop" :options="shopList" value-field="id" text-field="name"></b-form-select>
+            </div>
+            <div class="col">
+                <div id="btn_area">
+                    <div class="d-flex justify-content-end pb-2">
+                        <span id="time_record">最後更新時間: {{ recordTime }}</span>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <b-button v-b-modal.modal-prevent-closing variant="outline-primary" class=" ml-1">新增類別</b-button>
+                        <b-button v-if="hasMenu" id="swich_detail_btn" variant="outline-primary" class=" ml-1"
+                        v-on:click="ShowProductDetail">{{ showDetailBtnText }}</b-button>
+                        <b-button v-if="hasMenu" id="arrange_btn" :variant="arrangeBtnVariant" class=" ml-1"
+                        :disabled="arrange.arrangeLoading"
+                        v-on:click="ArrangeClass">
+                            <div class="d-flex align-items-center">
+                                {{ arrangeBtnText }}
+                                <b-spinner
+                                v-if="arrange.arrangeLoading"
+                                variant="primary"
+                                type="grow"
+                                small
+                                class="ml-1"
+                                ></b-spinner>
+                            </div>
+                        </b-button>
+                        <b-button v-if="hasMenu" id="menu_copy_btn" v-b-modal.copy-menu-modal variant="outline-primary" class="ml-1" :disabled="!copyBtnEnable">
+                            <div class="d-flex align-items-center">
+                                {{ copyBtnText }}
+                                <b-spinner
+                                v-if="!copyBtnEnable"
+                                variant="primary"
+                                type="grow"
+                                small
+                                class="ml-1"
+                                ></b-spinner>
+                            </div>
+                        </b-button>
+                    </div>
+                </div>
+                <add-class-modal v-on:create-class="CreateClass"></add-class-modal>
+                <copy-menu-modal v-on:copy-menu="CopyMenu" :currentshopid="currentShop" :shoplist="shopList"></copy-menu-modal>
+            </div>
+        </div>
+
+        <!-- ClassList -->
+        <div id="classList" class="card-body">
+            <b-overlay :show="overlayShow" rounded="sm">
+                
+                <div id="menu_area"
+                is="draggable" 
+                v-model="classList"
+                handle=".handle"
+                tag="div" 
+                v-on:start="drag = true"
+                v-on:end="drag = false"
+                v-bind="dragOptions">
+                    <class-list v-for="(item, index) in classList" :key="index" 
+                    :group="item"
+                    :detailstate="showDetailState"
+                    :arrangestate="arrange.arrangeState"
+                    v-on:delete-class="DeleteClass"
+                    v-on:edit-class="EditClass"
+                    v-on:delete-product="DeleteProduct"
+                    v-on:update-product="UpdateProduct"
+                    v-on:copy-custom="CopyCustom"
+                    ></class-list>
+                </div>
+            </b-overlay>
+        </div>
+    </div>
+
+    <b-modal id="copyCustomTo" v-on:show="resetCopyCustomModal" v-on:ok="CopyCustomConfirm" title="複製題型">
+        <template v-slot:modal-ok>
+            確定
+        </template>
+        <template v-slot:modal-cancel>
+            取消
+        </template>
+        
+        <b-form-group
+        label="複製題型與選項到以下類型中的產品:">
+            <b-form-checkbox-group
+                v-model="selectedClass"
+                :options="classOptions"
+                name="flavour-2a"
+                stacked
+            ></b-form-checkbox-group>
+        </b-form-group>
+    </b-modal>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div id="scroll_bottom"></div>
+    <div id="scroll_top"></div>
+</div>

@@ -1,0 +1,371 @@
+﻿
+<div id="brandManage">
+    <b-card no-body>
+        <b-tabs v-model="tabIndex" small card>
+            <b-tab title="品牌Logo及卡片圖片">
+                <b-card>
+                    <div class="row">
+                        <div class="col-6 d-flex">
+                            <span class="fz_18 font-weight-bold">預覽:</span>
+                            <div class="col-7 p-3 ml-auto mr-auto mt-5">
+                                <div class="card border-0">
+                                    <div class="position-relative">
+                                        <img src="/images/samples/1.png" class="card-img-top rounded-lg">
+                                        <img src="/images/logo/logo.png" class="rounded-circle position-absolute" style="width:70px;height:70px;top:10px;left:10px;">
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex flex-wrap">
+                                            <h3 class="fz_17 text-dark mb-auto mt-auto mr-2">{{brandManagement.Name}}</h3>
+                                            <div class="bg-light rounded-lg p-1 mr-2 d-inline-block font-weight-bold"><i class="fas fa-star text-warning"></i> <span>{{brandManagement.Star}}</span></div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="mr-auto pt-3 pb-2">
+                                                <p class="d-inline">
+                                                    {{brandManagement.Slogan}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5 pt-5">
+                            <div class="row">
+                                <div class="col-10">
+                                    <b-form-group label="Logo:"
+                                                  label-for="logo"
+                                                  label-cols-sm="3"
+                                                  class="mt-4">
+                                        <b-form-file id="logo"
+                                                     v-model="brandlogofile"
+                                                     :state="Boolean(brandlogofile)"
+                                                     placeholder="選擇檔案"
+                                                     accept=".jpg, .jpeg, .png"
+                                                     disabled>
+                                        </b-form-file>
+                                    </b-form-group>
+                                </div>
+                                <div class="col-2">
+                                    <b-button class="mt-4" variant="secondary" disabled>上傳</b-button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <b-form-group label="卡片圖片:"
+                                                  label-for="card"
+                                                  label-cols-sm="3"
+                                                  class="mt-4">
+                                        <b-form-file id="card"
+                                                     v-model="brandcardfile"
+                                                     :state="Boolean(brandcardfile)"
+                                                     placeholder="選擇檔案"
+                                                     accept=".jpg, .jpeg, .png"
+                                                     disabled>
+                                        </b-form-file>
+                                    </b-form-group>
+                                </div>
+                                <div class="col-2">
+                                    <b-button class="mt-4" variant="secondary" disabled>上傳</b-button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <b-form-group label="Slogan:"
+                                                  label-for="slogan"
+                                                  label-cols-sm="3"
+                                                  class="mt-4">
+                                        <b-form-input id="slogan" v-model="brandManagement.Slogan" placeholder="請輸入卡片上欲顯示的口號" disabled></b-form-input>
+                                    </b-form-group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <b-form-group label="餐點種類:"
+                                                  label-for="category"
+                                                  label-cols-sm="2"
+                                                  class="mt-4"
+                                                  v-slot="{ ariaDescribedby }">
+                                        <b-form-checkbox-group id="category"
+                                                               v-model="brandManagement.BrandCategories"
+                                                               :options="brandManagement.Categories"
+                                                               :aria-describedby="ariaDescribedby">
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-5">
+                        <div class="ml-auto">
+                            <b-button v-on:click="" class="m-2" variant="warning">修改</b-button>
+                            <b-button v-on:click="" class="m-2" variant="success" disabled>儲存</b-button>
+                        </div>
+                    </div>
+                </b-card>
+            </b-tab>
+            <b-tab title="品牌介紹圖片">
+                <div class="row">
+                    <div class="col-4 p-5">
+                        <p class="text-center">
+                            請選擇欲放在品牌介紹頁廣告看板的圖片並上傳
+                        </p>
+                        <b-form-file v-model="brandimgfiles"
+                                     :state="Boolean(brandimgfiles)"
+                                     placeholder="選擇檔案"
+                                     multiple="true"
+                                     accept=".jpg, .jpeg, .png"
+                                     class="mb-3"
+                                     disabled>
+                        </b-form-file>
+                        <div class="">
+                            <b-button variant="secondary" disabled>上傳</b-button>
+                        </div>
+                        <p class="mb-3">上傳結果:</p>
+                        <p class=""></p>
+                    </div>
+                    <div class="col-8 p-5">
+                        <p class="">
+                            已上傳圖片:
+                        </p>
+                        <div id="">
+                            <b-table hover :items="brandManagement.BrandImages" :fields="fields" class="text-center">
+                                <template #cell(ImageUrl)="data">
+                                    <img src="/images/samples/1.png" style="width:200px;" />
+                                </template>
+                                <template #cell(ImageAlt)="data">
+                                    <b-form-input v-model="data.value" class="mt-2" placeholder="請輸入圖片替代文字" disabled></b-form-input>
+                                </template>
+                                <template #cell(edit)="data">
+                                    <b-button v-on:click="" class="m-2" variant="outline-danger" disabled>移除</b-button>
+                                </template>
+                            </b-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto">
+                        <b-button v-on:click="" class="m-2" variant="warning">修改</b-button>
+                        <b-button v-on:click="" class="m-2" variant="success" disabled>儲存</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="品牌介紹影片及說明">
+                <div class="row">
+                    <div class="col-6 p-5">
+                        <iframe class="w-100" width="560" height="315" :src="brandManagement.Video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <b-form-group label="品牌介紹影片:"
+                                      label-for="video"
+                                      label-cols-sm="3"
+                                      class="mt-4 text-nowrap">
+                            <b-form-input id="video" v-model="brandManagement.Video" placeholder="請輸入YouTube影片連結" disabled></b-form-input>
+                        </b-form-group>
+                    </div>
+                    <div class="col-6 p-5">
+                        <b-card>
+                            <p class="text-center">
+                                請選擇兩種顏色作為品牌介紹頁的主題色吧
+                            </p>
+                            <div class="row">
+                                <div class="col-9">
+                                    <b-form-group label="第一主題色:"
+                                                  label-for="firstcolor"
+                                                  label-cols-sm="4"
+                                                  class="mt-4">
+                                        <b-form-input id="firstcolor" v-model="brandManagement.FirstColor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" disabled></b-form-input>
+                                    </b-form-group>
+                                </div>
+                                <div class="col-3">
+                                    <input type="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" v-model="brandManagement.FirstColor" class="mt-4 rounded-sm bg-white" colorpick-eyedropper-active="false" style="height:35px;" placeholder="請輸入HEX色碼" disabled />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <b-form-group label="第二主題色:"
+                                                  label-for="secondcolor"
+                                                  label-cols-sm="4"
+                                                  class="mt-4">
+                                        <b-form-input id="secondcolor" v-model="brandManagement.SecondColor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" disabled></b-form-input>
+                                    </b-form-group>
+                                </div>
+                                <div class="col-3">
+                                    <input type="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" v-model="brandManagement.SecondColor" class="mt-4 rounded-sm bg-white" colorpick-eyedropper-active="false" style="height:35px;" placeholder="請輸入HEX色碼" disabled />
+                                </div>
+                            </div>
+                        </b-card>
+                        <b-row class="mt-4">
+                            <b-col sm="3">
+                                <label for="introduce">品牌介紹:</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-textarea id="introduce"
+                                                 v-model="brandManagement.Description"
+                                                 placeholder="寫點什麼來介紹自己的品牌吧..."
+                                                 disabled>
+                                </b-form-textarea>
+                            </b-col>
+                        </b-row>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto">
+                        <b-button v-on:click="" class="m-2" variant="warning">修改</b-button>
+                        <b-button v-on:click="" class="m-2" variant="success" disabled>儲存</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="外部連結">
+                <div class="row">
+                    <div class="col-6 p-5">
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="FaceBook:"
+                                              label-for="facebook"
+                                              label-cols-sm="3"
+                                              label-align-sm="right"
+                                              class="mt-4">
+                                    <b-form-input id="facebook" v-model="brandManagement.FaceBook" placeholder="請輸入網站連結" disabled></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="brandManagement.FaceBook" style="width:35px;height:35px;" class="rounded-lg border border-secondary mt-4 d-flex">
+                                    <img src="~/images/logo/logo.png" class="w-100 m-auto" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="Instagram:"
+                                              label-for="instagram"
+                                              label-cols-sm="3"
+                                              label-align-sm="right"
+                                              class="mt-4">
+                                    <b-form-input id="instagram" v-model="brandManagement.Instagram" placeholder="請輸入網站連結" disabled></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="brandManagement.Instagram" style="width:35px;height:35px;" class="rounded-lg border border-secondary mt-4 d-flex">
+                                    <img src="~/images/logo/logo.png" class="w-100 m-auto" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="Line:"
+                                              label-for="line"
+                                              label-cols-sm="3"
+                                              label-align-sm="right"
+                                              class="mt-4">
+                                    <b-form-input id="line" v-model="brandManagement.Line" placeholder="請輸入網站連結" disabled></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="brandManagement.Line" style="width:35px;height:35px;" class="rounded-lg border border-secondary mt-4 d-flex">
+                                    <img src="~/images/logo/logo.png" class="w-100 m-auto" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="官網:"
+                                              label-for="official"
+                                              label-cols-sm="3"
+                                              label-align-sm="right"
+                                              class="mt-4">
+                                    <b-form-input id="official" v-model="brandManagement.Official" placeholder="請輸入網站連結" disabled></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="brandManagement.Official" style="width:35px;height:35px;" class="rounded-lg border border-secondary mt-4 d-flex">
+                                    <img src="~/images/logo/logo.png" class="w-100 m-auto" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="官網圖片:"
+                                              label-for="officialimg"
+                                              label-cols-sm="3"
+                                              label-align-sm="right"
+                                              class="mt-4">
+                                    <b-form-file id="officialimg"
+                                                 v-model="brandofficialimg"
+                                                 :state="Boolean(brandofficialimg)"
+                                                 placeholder="選擇檔案"
+                                                 accept=".jpg, .jpeg, .png"
+                                                 disabled>
+                                    </b-form-file>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <div class="mt-4">
+                                    <b-button variant="secondary" disabled>上傳</b-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex pt-5 pt-5">
+                        <span class="fz_18 font-weight-bold">官網圖放大檢視:</span>
+                        <div class="m-auto border border-secondary d-flex" style="width:300px;height:300px;border-radius:20px;">
+                            <img src="/images/logo/logo.png" class="w-100 m-auto" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto">
+                        <b-button v-on:click="" class="m-2" variant="warning">修改</b-button>
+                        <b-button v-on:click="" class="m-2" variant="success" disabled>儲存</b-button>
+                    </div>
+                </div>
+            </b-tab>
+        </b-tabs>
+    </b-card>
+</div>
+@section endJS{
+<script>
+    let brandManage=new Vue({
+        el:'#brandManage',
+        data:{
+            tabIndex:0,
+            brandManagement:JSON.parse('@Html.Raw(Model)'),
+            brandimgfiles:[],
+            brandlogofile:null,
+            brandcardfile:null,
+            brandofficialimg:null,
+            fields:[
+                {
+                    key:'ImageUrl',
+                    label:'圖片'
+                },
+                {
+                    key:'ImageAlt',
+                    label:'圖片敘述'
+                },
+                {
+                    key:'edit',
+                    label:''
+                }
+            ],
+            dragIndex:''
+        },
+        methods:{
+            dragstart(index) {
+                this.dragIndex = index;
+            },
+            dragenter(e, index) {
+                e.preventDefault();
+                if (this.dragIndex !== index) {
+                const moving = this.brandImages[this.dragIndex];
+                this.brandImages.splice(this.dragIndex, 1);
+                this.brandImages.splice(index, 0, moving);
+                this.dragIndex = index;
+                }
+            },
+            dragover(e, index) {
+                e.preventDefault();
+            },
+
+        }
+    })
+</script>
+}
+

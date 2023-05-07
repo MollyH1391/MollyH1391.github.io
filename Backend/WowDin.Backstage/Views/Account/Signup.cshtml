@@ -1,0 +1,247 @@
+﻿@model SignupDataModel
+
+@{
+    ViewData["Title"] = "註冊品牌";
+    Layout = "_Login";
+}
+
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">註冊品牌</h1>
+                    </div>
+                    <div id="app" v-cloak>
+                        <form class="user" method="post" asp-controller="Account" asp-action="Signup">
+                            <div class="form-group">
+                                <label for="exampleInputBrand">品牌名稱</label>
+                                <input type="text" name="BrandName" v-model="inputData.brandName" :class="{ 'is-invalid': inputDataCheck.brandNameError }" class="form-control form-control-user" id="exampleInputBrand" value="@Html.DisplayFor(model => model.BrandName)">
+                                <div class="text-danger small mt-1">
+                                    {{ inputDataCheck.brandNameErrorMsg }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName">聯絡人姓名</label>
+                                <input type="text" v-model="inputData.name" :class="{ 'is-invalid': inputDataCheck.nameError }" class="form-control form-control-user" id="exampleInputName" value="@Html.DisplayFor(model => model.Name)">
+                                <div class="text-danger small mt-1">
+                                    {{ inputDataCheck.nameErrorMsg }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPhone">聯絡人電話</label>
+                                <input type="tel" v-model="inputData.phone" :class="{ 'is-invalid': inputDataCheck.phoneError }" class="form-control form-control-user" id="exampleInputPhone" value="@Html.DisplayFor(model => model.Phone)">
+                                <div class="text-danger small mt-1">
+                                    {{ inputDataCheck.phoneErrorMsg }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputTime">方便連絡時間</label>
+                                <input type="text" v-model="inputData.time" :class="{ 'is-invalid': inputDataCheck.timeError }" class="form-control form-control-user" id="exampleInputTime" value="@Html.DisplayFor(model => model.Time)">
+                                <div class="text-danger small mt-1">
+                                    {{ inputDataCheck.timeErrorMsg }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail">信箱</label>
+                                <input type="email" name="Email" v-model="inputData.email" :class="{ 'is-invalid': inputDataCheck.emailError }" class="form-control form-control-user" id="exampleInputEmail" value="@Html.DisplayFor(model => model.Email)">
+                                <div class="text-danger small mt-1">
+                                    {{ inputDataCheck.emailErrorMsg }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="exampleInputPassword">密碼</label>
+                                    @*<input type="password" name="Password" class="form-control form-control-user"
+                                        id="exampleInputPassword">*@
+                                    <input type="password" name="Password" v-model="inputData.password" :class="{ 'is-invalid': inputDataCheck.passwordError }" class="form-control form-control-user"
+                                            id="exampleInputPassword">
+                                    <div class="text-danger small mt-1">
+                                        {{ inputDataCheck.passwordErrorMsg }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="exampleRepeatPassword">再次輸入密碼</label>
+                                    @*<input type="password" name="PasswordCheck" class="form-control form-control-user"
+                                        id="exampleRepeatPassword">*@
+                                    <input type="password" name="PasswordCheck" v-model="inputData.passwordCheck" :class="{ 'is-invalid': inputDataCheck.passwordError }" class="form-control form-control-user"
+                                            id="exampleRepeatPassword">
+                                    <div class="text-danger small mt-1">
+                                        {{ inputDataCheck.passwordCheckErrorMsg }}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="d-block mt-2 text_pink mb-2">@ViewData["ErrorMessage"]</span>
+                            <button :disabled="!addVerify" type="submit" class="btn btn-pink btn-user btn-block">
+                                送出申請
+                            </button>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <a class="small" href="/Account/Login">已有帳號?點這裡登入</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section endJS
+{
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                inputData: {
+                    brandName: '',
+                    name: '',
+                    phone: '',
+                    time: '',
+                    email: '',
+                    password: '',
+                    passwordCheck: ''
+                },
+                inputDataCheck: {
+                    brandNameError: false,
+                    brandNameErrorMsg: '',
+                    nameError: false,
+                    nameErrorMsg: '',
+                    phoneError: false,
+                    phoneErrorMsg: '',
+                    timeError: false,
+                    timeErrorMsg: '',
+                    emailError: false,
+                    emailErrorMsg: '',
+                    passwordError: false,
+                    passwordErrorMsg: '',
+                    passwordCheckError: false,
+                    passwordCheckErrorMsg: ''
+                },
+                addVerify: false
+            },
+            watch: {
+                'inputData.password': {
+                    handler(){
+                        let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,64}$/
+                        
+                        if(this.inputData.password == ''){
+                            this.inputDataCheck.passwordError = true
+                            this.inputDataCheck.passwordErrorMsg = '新密碼不得為空'
+                        }
+                        else if (this.inputData.password.length < 6){
+                            this.inputDataCheck.passwordError = true
+                            this.inputDataCheck.passwordErrorMsg = '密碼最少需6個字元'
+                        }
+                        else if (!passwordRegex.test(this.inputData.password)){
+                            this.inputDataCheck.passwordError = true
+                            this.inputDataCheck.passwordErrorMsg = '密碼須為英數字混合!'
+                        }
+                        else{
+                            this.inputDataCheck.passwordError = false
+                            this.inputDataCheck.passwordErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.passwordCheck': {
+                    handler(){
+                        if(this.inputData.password == ''){
+                            this.inputDataCheck.passwordCheckError = true
+                            this.inputDataCheck.passwordCheckErrorMsg = '再次輸入新密碼不得為空'
+                        }
+                        else if (this.inputData.passwordCheck != this.inputData.password){
+                                this.inputDataCheck.passwordCheckError = true
+                                this.inputDataCheck.passwordCheckErrorMsg = '密碼與第一次輸入不符合'
+                            }
+                        else{
+                            this.inputDataCheck.passwordCheckError = false
+                            this.inputDataCheck.passwordCheckErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.brandName': {
+                    handler(){
+                        if(this.inputData.brandName == ''){
+                            this.inputDataCheck.brandNameError = true
+                            this.inputDataCheck.brandNameErrorMsg = '品牌名稱不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.brandNameError = false
+                            this.inputDataCheck.brandNameErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.name': {
+                    handler(){
+                        if(this.inputData.name == ''){
+                            this.inputDataCheck.nameError = true
+                            this.inputDataCheck.nameErrorMsg = '聯絡人不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.nameError = false
+                            this.inputDataCheck.nameErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.phone': {
+                    handler(){
+                        if(this.inputData.phone == ''){
+                            this.inputDataCheck.phoneError = true
+                            this.inputDataCheck.phoneErrorMsg = '聯絡人電話不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.phoneError = false
+                            this.inputDataCheck.phoneErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.time': {
+                    handler(){
+                        if(this.inputData.time == ''){
+                            this.inputDataCheck.timeError = true
+                            this.inputDataCheck.timeErrorMsg = '可連絡時間不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.timeError = false
+                            this.inputDataCheck.timeErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.email': {
+                    handler(){
+                        if(this.inputData.email == ''){
+                            this.inputDataCheck.emailError = true
+                            this.inputDataCheck.emailErrorMsg = '信箱不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.emailError = false
+                            this.inputDataCheck.emailErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+            },
+            methods: {
+                checkVerify(){
+                    for(let prop in this.inputDataCheck){
+                        if(this.inputDataCheck[prop] == true){
+                            this.addVerify = false
+                            return 
+                        }
+                        this.addVerify = true
+                    }
+                }
+            }
+        })
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WowDin後台系統</title>
+    <link rel="icon" href="~/images/logo/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Shizuru&family=Vujahday+Script&display=swap" rel="stylesheet">
+    <script src="~/lib/vue/vue.min.js"></script>
+    <script src="~/lib/bootstrap-vue/bootstrap-vue.min.js"></script>
+    <script src="~/lib/bootstrap-vue/bootstrap-vue-icons.min.js"></script>
+    <link href="~/lib/bootstrap-vue/bootstrap-vue.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-vue/bootstrap-vue-icons.min.css rel="stylesheet" />  
+    <link rel="stylesheet" href="~/css/_settings.css" />
+    <link href="~/css/sb/sb-admin-2.min.css" rel="stylesheet">
+    <link href="~/lib/toastr.js/toastr.css" rel="stylesheet"/>
+    <link href="~/css/Login.css" rel="stylesheet"/>
+    
+
+    @await RenderSectionAsync("topCSS", required: false)
+</head>
+<body class="bg_blue">
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>*@
+    <script src="~/js/sb-admin-2.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @await RenderSectionAsync("endJS", required: false)
+</body>
+</html>

@@ -1,0 +1,923 @@
+﻿@{
+    ViewData["Title"] = "品牌管理";
+}
+
+
+<div id="brandManage" v-cloak>
+    <b-card no-body>
+        <b-tabs v-model="tabIndex" small card lazy fill>
+            <b-tab title="品牌Logo及卡片圖片" :disabled="tab(0)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{brandManagement.BrandFacade.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-6 d-flex flex-wrap">
+                        <span class="fz_18 font-weight-bold mt-3 m-xl-0 col-12">預覽:</span>
+                        <div class="col-12 col-md-8 p-3 mx-auto mt-2">
+                            <div class="card border-0">
+                                <div class="position-relative rounded_corner">
+                                    <img :src="brandManagement.BrandFacade.CardImgUrl" class="card-img-top">
+                                    <img :src="brandManagement.BrandFacade.Logo" class="brand_logo rounded-circle position-absolute">
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap">
+                                        <h3 class="fz_17 text-dark mb-auto mt-auto mr-2">{{brandManagement.BrandFacade.Name}}</h3>
+                                        <div class="bg-light rounded-lg p-1 mr-2 d-inline-block font-weight-bold" v-if="star"><i class="fas fa-star text-warning"></i> <span>{{brandManagement.Star}}</span></div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="mr-auto pt-3 pb-2">
+                                            <p class="d-inline">
+                                                {{brandManagement.BrandFacade.Slogan}}
+                                            </p>
+                                        </div>
+                                        <img v-for="bcategory in brandManagement.BrandFacade.BrandCategories" :key="bcategory.Id" :src="'/images/Information/categories/' + bcategory.Image" class="brand_category mt-auto m-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-5 pt-2 pt-xl-5">
+                        <div class="row">
+                            <div class="col-9 col-xl-10">
+                                <b-form-group label="Logo:"
+                                              label-for="logo"
+                                              label-cols="3"
+                                              class="mt-2 mt-xl-4">
+                                    <b-overlay :show="logoBusy" rounded="lg" opacity="0.6">
+                                        <template #overlay>
+                                            <div class="d-flex align-items-center">
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                            </div>
+                                        </template>
+                                        <b-form-file id="logo"
+                                                     v-model="brandLogoFile"
+                                                     placeholder="選擇檔案"
+                                                     browse-text="瀏覽"
+                                                     accept=".jpg, .jpeg, .png"
+                                                     :disabled="inputOff||logoBusy">
+                                        </b-form-file>
+                                    </b-overlay>
+                                    <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                                    <p class="m-0 small text-primary">上傳結果:</p>
+                                    <p class="m-0 small" :class="isSuccess(brandLogoFileResult)">{{brandLogoFileResult.FileName}}  {{brandLogoFileResult.Message}}</p>
+                                </b-form-group>
+                            </div>
+                            <div class="col-3 col-xl-2">
+                                <b-button v-on:click="uploadImage(brandLogoFile)" class="mt-2 mt-xl-4" variant="secondary" :disabled="inputOff||logoBusy||!Boolean(brandLogoFile)">上傳</b-button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 col-xl-10">
+                                <b-form-group label="卡片圖:"
+                                              label-for="card"
+                                              label-cols="3"
+                                              class="mt-2 mt-xl-4">
+                                    <b-overlay :show="cardBusy" rounded="lg" opacity="0.6">
+                                        <template #overlay>
+                                            <div class="d-flex align-items-center">
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                            </div>
+                                        </template>
+                                        <b-form-file id="card"
+                                                     v-model="brandCardFile"
+                                                     placeholder="選擇檔案"
+                                                     browse-text="瀏覽"
+                                                     accept=".jpg, .jpeg, .png"
+                                                     :disabled="inputOff||cardBusy">
+                                        </b-form-file>
+                                    </b-overlay>
+                                    <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                                    <p class="m-0 small text-primary">上傳結果:</p>
+                                    <p class="m-0 small" :class="isSuccess(brandCardFileResult)">{{brandCardFileResult.FileName}}  {{brandCardFileResult.Message}}</p>
+                                </b-form-group>
+                            </div>
+                            <div class="col-3 col-xl-2">
+                                <b-button v-on:click="uploadImage(brandCardFile)" class="mt-2 mt-xl-4" variant="secondary" :disabled="inputOff||cardBusy||!Boolean(brandCardFile)">上傳</b-button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 col-xl-10">
+                                <b-form-group label="Slogan:"
+                                              label-for="slogan"
+                                              label-cols="3"
+                                              class="mt-2 mt-xl-4 text-nowrap">
+                                    <b-form-input id="slogan" v-model="brandManagement.BrandFacade.Slogan" placeholder="請輸入卡片上欲顯示的口號" :disabled="inputOff"></b-form-input>
+                                </b-form-group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <b-form-group label="餐點種類:"
+                                              label-for="category"
+                                              label-cols="3"
+                                              label-cols-md="2"
+                                              class="mt-2 mt-xl-4"
+                                              v-slot="{ ariaDescribedby }">
+                                    <b-form-checkbox-group id="category"
+                                                           v-model="brandManagement.BrandFacade.BrandCategories"
+                                                           :options="brandManagement.Categories"
+                                                           :aria-describedby="ariaDescribedby"
+                                                           :disabled="inputOff"
+                                                           v-on:input="checkCategories()">
+                                        <p class="small">(請選擇最多3種餐點種類)</p>
+                                    </b-form-checkbox-group>
+                                </b-form-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="cancelChange('BrandFacade')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('BrandFacade')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="品牌介紹圖片" :disabled="tab(1)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{brandManagement.BrandImages.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-4 py-3">
+                        <p class="text-center">
+                            請選擇欲放在品牌介紹頁廣告看板的圖片並上傳
+                        </p>
+                        <b-overlay :show="brandImagesBusy" rounded="lg" opacity="0.6">
+                            <template #overlay>
+                                <div class="d-flex align-items-center">
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                </div>
+                            </template>
+                            <b-form-file v-model="brandImgFiles"
+                                         placeholder="選擇檔案"
+                                         browse-text="瀏覽"
+                                         multiple="true"
+                                         accept=".jpg, .jpeg, .png"
+                                         :disabled="inputOff||brandImagesBusy">
+                            </b-form-file>
+                        </b-overlay>
+                        <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                        <div class="">
+                            <b-button v-on:click="uploadImages(brandImgFiles)" variant="secondary" :disabled="inputOff||brandImagesBusy||brandImgFiles.length==0">上傳</b-button>
+                        </div>
+                        <p class="my-2 text-primary">上傳結果:</p>
+                        <p v-for="(result,index) in brandImgFilesResult" :key="index" class="ml-2 my-0 small" :class="isSuccess(result)">{{result.FileName}}  {{result.Message}}</p>
+                    </div>
+                    <div class="col-12 col-lg-8 py-3">
+                        <p class="">
+                            已上傳圖片:
+                        </p>
+                        <span class="small d-none d-xl-block">(於排序欄點擊箭頭或拖曳圖片可改變輪播順序)</span>
+                        <span class="small d-xl-none">(拖曳圖片可改變輪播順序)</span>
+                        <div>
+                            <b-table hover :items="brandManagement.BrandImages.Images" :fields="mdfields" class="text-center text-nowrap d-none d-md-block">
+                                <template #cell(sort)="data">
+                                    <button type="button" v-on:click.prevent="sortUp(data.index,'brand')" class="btn d-block" :disabled="inputOff" v-if="isShowUp(data.index)"><i class="fas fa-sort-up fz_30"></i></button>
+                                    <button type="button" v-on:click.prevent="sortDown(data.index,'brand')" class="btn d-block" :disabled="inputOff" v-if="isShowDown(data.index,'brand')"><i class="fas fa-sort-down fz_30"></i></button>
+                                </template>
+                                <template #cell(ImageUrl)="data">
+                                    <img :src="data.value" class="brand_img w-100" :draggable="!inputOff" v-on:dragstart="dragstart(data.index)" v-on:dragenter.prevent="dragenter(data.index,'brand')" v-on:dragover.prevent />
+                                </template>
+                                <template #cell(ImageAlt)="data">
+                                    <b-form-input v-model="data.item.ImageAlt" class="mt-2" placeholder="請輸入圖片替代文字" :disabled="inputOff"></b-form-input>
+                                    @*<b-form-checkbox v-model="data.item.TurnHome" class="mt-4" switch :disabled="inputOff">
+                                        <p class="text-left m-0">跳轉至首頁:  {{data.item.TurnHome==true?'是':'否'}}</p>
+                                        <span class="small">(是否於點擊圖片後跳轉至平台首頁)</span>
+                                        </b-form-checkbox>*@
+                                </template>
+                                <template #cell(remove)="data">
+                                    <b-button v-on:click="remove(data.index,'brand')" class="m-2" variant="outline-danger" :disabled="inputOff" v-if="brandImgRemove">移除</b-button>
+                                </template>
+                            </b-table>
+                            <b-table hover :items="brandManagement.BrandImages.Images" :fields="fields" class="text-center text-nowrap d-md-none">
+                                <template #cell(ImageUrl)="data">
+                                    <img :src="data.value" class="brand_img w-100" :draggable="!inputOff" v-on:dragstart="dragstart(data.index)" v-on:dragenter.prevent="dragenter(data.index,'brand')" v-on:dragover.prevent />
+                                    <b-form-input v-model="data.item.ImageAlt" class="brand_imgalt mt-2 mx-auto" placeholder="請輸入圖片替代文字" :disabled="inputOff"></b-form-input>
+                                </template>
+                                <template #cell(remove)="data">
+                                    <b-button v-on:click="remove(data.index,'brand')" class="m-2" variant="outline-danger" :disabled="inputOff" v-if="brandImgRemove">移除</b-button>
+                                </template>
+                            </b-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="cancelChange('BrandImages')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('BrandImages')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="商店介紹圖片" :disabled="tab(2)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{brandManagement.ShopImages.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-4 py-3">
+                        <p class="text-center">
+                            請選擇欲放在商店菜單頁廣告看板的圖片並上傳
+                        </p>
+                        <b-overlay :show="shopImagesBusy" rounded="lg" opacity="0.6">
+                            <template #overlay>
+                                <div class="d-flex align-items-center">
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                    <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                </div>
+                            </template>
+                            <b-form-file v-model="shopImgFiles"
+                                         placeholder="選擇檔案"
+                                         multiple="true"
+                                         browse-text="瀏覽"
+                                         accept=".jpg, .jpeg, .png"
+                                         :disabled="inputOff||shopImagesBusy">
+                            </b-form-file>
+                        </b-overlay>
+                        <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                        <div class="">
+                            <b-button v-on:click="uploadImages(shopImgFiles)" variant="secondary" :disabled="inputOff||shopImagesBusy||shopImgFiles.length==0">上傳</b-button>
+                        </div>
+                        <p class="my-2 text-primary">上傳結果:</p>
+                        <p v-for="(result,index) in shopImgFilesResult" :key="index" class="ml-2 my-0 small" :class="isSuccess(result)">{{result.FileName}}  {{result.Message}}</p>
+                    </div>
+                    <div class="col-12 col-lg-8 py-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <p>
+                                    已上傳圖片:
+                                </p>
+                                <span class="small d-none d-xl-block">(於排序欄點擊箭頭或拖曳圖片可改變輪播順序)</span>
+                                <span class="small d-xl-none">(拖曳圖片可改變輪播順序)</span>
+                            </div>
+                            <div class="col-6 d-flex">
+                                <b-button v-on:click="copy()" class="mt-auto mx-auto" variant="secondary" :disabled="inputOff">由品牌介紹圖片匯入</b-button>
+                            </div>
+                        </div>
+                        <div>
+                            <b-table hover :items="brandManagement.ShopImages.Images" :fields="mdfields" class="text-center text-nowrap d-none d-md-block">
+                                <template #cell(sort)="data">
+                                    <button type="button" v-on:click.prevent="sortUp(data.index,'shop')" class="btn d-block" :disabled="inputOff" v-if="isShowUp(data.index)"><i class="fas fa-sort-up fz_30"></i></button>
+                                    <button type="button" v-on:click.prevent="sortDown(data.index,'shop')" class="btn d-block" :disabled="inputOff" v-if="isShowDown(data.index,'shop')"><i class="fas fa-sort-down fz_30"></i></button>
+                                </template>
+                                <template #cell(ImageUrl)="data">
+                                    <img :src="data.value" class="shop_img w-100" :draggable="!inputOff" v-on:dragstart="dragstart(data.index)" v-on:dragenter.prevent="dragenter(data.index,'shop')" v-on:dragover.prevent />
+                                </template>
+                                <template #cell(ImageAlt)="data">
+                                    <b-form-input v-model="data.item.ImageAlt" class="mt-2" placeholder="請輸入圖片替代文字" :disabled="inputOff"></b-form-input>
+                                </template>
+                                <template #cell(remove)="data">
+                                    <b-button v-on:click="remove(data.index,'shop')" class="m-2" variant="outline-danger" :disabled="inputOff" v-if="shopImgRemove">移除</b-button>
+                                </template>
+                            </b-table>
+                            <b-table hover :items="brandManagement.ShopImages.Images" :fields="fields" class="text-center text-nowrap d-md-none">
+                                <template #cell(ImageUrl)="data">
+                                    <img :src="data.value" class="shop_img w-100" :draggable="!inputOff" v-on:dragstart="dragstart(data.index)" v-on:dragenter.prevent="dragenter(data.index,'shop')" v-on:dragover.prevent />
+                                    <b-form-input v-model="data.item.ImageAlt" class="shop_imgalt mt-2 mx-auto" placeholder="請輸入圖片替代文字" :disabled="inputOff"></b-form-input>
+                                </template>
+                                <template #cell(remove)="data">
+                                    <b-button v-on:click="remove(data.index,'shop')" class="m-2" variant="outline-danger" :disabled="inputOff" v-if="shopImgRemove">移除</b-button>
+                                </template>
+                            </b-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="cancelChange('ShopImages')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('ShopImages')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="品牌介紹影片及說明" :disabled="tab(3)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{brandManagement.BrandIntroduce.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-6 px-xl-5 py-4 py-lg-5 d-flex">
+                        <div class="mx-auto w-100" style="max-width:560px;">
+                            <iframe class="w-100" width="560" height="315" :src="brandManagement.BrandIntroduce.Video?brandManagement.BrandIntroduce.Video:'https://www.youtube.com/embed/Osw3c0FX45o'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <b-form-group label="品牌介紹影片:"
+                                          label-for="video"
+                                          label-cols="4"
+                                          label-cols-md="3"
+                                          class="mt-2 mt-md-4 text-nowrap">
+                                <b-form-input id="video" v-model="brandManagement.BrandIntroduce.Video" placeholder="請輸入YouTube影片連結" :disabled="inputOff" :formatter="video"></b-form-input>
+                            </b-form-group>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 px-xl-5 py-5">
+                        <div class="mx-auto w-100" style="max-width:560px;">
+                            <b-card>
+                                <p class="text-center">
+                                    請選擇兩種顏色作為品牌介紹頁的主題色吧
+                                </p>
+                                <div class="row justify-content-center">
+                                    <div class="col-10 col-md-9">
+                                        <b-form-group label="第一主題色:"
+                                                      label-for="firstcolor"
+                                                      label-cols="5"
+                                                      label-cols-sm="4"
+                                                      label-cols-md="5"
+                                                      class="mt-2 mt-md-4">
+                                            <b-form-input type="color" id="firstcolor" v-model="brandManagement.BrandIntroduce.FirstColor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" :disabled="inputOff"></b-form-input>
+                                        </b-form-group>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-10 col-md-9">
+                                        <b-form-group label="第二主題色:"
+                                                      label-for="secondcolor"
+                                                      label-cols="5"
+                                                      label-cols-sm="4"
+                                                      label-cols-md="5"
+                                                      class="mt-2 mt-md-4">
+                                            <b-form-input type="color" id="secondcolor" v-model="brandManagement.BrandIntroduce.SecondColor" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" :disabled="inputOff"></b-form-input>
+                                        </b-form-group>
+                                    </div>
+                                </div>
+                            </b-card>
+                            <b-row class="mt-4">
+                                <b-col sm="3">
+                                    <label for="introduce">品牌介紹:</label>
+                                </b-col>
+                                <b-col sm="9">
+                                    <b-form-textarea id="introduce"
+                                                     v-model="brandManagement.BrandIntroduce.Description"
+                                                     placeholder="寫點什麼來介紹自己的品牌吧..."
+                                                     :disabled="inputOff">
+                                    </b-form-textarea>
+                                </b-col>
+                            </b-row>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="cancelChange('BrandIntroduce')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('BrandIntroduce')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="外部連結" :disabled="tab(4)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{brandManagement.BrandWeb.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-6 py-3">
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="FaceBook:"
+                                              label-for="facebook"
+                                              label-cols="4"
+                                              label-align-sm="right"
+                                              class="mt-2 mt-lg-4">
+                                    <b-form-input id="facebook" v-model="brandManagement.BrandWeb.FaceBook" placeholder="請輸入網站連結" :disabled="inputOff"></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="facebook" target="_blank" style="width:35px;height:35px;" class="rounded border border-light overflow-hidden mt-2 mt-lg-4 d-block">
+                                    <img src="/images/Information/plates/brand_introduce_fb.svg" class="rounded w-100 h-100" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="Instagram:"
+                                              label-for="instagram"
+                                              label-cols="4"
+                                              label-align-sm="right"
+                                              class="mt-2 mt-lg-4">
+                                    <b-form-input id="instagram" v-model="brandManagement.BrandWeb.Instagram" placeholder="請輸入網站連結" :disabled="inputOff"></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="instagram" target="_blank" style="width:35px;height:35px;" class="rounded border border-light overflow-hidden mt-2 mt-lg-4 d-block">
+                                    <img src="/images/Information/plates/brand_introduce_ig.svg" class="rounded w-100 h-100" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="Line:"
+                                              label-for="line"
+                                              label-cols="4"
+                                              label-align-sm="right"
+                                              class="mt-2 mt-lg-4">
+                                    <b-form-input id="line" v-model="brandManagement.BrandWeb.Line" placeholder="請輸入網站連結" :disabled="inputOff"></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="line" target="_blank" style="width:35px;height:35px;" class="rounded border border-light overflow-hidden mt-2 mt-lg-4 d-block">
+                                    <img src="/images/Information/plates/brand_introduce_line.svg" class="rounded w-100 h-100" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="官網:"
+                                              label-for="official"
+                                              label-cols="4"
+                                              label-align-sm="right"
+                                              class="mt-2 mt-lg-4">
+                                    <b-form-input id="official" v-model="brandManagement.BrandWeb.Official" placeholder="請輸入網站連結" :disabled="inputOff"></b-form-input>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <a :href="official" target="_blank" style="width:35px;height:35px;" class="rounded border border-light overflow-hidden mt-2 mt-lg-4 d-block">
+                                    <img :src="brandManagement.BrandWeb.OfficialImage?brandManagement.BrandWeb.OfficialImage:'https://i.imgur.com/BkxYFwk.png'" class="rounded w-100 h-100" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <b-form-group label="官網圖片:"
+                                              label-for="officialimg"
+                                              label-cols="4"
+                                              label-align-sm="right"
+                                              class="mt-2 mt-lg-4">
+                                    <b-overlay :show="officialBusy" rounded="lg" opacity="0.6">
+                                        <template #overlay>
+                                            <div class="d-flex align-items-center">
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                                <b-spinner small type="grow" variant="secondary" class="m-2"></b-spinner>
+                                            </div>
+                                        </template>
+                                        <b-form-file id="officialimg"
+                                                     v-model="brandOfficialImg"
+                                                     placeholder="選擇檔案"
+                                                     browse-text="瀏覽"
+                                                     accept=".jpg, .jpeg, .png"
+                                                     :disabled="inputOff||officialBusy">
+                                        </b-form-file>
+                                    </b-overlay>
+                                    <span class="small">(接受JPG、JPEG、PNG檔案)</span>
+                                    <p class="m-0 small text-primary">上傳結果:</p>
+                                    <p class="m-0 small" :class="isSuccess(brandOfficialImgResult)">{{brandOfficialImgResult.FileName}}  {{brandOfficialImgResult.Message}}</p>
+                                </b-form-group>
+                            </div>
+                            <div class="col-2">
+                                <div class="mt-2 mt-lg-4">
+                                    <b-button v-on:click="uploadImage(brandOfficialImg)" variant="secondary" :disabled="inputOff||officialBusy||!Boolean(brandOfficialImg)">上傳</b-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 d-flex flex-wrap py-3">
+                        <span class="fz_18 font-weight-bold col-12 my-3">官網圖放大檢視:</span>
+                        <div class="m-auto border border-secondary overflow-hidden" style="width:300px;height:300px;border-radius:20px;">
+                            <img :src="brandManagement.BrandWeb.OfficialImage?brandManagement.BrandWeb.OfficialImage:'https://i.imgur.com/BkxYFwk.png'" class="w-100 h-100" style="border-radius:20px;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="cancelChange('BrandWeb')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('BrandWeb')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+        </b-tabs>
+    </b-card>
+</div>
+@section topCSS{
+<link href="~/css/brandManagement.css" rel="stylesheet">
+}
+@section endJS{
+<script>
+    let brandManage = new Vue({
+        el: '#brandManage',
+        data: {
+            brandImgRemove: true,
+            shopImgRemove:true,
+            tabIndex: 0,
+            brandManagement: JSON.parse('@Html.Raw(Model)'),
+            brandImgFiles: [],
+            brandImgFilesResult: [],
+            brandImagesBusy: false,
+            shopImgFiles: [],
+            shopImgFilesResult: [],
+            shopImagesBusy: false,
+            brandLogoFile: null,
+            brandLogoFileResult: {},
+            logoBusy: false,
+            brandCardFile: null,
+            brandCardFileResult: {},
+            cardBusy: false,
+            brandOfficialImg: null,
+            brandOfficialImgResult: {},
+            officialBusy: false,
+            mdfields: [
+                {
+                    key: 'Sort',
+                    label: '排序'
+                },
+                {
+                    key: 'ImageUrl',
+                    label: '圖片'
+                },
+                {
+                    key: 'ImageAlt',
+                    label: '圖片設定'
+                },
+                {
+                    key: 'remove',
+                    label: ''
+                }
+            ],
+            fields: [
+                {
+                    key: 'ImageUrl',
+                    label: '圖片'
+                },
+                {
+                    key: 'remove',
+                    label: ''
+                }
+            ],
+            dragIndex: '',
+            inputOff: true,
+        },
+        computed: {
+            star(){
+                return this.brandManagement.Star!='0.0'
+            },
+            facebook(){
+                let fb=this.brandManagement.BrandWeb.FaceBook
+                return fb!=''?fb:false
+            },
+            instagram(){
+                let ig=this.brandManagement.BrandWeb.Instagram
+                return ig!=''?ig:false
+            },
+            line(){
+                let l=this.brandManagement.BrandWeb.Line
+                return l!=''?l:false
+            },
+            official(){
+                let o=this.brandManagement.BrandWeb.Official
+                return o!=''?o:false
+            }
+        },
+        watch: {
+            'brandManagement.BrandImages.Images.length': {
+                handler() {
+                    if (this.brandManagement.BrandImages.Images.length == 0) {
+                        this.brandManagement.BrandImages.Images.push({ Id: 0, ImageAlt: 'default', ImageUrl: 'https://i.imgur.com/BwaQFTN.jpeg', Sort: 0,/*TurnHome:false*/ })
+                        this.brandImgRemove = false
+                    } else if (this.brandManagement.BrandImages.Images.length == 1 && this.brandManagement.BrandImages.Images[0].ImageUrl == 'https://i.imgur.com/BwaQFTN.jpeg') {
+                        this.brandImgRemove = false
+                    }
+                },
+                immediate: true
+            },
+            'brandManagement.BrandFacade.Logo': {
+                handler() {
+                    if (!this.brandManagement.BrandFacade.Logo) {
+                        this.brandManagement.BrandFacade.Logo = 'https://i.imgur.com/BkxYFwk.png'
+                    }
+                },
+                immediate: true
+            },
+            'brandManagement.BrandFacade.CardImgUrl': {
+                handler() {
+                    if (!this.brandManagement.BrandFacade.CardImgUrl) {
+                        this.brandManagement.BrandFacade.CardImgUrl = 'https://i.imgur.com/U1uKQUi.jpeg'
+                    }
+                },
+                immediate: true
+            },
+            'brandManagement.ShopImages.Images.length': {
+                handler() {
+                    if (this.brandManagement.ShopImages.Images.length == 0) {
+                        this.brandManagement.ShopImages.Images.push({ Id: 0, ImageAlt: 'default', ImageUrl: 'https://i.imgur.com/BwaQFTN.jpeg', Sort: 0 })
+                        this.shopImgRemove = false
+                    } else if (this.brandManagement.ShopImages.Images.length == 1 && this.brandManagement.ShopImages.Images[0].ImageUrl == 'https://i.imgur.com/BwaQFTN.jpeg') {
+                        this.shopImgRemove = false
+                    }
+                },
+                immediate: true
+            },
+
+        },
+        methods: {
+            video(value){
+                if(value.length==1){return 'https://www.youtube.com/embed/'}
+                if(value.includes('https://youtu.be/')){return `https://www.youtube.com/embed/${value.slice(17)}`}
+                if(value.includes('https://www.youtube.com/watch?v=')){return `https://www.youtube.com/embed/${value.slice(32)}`}
+                if(value.length<30){return ''}
+                if(!value.includes('youtu')){return ''}
+                return value
+            },
+            async saveChange(action) {
+                let data
+                switch (action) {
+                    case 'BrandFacade':
+                        data = this.brandManagement.BrandFacade
+                        this.brandCardFileResult = {}
+                        this.brandLogoFileResult = {}
+                        break
+                    case 'BrandIntroduce':
+                        data = this.brandManagement.BrandIntroduce
+                        break
+                    case 'BrandWeb':
+                        data = this.brandManagement.BrandWeb
+                        this.brandOfficialImgResult = {}
+                        break
+                    case 'BrandImages':
+                        data = this.brandManagement.BrandImages
+                        this.brandImgFilesResult = []
+                        break
+                    case 'ShopImages':
+                        data = this.brandManagement.ShopImages
+                        this.shopImgFilesResult = []
+                        break
+                }
+                await fetch(`/Information/${action}`, {
+                    headers: {
+                        'Accept': 'application/json,text/plain',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                }).
+                    then(r => r.json()).then(r => {
+                        const result = JSON.parse(r)
+                        if (result.IsSuccess == true) {
+                            this.inputturn()
+                            toastr['success'](result.Message)
+                            switch (action) {
+                                case 'BrandFacade':
+                                    this.brandManagement.BrandFacade.UpdateTime = result.UpdateTime
+                                    break
+                                case 'BrandIntroduce':
+                                    this.brandManagement.BrandIntroduce.UpdateTime = result.UpdateTime
+                                    break
+                                case 'BrandWeb':
+                                    this.brandManagement.BrandWeb.UpdateTime = result.UpdateTime
+                                    break
+                                case 'BrandImages':
+                                    this.brandManagement.BrandImages.UpdateTime = result.UpdateTime
+                                    break
+                                case 'ShopImages':
+                                    this.brandManagement.ShopImages.UpdateTime = result.UpdateTime
+                                    break
+                            }
+                        } else {
+                            toastr['warning'](result.Message)
+                        }
+                    }).catch(ex=>{toastr['warning'](`${ex} 保存失敗`)})
+            },
+            async cancelChange(action) {
+                await fetch(`/Information/${action}`).
+                    then(r => r.json()).then(r => {
+                        this.inputturn()
+                        const result = JSON.parse(r)
+                        switch (action) {
+                            case 'BrandFacade':
+                                this.brandManagement.BrandFacade = result
+                                this.brandCardFileResult = {}
+                                this.brandLogoFileResult = {}
+                                break
+                            case 'BrandIntroduce':
+                                this.brandManagement.BrandIntroduce = result
+                                break
+                            case 'BrandWeb':
+                                this.brandManagement.BrandWeb = result
+                                this.brandOfficialImgResult = {}
+                                break
+                            case 'BrandImages':
+                                this.brandManagement.BrandImages = result
+                                this.brandImgFilesResult = []
+                                break
+                            case 'ShopImages':
+                                this.brandManagement.ShopImages = result
+                                this.shopImgFilesResult = []
+                                break
+                        }
+
+                    }).catch(ex=>{toastr['warning'](`${ex} 取消失敗`)})
+            },
+            remove(index,type) {
+                switch(type){
+                    case 'brand':
+                        this.brandManagement.BrandImages.Images.splice(index, 1)
+                        this.brandManagement.BrandImages.Images.forEach((img, idx) => {
+                            img.Sort = idx
+                        })
+                        break
+                    case 'shop':
+                        this.brandManagement.ShopImages.Images.splice(index, 1)
+                        this.brandManagement.ShopImages.Images.forEach((img, idx) => {
+                            img.Sort = idx
+                        })
+                        break
+                }
+            },
+            isSuccess(result) {
+                if (result && result.IsSuccess == true) return 'text-success'
+                return 'text-danger'
+            },
+            async uploadImage(file) {
+                switch (file) {
+                    case this.brandLogoFile:
+                        this.logoBusy = true
+                        break
+                    case this.brandCardFile:
+                        this.cardBusy = true
+                        break
+                    case this.brandOfficialImg:
+                        this.officialBusy = true
+                        break
+                }
+                const formdata = new FormData()
+                formdata.append('file', file)
+                await fetch('/Information/UploadImage', {
+                    method: 'POST',
+                    body: formdata
+                }).then(r => r.json()).then(r => {
+                    const result = JSON.parse(r)
+                    switch (file) {
+                        case this.brandLogoFile:
+                            this.brandLogoFileResult = result
+                            this.brandLogoFile = null
+                            this.logoBusy = false
+                            if (result.IsSuccess == true) {
+                                this.brandManagement.BrandFacade.Logo = result.FileUrl
+                            }
+                            break
+                        case this.brandCardFile:
+                            this.brandCardFileResult = result
+                            this.brandCardFile = null
+                            this.cardBusy = false
+                            if (result.IsSuccess == true) {
+                                this.brandManagement.BrandFacade.CardImgUrl = result.FileUrl
+                            }
+                            break
+                        case this.brandOfficialImg:
+                            this.brandOfficialImgResult = result
+                            this.brandOfficialImg = null
+                            this.officialBusy = false
+                            if (result.IsSuccess == true) {
+                                this.brandManagement.BrandWeb.OfficialImage = result.FileUrl
+                            }
+                            break
+                    }
+                }).catch(ex=>{toastr['warning'](`${ex} 上傳失敗`)})
+            },
+            async uploadImages(files) {
+                switch(files){
+                    case this.brandImgFiles:
+                        this.brandImagesBusy = true
+                        break
+                    case this.shopImgFiles:
+                        this.shopImagesBusy=true
+                        break
+                }
+                const formdata = new FormData()
+                files.forEach(file => {
+                    formdata.append('files', file)
+                })
+                await fetch('/Information/UploadImages', {
+                    method: 'POST',
+                    body: formdata
+                }).then(r => r.json()).then(r => {
+                    const results=JSON.parse(r)
+                    switch(files){
+                        case this.brandImgFiles:
+                            this.brandImgFilesResult = results
+                            this.brandImgFiles = []
+                            this.brandImagesBusy = false
+                            this.brandImgFilesResult.forEach(result => {
+                                if (result.IsSuccess == true) {
+                                    this.brandManagement.BrandImages.Images.push({ Id: 0, ImageAlt: '', ImageUrl: result.FileUrl, Sort: this.brandManagement.BrandImages.Images.length,/*TurnHome:false*/ })
+                                    this.brandImgRemove = true
+                                }
+                            })
+                            break
+                        case this.shopImgFiles:
+                            this.shopImgFilesResult = results
+                            this.shopImgFiles = []
+                            this.shopImagesBusy = false
+                            this.shopImgFilesResult.forEach(result => {
+                                if (result.IsSuccess == true) {
+                                    this.brandManagement.ShopImages.Images.push({ Id: 0, ImageAlt: '', ImageUrl: result.FileUrl, Sort: this.brandManagement.ShopImages.Images.length })
+                                    this.shopImgRemove = true
+                                }
+                            })
+                            break
+                    }
+                }).catch(ex=>{toastr['warning'](`${ex} 上傳失敗`)})
+            },
+            isShowUp(index) {
+                if (index == 0) return false
+                return true
+            },
+            isShowDown(index,type) {
+                switch(type){
+                    case 'brand':
+                        if (index == this.brandManagement.BrandImages.Images.length - 1) return false
+                        return true
+                        break
+                    case 'shop':
+                        if (index == this.brandManagement.ShopImages.Images.length - 1) return false
+                        return true
+                        break
+                }
+            },
+            sortUp(index,type) {
+                switch(type){
+                    case 'brand':
+                        this.brandManagement.BrandImages.Images[index].Sort--
+                        this.brandManagement.BrandImages.Images[index - 1].Sort++
+                        this.brandManagement.BrandImages.Images.sort((a, b) => a.Sort - b.Sort)
+                        break
+                    case 'shop':
+                        this.brandManagement.ShopImages.Images[index].Sort--
+                        this.brandManagement.ShopImages.Images[index - 1].Sort++
+                        this.brandManagement.ShopImages.Images.sort((a, b) => a.Sort - b.Sort)
+                }
+            },
+            sortDown(index,type) {
+                switch(type){
+                    case 'brand':
+                        this.brandManagement.BrandImages.Images[index].Sort++
+                        this.brandManagement.BrandImages.Images[index + 1].Sort--
+                        this.brandManagement.BrandImages.Images.sort((a, b) => a.Sort - b.Sort)
+                        break
+                    case 'shop':
+                        this.brandManagement.ShopImages.Images[index].Sort++
+                        this.brandManagement.ShopImages.Images[index + 1].Sort--
+                        this.brandManagement.ShopImages.Images.sort((a, b) => a.Sort - b.Sort)
+                        break
+                }
+            },
+            checkCategories() {
+                if (this.brandManagement.BrandFacade.BrandCategories.length >= 3) {
+                    this.brandManagement.Categories.filter((x) => !this.brandManagement.BrandFacade.BrandCategories.map(x => x.Id).includes(x.value.Id)).forEach(x => {
+                        x.disabled = true
+                    })
+                } else {
+                    this.brandManagement.Categories.forEach(x => {
+                        x.disabled = false
+                    })
+                }
+            },
+            tab(idx) {
+                if (this.inputOff == false && idx !== this.tabIndex) { return true }
+                return false
+            },
+            inputturn() {
+                this.inputOff = !this.inputOff;
+            },
+            dragstart(index) {
+                this.dragIndex = index
+            },
+            dragenter(index,type) {
+                if (this.dragIndex !== index) {
+                    switch(type){
+                        case 'brand':
+                            this.brandManagement.BrandImages.Images[this.dragIndex].Sort = index
+                            this.brandManagement.BrandImages.Images[index].Sort = this.dragIndex
+                            this.brandManagement.BrandImages.Images.sort((a, b) => a.Sort - b.Sort)
+                            break
+                        case 'shop':
+                            this.brandManagement.ShopImages.Images[this.dragIndex].Sort = index
+                            this.brandManagement.ShopImages.Images[index].Sort = this.dragIndex
+                            this.brandManagement.ShopImages.Images.sort((a, b) => a.Sort - b.Sort)
+                    }
+                    this.dragIndex = index
+                }
+            },
+            copy(){
+                this.brandManagement.BrandImages.Images.forEach(x=>{
+                    this.brandManagement.ShopImages.Images.push({ Id: 0, ImageAlt: x.ImageAlt, ImageUrl: x.ImageUrl, Sort: this.brandManagement.ShopImages.Images.length })
+                })
+                this.shopImgRemove = true
+            }
+        },
+    })
+
+</script>
+}

@@ -1,0 +1,125 @@
+﻿@model LoginDataModel
+
+@{
+    ViewData["Title"] = "登入";
+    Layout = "_Login";
+}
+
+<!-- Outer Row -->
+<div class="row justify-content-center">
+
+    <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0 login-card">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-6 d-none d-lg-block">
+                        <img class="w-100" src="~/images/account/login_img.jpg"/>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">歡迎回來WowDin!</h1>
+                            </div>
+                            <div id="app" v-cloak>
+                                <form class="user" method="post" asp-controller="Account" asp-action="Login">
+                                    <div class="form-group">
+                                        <input type="email" name="Account" v-model="inputData.account" :class="{ 'is-invalid': inputDataCheck.accountError }" class="form-control form-control-user"
+                                        id="exampleInputEmail" aria-describedby="emailHelp"
+                                        placeholder="信箱">
+                                        <div class="text-danger small mt-1">
+                                            {{ inputDataCheck.accountErrorMsg }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="Password" v-model="inputData.password" :class="{ 'is-invalid': inputDataCheck.passwordError }" class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="密碼">
+                                        <div class="text-danger small mt-1">
+                                            {{ inputDataCheck.passwordErrorMsg }}
+                                        </div>
+                                    </div>
+                                    <span class="d-block mt-2 text_pink mb-2">@ViewData["ErrorMessage"]</span>
+                                    <button :disabled="!addVerify" type="submit" class="btn btn-pink btn-user btn-block">
+                                        登入
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="/Account/ForgetPassword">忘記密碼?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/Account/Signup">註冊品牌</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section endJS{
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                inputData: {
+                    account: '',
+                    password: ''
+                },
+                inputDataCheck: {
+                    accountError: false,
+                    accountErrorMsg: '',
+                    passwordError: false,
+                    passwordErrorMsg: ''
+                },
+                addVerify: false
+            },
+            watch: {
+                'inputData.account': {
+                    handler(){
+                        if(this.inputData.account == ''){
+                            this.inputDataCheck.accountError = true
+                            this.inputDataCheck.accountErrorMsg = '信箱不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.accountError = false
+                            this.inputDataCheck.accountErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                },
+                'inputData.password': {
+                    handler(){
+                        if(this.inputData.password == ''){
+                            this.inputDataCheck.passwordError = true
+                            this.inputDataCheck.passwordErrorMsg = '密碼不得為空'
+                        }
+                        else{
+                            this.inputDataCheck.passwordError = false
+                            this.inputDataCheck.passwordErrorMsg = ''
+                        }
+                        this.checkVerify()
+                    }
+                }
+            },
+            methods: {
+                checkVerify(){
+                    for(let prop in this.inputDataCheck){
+                        if(this.inputDataCheck[prop] == true){
+                            this.addVerify = false
+                            return 
+                        }
+                        this.addVerify = true
+                    }
+                }
+            }
+        })
+    </script>
+    
+}

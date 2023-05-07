@@ -1,0 +1,9 @@
+﻿.login-card{
+    height: 400px;
+}
+
+.btn-pink {
+    color: #fff;
+    background-color: var(--din-main-pink);
+    border-color: var(--din-main-pink);
+}

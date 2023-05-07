@@ -1,0 +1,59 @@
+﻿@using WowDin.Backstage.Models.ViewModel
+@model IEnumerable<CommentViewModel>
+@{
+    ViewData["Title"] = "Comment";
+}
+@*<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.0/dist/bootstrap-table.min.css">*@
+<link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@Model.Select(x => x.BrandName).First(y => y != "") 評論列表</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="comment_table" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>店名</th>
+                        <th>星星數</th>
+                        <th>評論內容</th>
+                        <th>時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comment in Model.OrderByDescending(x => x.Date))
+                    {
+                        <tr>
+                            <td>@comment.UserName</td>
+                            <td>@comment.ShopName  </td>
+                            <td>@comment.Star</td>
+                            @*<td style="max-width: 550px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">@comment.Comment aa</td>*@
+                            <td fullName="@comment.Comment" onclick="changeShow(this)">@comment.Comment</td>
+
+                            <td>@comment.Date.ToString("yyyy/MM/dd hh:mm:ss")</td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+            @*<table id="comment_table">
+                </table>*@
+        </div>
+    </div>
+</div>
+
+
+
+@section endJS{
+    <script src="~/js/demo/datatables-demo.js"></script>
+    @*<script src="https://unpkg.com/bootstrap-table@1.20.0/dist/bootstrap-table.min.js"></script>*@
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/Home/Comment.js"></script>
+}

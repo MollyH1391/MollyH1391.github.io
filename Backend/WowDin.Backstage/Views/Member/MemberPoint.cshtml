@@ -1,0 +1,183 @@
+﻿@{
+    ViewData["Title"] = "會員列表";
+}
+
+<h1 class="h3 mb-2 text-gray-800 fw-bold">會員點數列表</h1>
+
+<div id="app" v-cloak>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <b-container fluid class="pt-4">
+                <b-row class="mb-4">
+                    <b-col lg="6" class="my-1">
+                        <b-form-group
+                  
+                            label-for="filter-input"
+                            label-cols-sm="3"
+                            label-align-sm="left"
+                            label-size="sm"
+                        >
+                            <b-input-group size="md">
+                            <b-form-input
+                                id="filter-input"
+                                v-model="filter"
+                                type="search"
+                                placeholder="搜尋關鍵字"
+                            ></b-form-input>
+
+                            <b-input-group-append>
+                                <b-button :disabled="!filter" v-on:click="filter = ''">清除</b-button>
+                            </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+                      <b-col lg="6" class="my-1">
+                        <b-form-group
+                          v-model="sortDirection"
+                          label="篩選項目"
+                          description="針對欲查詢的項目做勾選"
+                          label-cols-sm="3"
+                          label-align-sm="right"
+                          label-size="md"
+                          v-slot="{ ariaDescribedby }"
+                        >
+                          <b-form-checkbox-group
+                            v-model="filterOn"
+                            :aria-describedby="ariaDescribedby"
+                            class="mt-1"
+                          >
+                            <b-form-checkbox value="userAccountId">會員編號</b-form-checkbox>
+                            <b-form-checkbox value="nickName">會員暱稱</b-form-checkbox>
+                            <b-form-checkbox value="point">消費次數</b-form-checkbox>
+                            <b-form-checkbox value="gradeName">目前分級</b-form-checkbox>
+                          </b-form-checkbox-group>
+                        </b-form-group>
+                      </b-col>
+                </b-row>
+
+                <div>
+                    <b-table 
+                        striped 
+                        hover 
+                        :items="items"
+                        :fields="fields"
+                        :current-page="currentPage"
+                        :per-page="perPage"
+                        :filter="filter"
+                        :filter-included-fields="filterOn"
+                        :sort-by.sync="sortBy"
+                        :sort-desc.sync="sortDesc"
+                        :sort-direction="sortDirection"
+                        stacked="md"
+                        show-empty
+                        empty-filtered-text="目前無資料"
+                        empty-text="還未有任何已消費的會員!"
+                        v-on:filtered="onFiltered"
+                        :busy="isBusy"
+                    >
+                        <template #table-busy>
+                            <div class="text-center text-danger my-2">
+                                <b-spinner class="align-middle"></b-spinner>
+                                <strong>Loading...</strong>
+                            </div>
+                        </template>
+                    </b-table>
+                </div>
+
+                <b-row class="my-4">
+                    @*每頁顯示幾筆*@
+                    <b-col sm="4" md="4">
+                        <b-form-group
+                          label="每頁顯示筆數"
+                          label-for="per-page-select"
+                          label-cols-sm="6"
+                          label-cols-md="4"
+                          label-cols-lg="3"
+                          label-align-sm="left"
+                          label-size="md"
+                          class="mb-0"
+                        >
+                          <b-form-select
+                            id="per-page-select"
+                            v-model="perPage"
+                            :options="pageOptions"
+                            size="md"
+                            class="w-25"
+                          ></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col sm="7" md="6">
+                        <b-pagination
+                          v-model="currentPage"
+                          :total-rows="totalRows"
+                          :per-page="perPage"
+                          align="fill"
+                          size="md"
+                          class="my-0"
+                        ></b-pagination>
+                    </b-col>
+                </b-row>
+
+            </b-container>
+        </div>
+    </div>
+</div>
+
+@section endJS {
+    <script>
+        //const API_BASE_URL = 'https://localhost:5001/api/MemberApi'
+        const API_BASE_URL = 'https://wowdin-backstage.azurewebsites.net/api/MemberApi'
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                isBusy: true,
+                filter: null,
+                filterOn: [],
+                sortBy: '',
+                sortDesc: false,
+                sortDirection: 'asc',
+                items: [], //資料
+                sortDirection: 'asc',
+                fields: [
+                    //欄位處理
+                    { key: 'userAccountId', label: '會員編號', sortable: true, class: 'text-center' },
+                    { key: 'nickName', label: '會員暱稱', class: 'text-center' },
+                    { key: 'point', label: '消費次數', sortable: true, class: 'text-center' },
+                    { key: 'gradeName', label: '目前分級', class: 'text-center' }
+                ],
+                totalRows: 1,
+                currentPage: 1,
+                perPage: 5,
+                pageOptions: [5, 10, 25, 100]
+            },
+            created() {
+                this.getAll()
+            },
+            methods: {
+                getAll(){
+                    axios.get(`${API_BASE_URL}/getMemberPoint`)
+                        .then((res) => {
+                            console.log(res)
+                            if (res.data.status == 20000){
+                                this.items = res.data.result
+                                this.totalRows = this.items.length
+                                this.isBusy = false
+                            }
+                            else {
+                                toastr.warning('資料讀取失敗')
+                            }
+                        })
+                },
+                onFiltered(filteredItems){
+                    this.totalRows = filteredItems.length
+                    this.currentPage = 1
+                }
+            }
+        })
+
+        
+    </script>
+}
+

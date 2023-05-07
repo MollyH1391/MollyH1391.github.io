@@ -1,0 +1,274 @@
+﻿
+@{
+    ViewData["Title"] = "會員卡分級管理";
+}
+
+<h1 class="h3 mb-2 text-gray-800 fw-bold">會員卡分級管理</h1>
+
+<!-- Tables -->
+<div id="app" v-cloak>
+    <div class="card shadow mb-4">
+                        
+        <div class="card-body">
+            <div>
+                <button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#create-modal">新增分級</button>
+            </div>
+            <b-container fluid class="pt-4">
+                <b-row class="mb-4">
+                    <b-col lg="6" class="my-1">
+                        <b-form-group
+                  
+                            label-for="filter-input"
+                            label-cols-sm="3"
+                            label-align-sm="left"
+                            label-size="sm"
+                        >
+                            <b-input-group size="md">
+                            <b-form-input
+                                id="filter-input"
+                                v-model="filter"
+                                type="search"
+                                placeholder="搜尋關鍵字"
+                            ></b-form-input>
+
+                            <b-input-group-append>
+                                <b-button :disabled="!filter" v-on:click="filter = ''">清除</b-button>
+                            </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+                      <b-col lg="6" class="my-1">
+                        <b-form-group
+                          v-model="sortDirection"
+                          label="篩選項目"
+                          description="針對欲查詢的項目做勾選"
+                          label-cols-sm="3"
+                          label-align-sm="right"
+                          label-size="md"
+                          v-slot="{ ariaDescribedby }"
+                        >
+                          <b-form-checkbox-group
+                            v-model="filterOn"
+                            :aria-describedby="ariaDescribedby"
+                            class="mt-1"
+                          >
+                            <b-form-checkbox value="name">名稱</b-form-checkbox>
+                            <b-form-checkbox value="range">消費次數門檻</b-form-checkbox>
+                          </b-form-checkbox-group>
+                        </b-form-group>
+                      </b-col>
+                </b-row>
+
+                <div>
+                    <b-table 
+                        striped 
+                        hover 
+                        :items="cardGradingList"
+                        :fields="fields"
+                        :current-page="currentPage"
+                        :per-page="perPage"
+                        :filter="filter"
+                        :filter-included-fields="filterOn"
+                        :sort-by.sync="sortBy"
+                        :sort-desc.sync="sortDesc"
+                        :sort-direction="sortDirection"
+                        stacked="md"
+                        show-empty
+                        empty-filtered-text="目前無資料"
+                        empty-text="還未設定任何分級!"
+                        v-on:filtered="onFiltered"
+                        :busy="isBusy"
+                    >
+                        <template #table-busy>
+                            <div class="text-center text-danger my-2">
+                                <b-spinner class="align-middle"></b-spinner>
+                                <strong>Loading...</strong>
+                            </div>
+                        </template>
+
+                        <template #cell(cardImgUrl)="row">
+                            <div class="img-container m-auto" v-on:click="showImgModal(row.item.cardImgUrl)">
+                                <img class="cardImg" :src="row.item.cardImgUrl"/>
+                            </div>
+                        </template>
+
+
+                        <template #cell(actions)="row">
+                            <b-button size="md" v-on:click="selectEdit(row)" variant="primary" data-toggle="modal" data-target="#edit-modal">
+                                編輯
+                            </b-button>
+                            <b-button size="md" v-on:click="deleteCard(row)" variant="danger">
+                                刪除
+                            </b-button>
+                        </template>
+                    </b-table>
+                </div>
+
+                <b-row class="my-4">
+                    @*每頁顯示幾筆*@
+                    <b-col sm="4" md="4">
+                        <b-form-group
+                          label="每頁顯示筆數"
+                          label-for="per-page-select"
+                          label-cols-sm="6"
+                          label-cols-md="4"
+                          label-cols-lg="3"
+                          label-align-sm="left"
+                          label-size="md"
+                          class="mb-0"
+                        >
+                          <b-form-select
+                            id="per-page-select"
+                            v-model="perPage"
+                            :options="pageOptions"
+                            size="md"
+                            class="w-25"
+                          ></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col sm="7" md="6">
+                        <b-pagination
+                          v-model="currentPage"
+                          :total-rows="totalRows"
+                          :per-page="perPage"
+                          align="fill"
+                          size="md"
+                          class="my-0"
+                        ></b-pagination>
+                    </b-col>
+                </b-row>
+
+            </b-container>
+        </div>
+    </div>
+
+    @*新增modal*@
+    <div class="modal fade" id="create-modal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">新增分級</h5> 
+                        <button type="button" class="close"
+                        data-dismiss="modal" aria-label="Close"> 
+                        <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body container">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputName">名稱</label> 
+                            <input v-model="createCardData.name" class="form-control" type="text" :class="{ 'is-invalid': createCardDataCheck.nameError }" id="inputName"> 
+                            <div class="text-danger small mt-1">
+                                {{ createCardDataCheck.nameErrorMsg }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputCardImgUrl">上傳圖片</label>
+                            <b-form-file v-model="brandImgFile"
+                                         :state="Boolean(brandImgFile)"
+                                         placeholder="選擇檔案"
+                                         drop-placeholder="拖曳檔案至此"
+                                         accept=".jpg, .jpeg, .png">
+                            </b-form-file>
+                            <div class="text-danger small mt-1">
+                                {{ createCardDataCheck.cardImgUrlErrorMsg }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputRange">點數上限</label> 
+                            <input v-model="createCardData.range" class="form-control" type="number" :class="{ 'is-invalid': createCardDataCheck.rangeError }" id="inputRange">
+                            <div class="text-danger small mt-1">
+                                {{ createCardDataCheck.rangeErrorMsg }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"> 
+                    <span class="text-danger small">{{ modalErrorMsg }}</span>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="initCreateData">取消</button>
+                    <b-overlay
+                        :show="uploadBusy"
+                        rounded
+                        opacity="0.6"
+                        spinner-small
+                        spinner-variant="primary"
+                        class="d-inline-block"
+                    >
+                        <button :disabled="!addVerify" v-on:click="createCard(brandImgFile)" type="button" class="btn btn-primary">新增</button>
+                    </b-overlay>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*編輯modal*@
+    <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">編輯分級</h5>
+                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+                <div class="modal-body container">
+                    <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputName">名稱</label> 
+                            <input v-model="currentCard.name" class="form-control" type="text" :class="{ 'is-invalid': updateCardDataCheck.nameError }" id="inputName"> 
+                            <div class="text-danger small mt-1">
+                                {{ updateCardDataCheck.nameErrorMsg }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputCardImgUrl">上傳圖片</label>
+                            <b-form-file v-model="brandEditImgFile"
+                                         placeholder="選擇檔案"
+                                         drop-placeholder="拖曳檔案至此"
+                                         accept=".jpg, .jpeg, .png">
+                            </b-form-file>
+                            <b-overlay
+                                :show="uploadBusy"
+                                rounded
+                                opacity="0.6"
+                                spinner-small
+                                spinner-variant="primary"
+                                class="d-inline-block"
+                            >
+                                <button class="btn btn-primary mt-2" v-on:click="uploadImg(brandEditImgFile)">上傳</button>
+                            </b-overlay>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3"> 
+                            <label for="inputRange">消費次數門檻</label> 
+                            <input v-model="currentCard.range" class="form-control" type="number" :class="{ 'is-invalid': updateCardDataCheck.rangeError }" id="inputRange">
+                            
+                            <div class="text-danger small mt-1">
+                                {{ updateCardDataCheck.rangeErrorMsg }}
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer"> 
+                    <span class="text-danger small">{{ modalErrorMsg }}</span>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="initUpdateData">取消</button>
+                    <button :disabled="!editVerify" v-on:click="updateCard()" type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*放大檢視圖片modal*@
+    <div id="imgmodal" :style="{ 'display': showImg.isDisplay }" v-on:click="closeModal">
+        <div id="img-modal">
+            <img :src="showImg.showImg"/>
+        </div>
+    </div>
+</div>
+
+@section topCSS{
+    <link href="~/css/memberCard.css" rel="stylesheet">
+}
+
+@section endJS {
+    <script src="~/js/Member/memberCard.js"></script>
+}
+

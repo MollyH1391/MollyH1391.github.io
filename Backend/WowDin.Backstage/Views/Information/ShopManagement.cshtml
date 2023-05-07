@@ -1,0 +1,599 @@
+﻿@{
+    ViewData["Title"] = "商店管理";
+}
+
+<div id="shopManage" v-cloak>
+    <div class="row">
+        <div class="col-7 col-sm-7 col-md-6 col-lg-5 col-xl-4 py-3 d-flex">
+            <label for="shop" class="text-nowrap mr-2 my-auto">選擇商店:</label>
+            <b-form-select id="shop" v-model="shopManagement.ShopId" :options="shopManagement.Shops" v-on:change="showShop()" :disabled="!inputOff"></b-form-select>
+        </div>
+        <div class="py-3 px-sm-3 ml-auto">
+            <b-button variant="outline-secondary" v-on:click="createShop()" :disabled="!inputOff">新增商店</b-button>
+        </div>
+        <div class="py-3 px-md-3" v-if="!createBtn&&show">
+            <b-button variant="outline-danger" v-on:click="removeShop()" :disabled="!inputOff||createBtn||!show">刪除商店</b-button>
+        </div>
+    </div>
+    <b-card class="text-center" v-if="!show">您可以由左上角的選擇器選擇一家商店查看或者變更，也可以點擊右上角的按鈕新增一家商店。</b-card>
+    <b-card no-body v-if="show">
+        <b-tabs v-model="tabIndex" small card lazy fill>
+            <b-tab title="商店資訊" :disabled="tab(0)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{shopManagement.ShopInfo.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-6 pt-2 pt-xl-5 mx-auto">
+                        <div class="row py-2">
+                            <label for="shopname" class="text-nowrap col-3 m-auto">商店名稱:</label>
+                            <p class="mb-0 text-nowrap col-5 col-sm-4 col-lg-3 m-auto">{{shopManagement.BrandName}}</p>
+                            <b-form-input id="shopname" class="col-4 col-sm-5 col-lg-6" v-model="shopManagement.ShopInfo.Name" placeholder="ex: 台北店" :disabled="inputOff" type="text" :state="name"></b-form-input>
+                            <b-form-invalid-feedback class="col-6 col-sm-7 ml-auto" :state="name">名稱不得為空</b-form-invalid-feedback>
+                        </div>
+                        <div class="row py-2">
+                            <label for="shopphone" class="text-nowrap col-3 m-auto">連絡電話:</label>
+                            <b-form-input id="shopphone" class="col-9" v-model="shopManagement.ShopInfo.Phone" placeholder="ex: 02-0000-0000" :disabled="inputOff" type="tel" :state="phone"></b-form-input>
+                            <b-form-invalid-feedback class="col-9 ml-auto" :state="phone">電話不得為空</b-form-invalid-feedback>
+                        </div>
+                        <div class="row py-2">
+                            <label for="shopaddress" class="text-nowrap col-3 my-auto">店家地址:</label>
+                            <b-form-select id="shopaddress" class="col-4 mr-auto" v-model="shopManagement.ShopInfo.City" :options="city" :disabled="inputOff" :state="sCity"></b-form-select>
+                            <b-form-select id="shopaddress" class="col-4" v-model="shopManagement.ShopInfo.District" :options="district" :disabled="inputOff" :state="sDistrict"></b-form-select>
+                        </div>
+                        <div class="row py-2">
+                            <b-form-input id="shopaddress" class="col-9 ml-auto" v-model="shopManagement.ShopInfo.Address" placeholder="ex: 信義路87號1樓" :disabled="inputOff" type="text" :state="address"></b-form-input>
+                            <b-form-invalid-feedback class="col-9 ml-auto" :state="sCity&&sDistrict&&address">請填寫完整地址</b-form-invalid-feedback>
+                        </div>
+                        <div class="row py-2">
+                            <label for="sticker" class="text-nowrap col-3 my-auto">專屬貼紙:</label>
+                            <b-form-checkbox id="sticker" class="col-9 my-auto" v-model="shopManagement.ShopInfo.HasSticker" value="true" unchecked-value="false" :disabled="inputOff">有提供姓名專屬貼紙</b-form-checkbox>
+                        </div>
+                        <div class="row py-2">
+                            <label for="pricelimit" class="text-nowrap col-4 col-sm-3 my-auto">消費金額上限:</label>
+                            <b-form-input id="pricelimit" class="col-3 col-sm-2 mr-auto" v-model="shopManagement.ShopInfo.PriceLimit" min="0" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter" :state="limit"></b-form-input>
+                            <b-form-checkbox id="unlimited" class="col-4 col-sm-6 my-auto" v-model="shopManagement.ShopInfo.PriceLimit" :value="limitT" :unchecked-value="limitF" :disabled="inputOff">無上限</b-form-checkbox>
+                            <b-form-invalid-feedback class="col-8 col-sm-9 ml-auto" :state="limit">請填寫合理的數字</b-form-invalid-feedback>
+                        </div>
+                        <div class="row py-2">
+                            <label for="payment" class="text-nowrap col-4 col-sm-3 mb-auto">支援付款方式:</label>
+                            <b-form-checkbox-group id="payment"
+                                                   class="col-8 col-sm-9"
+                                                   v-model="shopManagement.ShopInfo.PaymentTypes"
+                                                   :options="shopManagement.PaymentTypes"
+                                                   :disabled="inputOff"
+                                                   :state="payment">
+                                <b-form-invalid-feedback :state="payment">請選擇至少一種支援的付款方式</b-form-invalid-feedback>
+                            </b-form-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5" v-if="!createBtn">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click.prevent="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click.prevent="getData('ShopInfo')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click.prevent="saveChange('ShopInfo')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+                <div class="row p-5" v-if="createBtn">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click.prevent="cancelCreate()" class="m-2" variant="info" :disabled="inputOff">取消新增</b-button>
+                        <b-button v-on:click.prevent="saveChange('CreateShop')" class="m-2" variant="success" :disabled="inputOff">保存新增</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="營業時間及狀態" :disabled="tab(1)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{shopManagement.ShopBusiness.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-6 pt-2 pt-xl-5 mx-auto">
+                        <div class="row py-2">
+                            <label for="shopstate" class="text-nowrap col-3 m-auto">營業狀態:</label>
+                            <b-form-checkbox id="shopstateauto"
+                                             class="col-9"
+                                             v-model="shopManagement.ShopBusiness.State"
+                                             :value="stateT"
+                                             :unchecked-value="stateF"
+                                             :disabled="inputOff"
+                                             switch>{{isAuto?'啟用預設':'手動更改'}}</b-form-checkbox>
+                            <b-form-radio-group id="shopstate"
+                                                class="col-9 ml-auto"
+                                                v-model="shopManagement.ShopBusiness.State"
+                                                :options="shopManagement.States"
+                                                :disabled="inputOff||isAuto"
+                                                :state="state">
+                                <b-form-invalid-feedback :state="state">請選擇一種狀態</b-form-invalid-feedback>
+                            </b-form-radio-group>
+                        </div>
+                        <div class="row py-2">
+                            <label for="shopopenday" class="text-nowrap col-3 mb-auto">營業日:</label>
+                            <b-form-checkbox-group id="shopopenday"
+                                                   class="col-9"
+                                                   v-model="shopManagement.ShopBusiness.OpenDayList"
+                                                   :options="shopManagement.DayList"
+                                                   :disabled="inputOff||!isAuto"
+                                                   :state="dayList">
+                                <b-form-invalid-feedback v-if="isAuto" :state="dayList">請選擇至少一天營業的日子</b-form-invalid-feedback>
+                            </b-form-checkbox-group>
+                        </div>
+                        <div class="row py-2">
+                            <label for="shopopentime" class="text-nowrap col-3 my-auto">營業時間:</label>
+                            <b-form-timepicker id="shopopentime"
+                                               class="col-8"
+                                               v-model="shopManagement.ShopBusiness.OpenTime"
+                                               placeholder="開店時間"
+                                               no-flip
+                                               v-bind="timePicker"
+                                               :disabled="inputOff||!isAuto"
+                                               :state="openTime"></b-form-timepicker>
+                            <span class="m-auto">~</span>
+                        </div>
+                        <div class="row  py-2">
+                            <div class="col-3"></div>
+                            <b-form-timepicker id="shopclosetime"
+                                               class="col-8"
+                                               v-model="shopManagement.ShopBusiness.CloseTime"
+                                               placeholder="關店時間"
+                                               no-flip
+                                               v-bind="timePicker"
+                                               :disabled="inputOff||!isAuto"
+                                               :state="closeTime"></b-form-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="getData('ShopBusiness')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('ShopBusiness')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+            <b-tab title="取餐方式" :disabled="tab(2)">
+                <div class="row py-3">
+                    <div class="col-12 text-right">
+                        <p class="m-0">最後更新時間: {{shopManagement.ShopTakeMethod.UpdateTime}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-6 pt-2 pt-xl-5 mx-auto">
+                        <div class="row py-2">
+                            <label for="preorder" class="text-nowrap col-2 m-auto">預定:</label>
+                            <b-form-checkbox id="preorder"
+                                             class="col-10"
+                                             v-model="shopManagement.ShopTakeMethod.PreOrder"
+                                             :disabled="inputOff"
+                                             switch>{{shopManagement.ShopTakeMethod.PreOrder?'接受預訂':'不接受預定'}}</b-form-checkbox>
+                        </div>
+                        <div class="row py-2">
+                            <label for="takeout" class="text-nowrap col-2 m-auto">自取:</label>
+                            <b-form-checkbox id="takeout"
+                                             class="col-10"
+                                             v-model="shopManagement.ShopTakeMethod.IsTakeOut"
+                                             :disabled="inputOff"
+                                             switch>{{shopManagement.ShopTakeMethod.IsTakeOut?'開放自取':'不開放自取'}}</b-form-checkbox>
+                        </div>
+                        <div class="row py-2" v-if="shopManagement.ShopTakeMethod.IsTakeOut">
+                            <label for="takeouttime" class="text-nowrap col-3 col-sm-2 my-auto">備餐時間:</label>
+                            <b-form-input id="takeouttime" class="col-3" v-model="shopManagement.ShopTakeMethod.TakeOutTime" min="0" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter" :state="takeOutTime"></b-form-input>
+                            <span class="col-2 my-auto">分鐘</span>
+                            <b-form-invalid-feedback class="col-9 col-sm-10 ml-auto" :state="takeOutTime">請填寫合理的數字</b-form-invalid-feedback>
+                        </div>
+                        <div class="row py-2">
+                            <label for="delivery" class="text-nowrap col-2 m-auto">外送:</label>
+                            <b-form-checkbox id="delivery"
+                                             class="col-10"
+                                             v-model="shopManagement.ShopTakeMethod.IsDelivery"
+                                             :disabled="inputOff"
+                                             switch>{{shopManagement.ShopTakeMethod.IsDelivery?'提供外送':'不提供外送'}}</b-form-checkbox>
+                        </div>
+                        <div v-if="shopManagement.ShopTakeMethod.IsDelivery">
+                            <b-table :items="shopManagement.ShopTakeMethod.DeliveryConditions" :fields="dfields" class="text-center text-nowrap">
+                                <template #head(PriceThreshold)="data">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                </template>
+                                <template #head(LowerDistance)="data">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </template>
+                                <template #head(DeliveryTime)="data">
+                                    <i class="far fa-clock"></i>
+                                </template>
+                                <template #head(DeliveryFee)="data">
+                                    <i class="fas fa-coins"></i>
+                                </template>
+                                <template #row-details="data">
+                                    <div class="row py-2">
+                                        <label for="price" class="text-nowrap col-4 my-auto"><i class="fas fa-hand-holding-usd mr-2"></i>最低消費:</label>
+                                        <b-form-input id="price" class="col-3" v-model="data.item.PriceThreshold" min="0" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter"></b-form-input>
+                                        <span class="col-2 my-auto">元</span>
+                                    </div>
+                                    <div class="row py-2">
+                                        <label for="distance" class="text-nowrap col-4 my-auto"><i class="fas fa-shipping-fast mr-2"></i>外送距離:</label>
+                                        <b-form-input id="distance" class="col-3" v-model="data.item.LowerDistance" min="0" :step="0.1" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter"></b-form-input>
+                                        <span class="m-auto">~</span>
+                                        <b-form-input id="distance" class="col-3" v-model="data.item.HigherDistance" min="0" :step="0.1" placeholder="以上" :disabled="inputOff" type="number" :formatter="emptyFormatter"></b-form-input>
+                                        <span class="col-1 my-auto">公里</span>
+                                    </div>
+                                    <div class="row py-2">
+                                        <label for="deliverytime" class="text-nowrap col-4 my-auto"><i class="far fa-clock mr-2"></i>送餐時間:</label>
+                                        <b-form-input id="deliverytime" class="col-3" v-model="data.item.DeliveryTime" min="0" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter" :state="deliveryTime(data.index)"></b-form-input>
+                                        <span class="col-2 my-auto">分鐘</span>
+                                        <b-form-invalid-feedback class="col-8 ml-auto text-left" :state="deliveryTime(data.index)">請填寫合理的數字</b-form-invalid-feedback>
+                                    </div>
+                                    <div class="row py-2">
+                                        <label for="fee" class="text-nowrap col-4 my-auto"><i class="fas fa-coins mr-2"></i>外送費用:</label>
+                                        <b-form-input id="fee" class="col-3" v-model="data.item.DeliveryFee" min="0" :disabled="inputOff" type="number" lazy-formatter :formatter="zeroFormatter"></b-form-input>
+                                        <span class="col-2 my-auto">元</span>
+                                        <b-button variant="dark" class="col-2 ml-auto" v-on:click="data.toggleDetails" :disabled="inputOff">收起</b-button>
+                                    </div>
+                                </template>
+                                <template #cell(LowerDistance)="data">
+                                    {{data.item.LowerDistance}} ~ {{data.item.HigherDistance?data.item.HigherDistance:'以上'}}
+                                </template>
+                                <template #cell(DeliveryTime)="data">
+                                    <span :class="deliveryTime(data.index)?'':'text-danger'">{{data.item.DeliveryTime}}</span>
+                                </template>
+                                <template #cell(edit)="data">
+                                    <button type="button" class="deliveryBtn btn d-block p-0 m-0" v-on:click="data.toggleDetails" :disabled="inputOff"><i class="fas fa-edit text-dark"></i></button>
+                                </template>
+                                <template #cell(remove)="data">
+                                    <button type="button" class="deliveryBtn btn d-block p-0 m-0" v-on:click="dremove(data.index)" :disabled="inputOff"><i class="fas fa-trash-alt text-dark"></i></button>
+                                </template>
+                            </b-table>
+                            <b-button variant="outline-secondary" class="rounded-circle" v-on:click="create()" :disabled="inputOff"><i class="fas fa-plus"></i></b-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-5">
+                    <div class="ml-auto mr-auto ml-md-auto mr-md-0">
+                        <b-button v-on:click="inputturn()" class="m-2" variant="warning" :disabled="!inputOff">變更</b-button>
+                        <b-button v-on:click="getData('ShopTakeMethod')" class="m-2" variant="info" :disabled="inputOff">取消變更</b-button>
+                        <b-button v-on:click="saveChange('ShopTakeMethod')" class="m-2" variant="success" :disabled="inputOff">保存變更</b-button>
+                    </div>
+                </div>
+            </b-tab>
+        </b-tabs>
+    </b-card>
+    <b-modal id="modal" title="警告" size="sm" body-class="text-center" centered hide-footer>請確認所有欄位都已填妥</b-modal>
+</div>
+
+@section topCSS{
+<link href="~/css/shopManagement.css" rel="stylesheet">
+<style>
+    .btn:focus {
+        box-shadow: none !important;
+    }
+    .deliveryBtn {
+        opacity: 0.8;
+        transition: 0.2s;
+    }
+    .deliveryBtn:hover {
+        opacity: 1;
+    }
+</style>
+}
+@section endJS{
+<script>
+    let shopManage = new Vue({
+        el: '#shopManage',
+        data: {
+            shopManagement: JSON.parse('@Html.Raw(Model)'),
+            city:[],
+            district:[],
+            createBtn:false,
+            show:false,
+            tabIndex: 0,
+            inputOff: true,
+            dfields:[
+                {
+                    key: 'PriceThreshold',
+                },
+                {
+                    key: 'LowerDistance',
+                },
+                {
+                    key: 'DeliveryTime',
+                },
+                {
+                    key: 'DeliveryFee',
+                },
+                {
+                    key:'edit',
+                    label:''
+                },
+                {
+                    key:'remove',
+                    label:''
+                }
+            ],
+            timePicker:{
+                labelHours: '小時',
+                labelMinutes: '分鐘',
+                labelSeconds: '秒',
+                labelAmpm: '上午下午',
+                labelAm: '上午',
+                labelPm: '下午',
+                labelIncrement: '增加',
+                labelDecrement: '減少',
+                labelSelected: '選定時間',
+                labelNoTimeSelected: '沒有選擇時間',
+                labelCloseButton: '關閉',
+            },
+            limitT:null,
+            limitF:0,
+            stateT:3,
+            stateF:null,
+        },
+        created(){
+            this.city=this.shopManagement.CityDistrict.map(x=>({text:x.City,value:x.City}))
+        },
+        computed: {
+            limit(){
+                if(this.shopManagement.ShopInfo.PriceLimit!=null){
+                    return this.shopManagement.ShopInfo.PriceLimit>0
+                }else{return null}
+            },
+            phone(){
+                return this.shopManagement.ShopInfo.Phone!=null && this.shopManagement.ShopInfo.Phone.trim()!=''
+            },
+            name(){
+                return this.shopManagement.ShopInfo.Name!=null && this.shopManagement.ShopInfo.Name.trim()!=''
+            },
+            sCity(){
+                return this.shopManagement.ShopInfo.City!=null && this.shopManagement.ShopInfo.City.trim()!=''
+            },
+            sDistrict(){
+                return this.shopManagement.ShopInfo.District!=null && this.shopManagement.ShopInfo.District.trim()!=''
+            },
+            address(){
+                return this.shopManagement.ShopInfo.Address!=null && this.shopManagement.ShopInfo.Address.trim()!=''
+            },
+            payment(){
+                return this.shopManagement.ShopInfo.PaymentTypes.length>0
+            },
+            isAuto(){
+                return this.shopManagement.ShopBusiness.State==3
+            },
+            state(){
+                return this.shopManagement.ShopBusiness.State!=null
+            },
+            dayList(){
+                if(this.isAuto==false)return null
+                return this.shopManagement.ShopBusiness.OpenDayList.length>0
+            },
+            openTime(){
+                if(this.isAuto==false)return null
+                return this.shopManagement.ShopBusiness.OpenTime!='0001/1/1 上午 12:00:00'&&this.shopManagement.ShopBusiness.OpenTime!=null
+            },
+            closeTime(){
+                if(this.isAuto==false)return null
+                return this.shopManagement.ShopBusiness.CloseTime!='0001/1/1 上午 12:00:00'&&this.shopManagement.ShopBusiness.CloseTime!=null
+            },
+            takeOutTime(){
+                if(this.shopManagement.ShopTakeMethod.IsTakeOut){
+                    return this.shopManagement.ShopTakeMethod.TakeOutTime>0
+                }else{return null}
+            },
+        },
+        watch: {
+            'shopManagement.ShopTakeMethod.IsDelivery':{
+                handler() {
+                    if(this.show){
+                        if (this.shopManagement.ShopTakeMethod.IsDelivery == true&&this.shopManagement.ShopTakeMethod.DeliveryConditions.length==0) {
+                            this.shopManagement.ShopTakeMethod.DeliveryConditions.push({Id:0,DeliveryTime:'0',PriceThreshold:'0',LowerDistance:'0',HigherDistance:null,DeliveryFee:'0',_showDetails: true})
+                        }
+                    }
+                },
+            },
+            'shopManagement.ShopTakeMethod.DeliveryConditions.length':{
+                handler() {
+                    if(this.show){
+                        if (this.shopManagement.ShopTakeMethod.IsDelivery == true&&this.shopManagement.ShopTakeMethod.DeliveryConditions.length==0) {
+                            this.shopManagement.ShopTakeMethod.DeliveryConditions.push({Id:0,DeliveryTime:'0',PriceThreshold:'0',LowerDistance:'0',HigherDistance:null,DeliveryFee:'0',_showDetails: true})
+                        }
+                    }
+                },
+            },
+            'shopManagement.ShopInfo.City':{
+                handler(){
+                    if(this.shopManagement.ShopInfo.City){
+                        this.district=this.shopManagement.CityDistrict.find(x=>x.City==this.shopManagement.ShopInfo.City).District
+                    }
+                }
+            },
+            'show':{
+                handler(){
+                    if(this.show){
+                        if(this.shopManagement.ShopBusiness.OpenDayList[0]==''){
+                            this.shopManagement.ShopBusiness.OpenDayList=[]
+                        }
+                        if(this.shopManagement.ShopInfo.City){
+                            this.district=this.shopManagement.CityDistrict.find(x=>x.City==this.shopManagement.ShopInfo.City).District
+                        }
+
+                    }
+                },
+            },
+        },
+        methods: {
+            emptyFormatter(value){
+                if(value==''||value<=0)return null
+                return value
+            },
+            zeroFormatter(value){
+                if(value==''||value<0)return '0'
+                return value
+            },
+            deliveryTime(index){
+                if(this.shopManagement.ShopTakeMethod.IsDelivery){
+                    return this.shopManagement.ShopTakeMethod.DeliveryConditions[index].DeliveryTime>0
+                }else{return null}
+            },
+            async saveChange(action) {
+                let data
+                switch (action) {
+                    case 'CreateShop':
+                        if(this.name==false||this.phone==false||this.sCity==false||this.sDistrict==false||this.address==false||this.payment==false||this.limit==false){
+                            this.$bvModal.show('modal')
+                        }else{data = this.shopManagement.ShopInfo}
+                        break
+                    case 'ShopInfo':
+                        if(this.name==false||this.phone==false||this.sCity==false||this.sDistrict==false||this.address==false||this.payment==false||this.limit==false){
+                             this.$bvModal.show('modal')   
+                        }else{data = this.shopManagement.ShopInfo}
+                        break
+                    case 'ShopBusiness':
+                        if(this.state==false||this.dayList==false||this.openTime==false||this.closeTime==false){
+                            this.$bvModal.show('modal')
+                        }else{data = this.shopManagement.ShopBusiness}
+                        break
+                    case 'ShopTakeMethod':
+                        let allDT=null
+                        this.shopManagement.ShopTakeMethod.DeliveryConditions.forEach((x,idx)=>{
+                            if(this.deliveryTime(idx)==false){
+                                allDT=false
+                            }
+                        })
+                        if(this.takeOutTime==false||allDT==false){
+                            this.$bvModal.show('modal')
+                        }else{data = this.shopManagement.ShopTakeMethod}
+                        break
+                }
+                if(data==null){
+                    toastr['warning']('填寫資料不完整 保存失敗')
+                    return
+                }
+                await fetch(`/Information/${action}/${this.shopManagement.ShopId}`, {
+                    headers: {
+                        'Accept': 'application/json,text/plain',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                }).then(r => r.json()).then(r => {
+                        const result = JSON.parse(r)
+                        if (result.IsSuccess == true) {
+                            this.inputturn()
+                            toastr['success'](result.Message)
+                            switch (action) {
+                                case 'CreateShop':
+                                    this.createBtn=false
+                                    this.shopManagement.ShopInfo.UpdateTime = result.UpdateTime
+                                    this.shopManagement.ShopBusiness.UpdateTime = result.UpdateTime
+                                    this.shopManagement.ShopTakeMethod.UpdateTime = result.UpdateTime
+                                    this.shopManagement.Shops.push(result.NewShop)
+                                    this.shopManagement.ShopId=result.NewShop.value
+                                    break
+                                case 'ShopInfo':
+                                    this.shopManagement.ShopInfo.UpdateTime = result.UpdateTime
+                                    break
+                                case 'ShopBusiness':
+                                    this.shopManagement.ShopBusiness.UpdateTime = result.UpdateTime
+                                    break
+                                case 'ShopTakeMethod':
+                                    this.shopManagement.ShopTakeMethod.UpdateTime = result.UpdateTime
+                                    break
+                            }
+                        } else {
+                            toastr['warning'](result.Message)
+                        }
+                    }).catch(ex=>{toastr['warning'](`${ex} 保存失敗`)})
+            },
+            async getData(action) {
+                await fetch(`/Information/${action}/${this.shopManagement.ShopId}`).
+                    then(r => r.json()).then(r => {
+                        this.inputturn()
+                        const result = JSON.parse(r)
+                        switch (action) {
+                            case 'CreateShop':
+                                this.shopManagement.ShopInfo = result.ShopInfo
+                                this.shopManagement.ShopBusiness = result.ShopBusiness
+                                this.shopManagement.ShopTakeMethod = result.ShopTakeMethod
+                                break
+                            case 'RemoveShop':
+                                if(result.IsSuccess){
+                                    this.show=false
+                                    this.inputturn()
+                                    this.shopManagement.ShopInfo = null
+                                    this.shopManagement.ShopBusiness = null
+                                    this.shopManagement.ShopTakeMethod = null
+                                    this.shopManagement.Shops=this.shopManagement.Shops.filter(x=>x.value!=this.shopManagement.ShopId)
+                                    toastr['success'](result.Message)
+                                }else{toastr['warning'](result.Message)}
+                                break
+                            case 'ShowShop':
+                                this.shopManagement.ShopInfo = result.ShopInfo
+                                this.shopManagement.ShopBusiness = result.ShopBusiness
+                                this.shopManagement.ShopTakeMethod = result.ShopTakeMethod
+                                break
+                            case 'ShopInfo':
+                                this.shopManagement.ShopInfo = result
+                                break
+                            case 'ShopBusiness':
+                                this.shopManagement.ShopBusiness = result
+                                break
+                            case 'ShopTakeMethod':
+                                this.shopManagement.ShopTakeMethod = result
+                                break
+                        }
+                    }).catch(ex=>{toastr['warning'](`${ex} 資料獲取失敗`)})
+            },
+            async showShop(){
+                this.tabIndex=0
+                await this.getData('ShowShop')
+                this.inputturn()
+                this.createBtn=false
+                this.show=true
+            },
+            async createShop(){
+                this.tabIndex=0
+                this.shopManagement.ShopId=0
+                await this.getData('CreateShop')
+                this.createBtn=true
+                this.show=true
+            },
+            removeShop(){
+                this.$bvModal.msgBoxConfirm('確定刪除此店家?', {
+                    title: '警告',
+                    size: 'sm',
+                    okVariant: 'danger',
+                    okTitle: '確定',
+                    cancelTitle: '取消',
+                    footerClass: 'p-2',
+                    hideHeaderClose: false,
+                    centered: true
+                }).then(value => {
+                    if(value){
+                        this.getData('RemoveShop')
+                        this.tabIndex=0
+                    }
+                }).catch(ex=>{toastr['warning'](`${ex} 刪除失敗`)})
+            },
+            cancelCreate(){
+                this.inputturn()
+                this.show=false
+            },
+            dremove(index){
+                this.shopManagement.ShopTakeMethod.DeliveryConditions.splice(index, 1)
+            },
+            create(){
+                this.shopManagement.ShopTakeMethod.DeliveryConditions.push({Id:0,DeliveryTime:'0',PriceThreshold:'0',LowerDistance:'0',HigherDistance:null,DeliveryFee:'0',_showDetails: true})
+            },
+            tab(idx) {
+                if (this.inputOff == false && idx !== this.tabIndex) { return true }
+                return false
+            },
+            inputturn() {
+                this.inputOff = !this.inputOff;
+            },
+        },
+    })
+
+</script>
+}
+
+

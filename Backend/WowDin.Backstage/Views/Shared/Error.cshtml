@@ -1,0 +1,17 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container-fluid">
+    <!-- 404 Error Text -->
+    <div class="text-center">
+        @*<div class="error mx-auto" data-text="404">發生錯誤</div>*@
+        <p class="text-gray-500 mb-0">@ViewData["Exception"]</p>
+        <a href="index.html">&larr; Back to Dashboard</a>
+    </div>
+
+</div>
+
+@*<h2>@ViewData["Exception"]</h2>*@
+

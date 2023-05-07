@@ -1,0 +1,442 @@
+﻿@{
+    ViewData["Title"] = "折價券管理";
+    var baseUrl = (string)ViewData["BaseUrl"];
+    var brandId = (int)ViewData["BrandId"];
+}
+
+@section endJS {
+    <script>
+        const API_BASE_URL = "@baseUrl"
+        const brandId = @brandId
+    </script> 
+
+    <script src="~/js/Coupon/Coupon_v2.js"></script>
+}
+
+<div id="app" v-cloak>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">折價券管理</h6>
+        </div>
+        <div class="row p-4">
+            <div class="col-12">
+                <b-row id="base_controls" class="py-4 align-items-center">
+                    <b-col lg="6" class="my-1">
+                        <b-button v-b-modal.modal-create variant="success" class="p-2">
+                            <b-icon icon="plus-square" aria-hidden="true"></b-icon>
+                            新增優惠
+                        </b-button>
+                        <b-button v-if="passedCoupons.length!=0" variant="warning" v-on:click="switchAll" class="p-2">
+                            關閉所有已過期的代碼
+                        </b-button>
+                    </b-col>
+
+                    <b-col lg="6" class="my-1 d-flex justify-content-end">
+                        <b-form-group label="關鍵字搜尋" label-for="filter-input" label-cols-sm="4" label-align-sm="right" label-size="sm" class="mb-0">
+                            <b-input-group size="sm">
+                                <b-form-input id="filter-input" v-model="filter" type="search" placeholder="請輸入關鍵字"></b-form-input>
+                                <b-input-group-append>
+                                    <b-button :disabled="!filter" v-on:click="filter = ''">
+                                        清除
+                                    </b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+                    
+                </b-row>
+
+                <b-tabs content-class="pt-2 pb-2 px-2" fill v-model="tabIndex">
+                    <b-tab active>
+                        <template #title>
+                            <b-icon icon="check-square-fill" aria-hidden="true"></b-icon>
+                            <strong>開放兌換</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="openPerPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="openCurrentPage" :total-rows="openTotalRows" :per-page="openPerPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table
+                            :items="openItems" 
+                            :fields="fields" 
+                            :current-page="openCurrentPage" 
+                            :per-page="openPerPage" 
+                            :filter="filter" 
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy" 
+                            responsive="sm" 
+                            stacked="md"
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+                                <template #cell(actions)="row">
+                                    @* <b-button variant="primary" size="sm" v-on:click="editCoupon(row.item)" class="mr-1">
+                                        編輯內容
+                                    </b-button> *@
+                                    <b-button variant="info" size="sm" v-on:click="row.toggleDetails" class="mr-1">
+                                        查看詳情
+                                    </b-button>
+                                    <b-button variant="danger" size="sm" v-on:click="switchStatus(row.item)" class="mr-1">
+                                        停止兌換
+                                    </b-button>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <ul>
+                                            <li>優惠名稱: {{ row.item['couponName'] }}</li>
+                                            <li>適用店家: {{ row.item['shopName'] }}</li>
+                                            <li v-if="row.item.type==1">適用商品: {{ row.item['products'] }}</li>
+                                            <li>優惠說明: {{ row.item['description'] == '' ? '-無詳細說明-' : row.item['description']}}</li>
+                                        </ul>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+                    <b-tab>
+                        <template #title>
+                            <b-icon icon="x-square-fill" aria-hidden="true"></b-icon>
+                            <strong>停止兌換</strong>
+                        </template>
+                        <b-row class="my-4 justify-content-end align-items-center">
+                            <b-col lg="6" class="my-1">
+                                <b-form-group label="每頁顯示筆數" label-for="per-page-select" label-cols-lg="9" content-cols="3" label-align-sm="right" label-size="sm" class="mb-0">
+                                    <b-form-select id="per-page-select" v-model="closePerPage" :options="pageOptions" size="sm"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col lg="6" class="ml-auto">
+                                <b-pagination v-model="closeCurrentPage" :total-rows="closeTotalRows" :per-page="closePerPage" align="fill" size="sm" class="my-0">
+                                </b-pagination>
+                            </b-col>
+                        </b-row>
+                        <b-overlay :show="isBusy" rounded="sm">
+                            <!-- Main table element -->
+                            <b-table 
+                            :items="closeItems" 
+                            :fields="fields" 
+                            :current-page="closeCurrentPage" 
+                            :per-page="closePerPage" 
+                            :filter="filter"
+                            :filter-included-fields="filterOn" 
+                            :sort-by.sync="sortBy"
+                            responsive="sm" 
+                            stacked="md" 
+                            show-empty
+                            :tbody-tr-class="endtimePassClass"
+                            small 
+                            >
+
+                                <template #cell(number)="row" class="border-right">
+                                    <span>{{ row.index + 1 }}.</span>
+                                </template>
+
+                                <template #cell(actions)="row">
+                                    @* <b-button variant="primary" size="sm" v-on:click="editCoupon(row.item)" class="mr-1">
+                                        編輯內容
+                                    </b-button> *@
+                                    <b-button variant="info" size="sm" v-on:click="row.toggleDetails" class="mr-1">
+                                        查看詳情
+                                    </b-button>
+                                    <b-button variant="success" size="sm" v-on:click="switchStatus(row.item)" class="mr-1">
+                                        開放兌換
+                                    </b-button>
+                                </template>
+                                <template #row-details="row">
+                                    <b-card class="bg_page">
+                                        <ul>
+                                            <li>優惠名稱: {{ row.item['couponName'] }}</li>
+                                            <li>適用店家: {{ row.item['shopName'] }}</li>
+                                            <li v-if="row.item.type==1">適用商品: {{ row.item['products'] }}</li>
+                                            <li>優惠說明: {{ row.item['description'] == '' ? '-無詳細說明-' : row.item['description']}}</li>
+                                        </ul>
+                                    </b-card>
+                                </template>
+                            </b-table>
+                        </b-overlay>
+                    </b-tab>
+
+                </b-tabs>
+
+                <!-- Create modal -->
+                <b-modal id="modal-create" ref="modal" size="xl" title="新增優惠代碼" v-on:show="resetModal" v-on:ok="createCoupon" scrollable centered >
+                    <template v-slot:modal-ok>
+                        確定
+                    </template>
+                    <template v-slot:modal-cancel>
+                        取消
+                    </template>
+                    <form ref="form" class="row px-4" v-on:submit.stop.prevent="checkForm">
+                        <div class="col-6">
+                            <b-form-group label="優惠名稱"
+                                label-for="name-input"
+                                :invalid-feedback="formCheck.couponName.errorMsg"
+                                >
+                                <b-form-input id="name-input"
+                                    :state="formCheck.couponName.check"
+                                    v-model="newCoupon.couponName"
+                                    required></b-form-input>
+                            </b-form-group>
+                        </div>
+
+                        <div class="col-3 mt-2 d-flex justify-content-center">
+                            <div class="mx-auto">
+                                <b-form-group label="開放兌換">
+                                <b-form-checkbox v-model="newCoupon.status" switch size="lg">
+                                    <label>{{ newCoupon.status ? "開放中":"關閉中" }}</label>
+                                </b-form-checkbox>
+                                </b-form-group>
+                            </div>
+                        </div>
+
+                        <div class="col-3 mt-2">
+                            <b-form-group label="兌換數量上限">
+                                <b-input-group append="張" >
+                                    <b-form-input 
+                                        type="number"
+                                        onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                                        v-model="newCoupon.maxAmount"
+                                        center
+                                        min="1"
+                                        >
+                                    </b-form-input>
+                                </b-input-group>
+                            </b-form-group>
+                        </div>
+                                                
+                        <div class="col-8 mt-2">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b-form-group label="開始日期"
+                                        label-for="start-datepicker"
+                                        :invalid-feedback="formCheck.startTime.errorMsg"
+                                    >
+                                        <b-form-datepicker id="start-datepicker" 
+                                            v-model="newCoupon.startTime" 
+                                            :state="formCheck.startTime.check"
+                                            placeholder="選擇開始日期"
+                                            :date-disabled-fn="startDateDisabled"
+                                            class="mb-2">
+                                        </b-form-datepicker>
+                                    </b-form-group>
+                                </div>
+                                <div class="col-6">
+                                    <b-form-group label="結束日期(含)"
+                                        label-for="end-datepicker"
+                                        :invalid-feedback="formCheck.endTime.errorMsg"
+                                    >
+                                        <b-form-datepicker id="end-datepicker" 
+                                            v-model="newCoupon.endTime" 
+                                            :state="formCheck.endTime.check"
+                                            placeholder="選擇結束日期"
+                                            :date-disabled-fn="endDateDisabled"
+                                            class="mb-2">
+                                        </b-form-datepicker>
+                                    </b-form-group>
+                                </div>
+                            
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <b-form-group label="優惠類型"
+                                            label-for="codeType-input"
+                                            :invalid-feedback="formCheck.type.errorMsg"
+                                            :state="formCheck.type.check">
+                                            <b-form-radio-group 
+                                                id="codeType-input"
+                                                v-model="newCoupon.type"
+                                                :options="codeTypeOptions"
+                                                button-variant="outline-primary"
+                                                size="sm"
+                                                name="radio-btn-outline"
+                                                buttons
+                                                required
+                                                :state="formCheck.type.check"
+                                                :invalid-feedback="formCheck.type.errorMsg">
+                                            </b-form-radio-group>
+                                        </b-form-group>
+                                    </div>
+                                    <div class="col-9">
+                                        <div v-if="newCoupon.type==1" class="row">
+                                            <b-form-group label="優惠數量"
+                                                label-for="end-datepicker"
+                                                :invalid-feedback="formCheck.discountAmount.errorMsg"
+                                                :state="formCheck.discountAmount.check"
+                                                class="col-6"
+                                            >
+                                                <b-input-group prepend="折價" append="元">
+                                                    <b-form-input 
+                                                        type="number"
+                                                        onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                                                        v-model="newCoupon.discountAmount"
+                                                        required
+                                                        :state="formCheck.discountAmount.check"
+                                                        center
+                                                        min="1"
+                                                        >
+                                                    </b-form-input>
+                                                </b-input-group>
+                                            </b-form-group>
+                                            
+                                        </div>
+                                        <div v-if="newCoupon.type==2" class="row">
+                                            <b-form-group label="優惠門檻"
+                                                label-for="end-datepicker"
+                                                :state="formCheck.thresholdAmount.check"
+                                                :invalid-feedback="formCheck.thresholdAmount.errorMsg"
+                                                class="col-6"
+                                            >
+                                                <b-input-group prepend="消費滿" append="元" >
+                                                    <b-form-input 
+                                                        type="number"
+                                                        onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"
+                                                        v-model="newCoupon.thresholdAmount"
+                                                        :state="formCheck.thresholdAmount.check"
+                                                        required
+                                                        center
+                                                        min="0"
+                                                        >
+                                                    </b-form-input>
+                                                </b-input-group>
+                                            </b-form-group>
+                                            <b-form-group label="優惠數量"
+                                                label-for="end-datepicker"
+                                                :invalid-feedback="formCheck.discountAmount.errorMsg"
+                                                :state="formCheck.discountAmount.check"
+                                                class="col-6"
+                                                id="discount-hint"
+                                            >
+                                                <b-input-group prepend="總價 ×" append="倍" >
+                                                    <b-form-spinbutton v-model="newCoupon.discountAmount" :state="formCheck.discountAmount.check" min="0.01" max="0.99" step="0.01" wrap></b-form-spinbutton>
+                                                </b-input-group>
+                                            </b-form-group>
+                                            <b-popover target="discount-hint" triggers="hover" placement="bottom">
+                                                <b>不包含</b>外送費
+                                            </b-popover>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <b-form-group label="適用店面"
+                            label-for="codeType-input"
+                            :invalid-feedback="formCheck.shops.errorMsg"
+                            :state="formCheck.shops.check">
+                                <b-button v-b-modal.choose-shop>選擇店面</b-button>
+                                
+                                <b-table class="my-2" hover small head-variant="dark" :items="newCoupon.shops" :fields="selectedShopFields">
+                                    <template #cell(addProduct)="row">
+                                        <b-button variant="warning" size="sm" v-on:click="removeShop(row.index)">
+                                            刪除店面
+                                        </b-button>
+                                        <b-button variant="primary" size="sm" v-on:click="setProductModal(row.item)" v-b-modal.choose-product class="mr-1" :disabled="newCoupon.type==2 || newCoupon.type==0">
+                                            選擇產品
+                                        </b-button>
+                                    </template>
+                                    <template #cell(shopName)="row">
+                                        <div class="text-nowrap">{{ row.value }}</div>
+                                    </template>
+                                </b-table>
+                            
+                            </b-form-group>
+                            
+                        </div>
+
+                        <div class="col-12">
+                            <label for="description-textarea">優惠說明</label>
+                            <b-form-textarea
+                                id="description-textarea"
+                                v-model="newCoupon.description"
+                                placeholder="詳細描述"
+                                rows="3"
+                                max-rows="20"
+                            ></b-form-textarea>
+                        </div>
+                    </form>
+                </b-modal>
+
+                <b-modal id="choose-shop" title="選擇店面" v-on:ok="setShops" v-on:show="resetShop" scrollable>
+                    <template v-slot:modal-ok>
+                        確定
+                    </template>
+                    <template v-slot:modal-cancel>
+                        取消
+                    </template>
+                    
+                    <b-form-group>
+                        <template #label>
+                            <b-form-checkbox
+                                v-model="allSelected"
+                                :indeterminate="indeterminate"
+                                aria-describedby="shopList"
+                                aria-controls="shopList"
+                                v-on:change="toggleAll"
+                                >
+                                {{ allSelected ? '取消全選' : '全選' }}
+                            </b-form-checkbox>
+                        </template>
+                        <template v-slot="{ ariaDescribedby }">
+                            <b-form-checkbox-group
+                                id="shopList"
+                                v-model="selectedShops"
+                                :options="shopList"
+                                :aria-describedby="ariaDescribedby"
+                                name="shopList"
+                                stacked
+                            ></b-form-checkbox-group>
+                        </template>
+                    </b-form-group>
+                </b-modal>
+
+                <b-modal id="choose-product" title="選擇產品" v-on:ok="setProducts" v-on:show="resetProduct" scrollable>
+                    <template v-slot:modal-ok>
+                        確定
+                    </template>
+                    <template v-slot:modal-cancel>
+                        取消
+                    </template>
+                    <b-form-group
+                    label=""
+                    >
+                        <template #label>
+                            <b-form-input v-model="productFilter" placeholder="輸入關鍵字" class="mb-2"></b-form-input>
+                            <b-form-checkbox
+                                v-model="allSelected"
+                                :indeterminate="indeterminate"
+                                aria-describedby="productFiltered"
+                                aria-controls="productFiltered"
+                                v-on:change="toggleAllProduct"
+                                >
+                                {{ allSelected ? '取消全選' : '全選' }}
+                            </b-form-checkbox>
+                        </template>
+                        <b-form-checkbox-group
+                            id="productFiltered"
+                            v-model="selectedProducts"
+                            :options="productFiltered"
+                            name="productFiltered"
+                            stacked
+                        ></b-form-checkbox-group>
+                    </b-form-group>
+                </b-modal>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "儀錶板";
+}
+
+@section topCSS{
+    <style>
+        .chartBtn{
+                right: 0px;
+            }
+        .cardRecord{
+            height: 90%;
+        }
+        .nonOrderTitle{
+            font-family:"'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+            color: #666;
+        }
+        .nonOrder{
+            display:flex;
+            margin: auto;
+            width: 20%;
+        }
+        .nonOrderText{
+            font-size: 22px;
+        }
+    </style>
+}
+@section endJS{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+    <script src="~/js/Home/HomeIndex.js"></script>
+}
+
+<div id="index" v-cloak>
+    <h4>年度統計數據</h4>
+    <div class="row">
+        <!-- 本年度訂單總數 -->
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="cardRecord card bg-primary shadow py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="font-weight-bold text-uppercase mb-3 text-gray-200 text-lg">
+                    訂單總數
+                </div>
+                </div>
+                <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                    <i class="fas fa-clipboard-list fa-3x text-gray-200"></i>
+                </div>
+                <div class="col mr-2">
+                    <div class="h2 mb-0 font-weight-bold text-gray-200 text-right">
+                    {{YearTotalQuantity}} <span class="h6">/ 筆</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 本年度銷售額 -->
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="cardRecord card bg-warning shadow py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="font-weight-bold text-uppercase mb-3 text-gray-200 text-lg">
+                    總銷售額
+                </div>
+                </div>
+                <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-3x text-gray-200"></i>
+                </div>
+                <div class="col mr-2">
+                    <div class="h2 mb-0 font-weight-bold text-gray-200 text-right">
+                    {{ YearTotalAmount }} <span class="h6">/ 元</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 本年度熱銷產品 -->
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="cardRecord card bg-danger shadow py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="font-weight-bold text-uppercase mb-3 text-gray-200 text-lg">
+                    Top1熱銷產品
+                </div>
+                </div>
+                <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                    <i class="fas fa-thumbs-up fa-3x text-gray-200"></i>
+                </div>
+                <div class="col mr-2">
+                    <div class="h2 mb-0 font-weight-bold text-gray-200 text-right">
+                    {{ YearBestProduct }}
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>每日統計數據</h4>
+    <!-- Content Row -->
+    <div class="row">
+         <!-- 本日訂單數 -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="cardRecord card border-left-primary shadow py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="text-lg font-weight-bold text-primary text-uppercase mb-2">本日訂單數</div>
+                    </div>
+                    <div class="row no-gutters align-items-end">       
+                        <div class="col-auto"> 
+                            <i class="fas fa-clipboard-list fa-3x text-gray-300"></i>
+                        </div>
+                        <div class="col mr-2"> 
+                            <div class="h2 mb-0 font-weight-bold text-gray-800 text-right">{{TodayTotalQuantity}}<span class="font-weight-normal fz_15">&nbsp;/筆</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 本日銷售額 -->
+          <div class="col-xl-4 col-md-6 mb-4">
+            <div class="cardRecord card border-left-warning shadow py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="text-lg font-weight-bold text-warning text-uppercase mb-2">本日銷售額</div>
+                    </div>
+                    <div class="row no-gutters align-items-end">
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-3x text-gray-300"></i>
+                        </div>
+                         <div class="col mr-2">
+                            <div class="h2 mb-0 font-weight-bold text-gray-800 text-right">{{TodayTotalAmount}}<span class="font-weight-normal fz_15">&nbsp;/元</span></div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 本日熱銷產品 -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="cardRecord card border-left-danger shadow py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="text-lg font-weight-bold text-danger text-uppercase mb-2">本日熱銷產品</div>
+                    </div>
+                    <div class="row no-gutters align-items-end">
+                        <div class="col-auto">
+                            <i class="fas fa-thumbs-up fa-3x text-gray-300"></i>
+                        </div>
+                         <div class="col mr-2">
+                            <div class="fz_18 mb-0 font-weight-bold text-gray-600 text-right">{{TodayBestProduct}}</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="mb-5 col-xl-6">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="font-weight-bold text-primary fz_18">銷售額</h6>
+            </div>
+            <div class="card-body">
+                 <b-button-group id="totalAmountType" size="sm" class="chartBtn position-absolute p-5"></b-button-group>
+                 <div id="totalAmountChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 col-xl-6">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="font-weight-bold text-primary fz_18">Top7銷量排行</h6>
+            </div>
+            <div class="card-body">
+                <b-button-group id="totalQuantityType" size="sm" class="chartBtn position-absolute p-5"></b-button-group>
+                <div id="totalQuantityChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
