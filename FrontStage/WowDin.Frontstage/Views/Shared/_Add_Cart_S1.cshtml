@@ -43,34 +43,25 @@
             </div>
             <!--揪團 modal -->
             <!--揪團 modal -->
-            <div class="row justify-content-center mb-2">
+           <div class="row justify-content-center mb-2">
                 <div class="col-12 col-sm-10 col-lg-8">
                     <div class="card rounded-1">
                         <div class="card-body">
                             <div class="row py-2 px-3">
                                 <div class="col-12">
-                                    <h4 class="fz_16 fw-bolder">購物內容</h4>
+                                    <h4 class="fz_16 fw-bolder">Cart Details</h4>
                                 </div>
                             </div>
                             
-
                             <div id="updateCartProducts">
                                 @await Html.PartialAsync("_Update_CartProducts")
                             </div>
-                           @* @foreach(var cd in Model.ProductDetailsByCart)
-                            {
-                                
-                                <div id="productListByUser" userid="@cd.UserAcountId">
-                                    @await Html.PartialAsync("_CartDetail_GroupBuyList", cd)
-                                </div>
-                            }*@
-                                
-
+  
                                 <div class="row mt-2">
                                     <div class="col-3 m-auto">
                                         <button id="reloadcartBtn" type="button" class=" btn btn-outline-secondary w-100 d-flex justify-content-evenly">
                                             <p class="mb-0 d-inline-block"><i class="fas fa-redo-alt text_gray"></i></p>
-                                            <p class="mb-0 d-inline-block">更新購物車</p>
+                                            <p class="mb-0 d-inline-block">cart details update</p>
                                         </button>
                                     </div>
                                 </div>
