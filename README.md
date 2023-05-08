@@ -29,7 +29,7 @@ The order process includes obtaining items from the shopping cart, filling out o
 
 The methods inside the Service use **transactions with try-catch blocks** to ensure data Atomicity and Consistency. In case of operation failure, it performs a rollback. For example, in the OrderService, the CreateOrder method needs to perform create, update, and delete actions on multiple tables to add the order and order details table, update the coupon table, and delete the shopping cart table. Each action must complete to ensure data integrity. Below is the code for the CreateOrder method:
 
-```c#
+```c#:
 public OperationResult CreateOrder(AddCartDetailsInputDto input)
         {
             //create order
@@ -148,7 +148,7 @@ public OperationResult CreateOrder(AddCartDetailsInputDto input)
 ## Using partial views to reduce duplicate code and enhance user experience
 Using partial views reduces code duplication and increases flexibility, making the code more manageable, readable, and improving the user experience. For example, if an order page has many duplicate cards with only some differing data, a partial view can render and pass in different parameters for each card. Here's an example of the order card partial view code:
 
-```html
+```html:
 @model WowDin.Frontstage.Models.ViewModel.Order.OrdersViewModel
 
 @{
@@ -186,7 +186,7 @@ Using partial views reduces code duplication and increases flexibility, making t
 
 In the shopping cart page, only a portion of the page needs updating. Using partial views, users can obtain the products ordered by other members of the group without having to refresh the entire page, improving the shopping experience. Here's an example of the cart details update code:
 
-```html
+```html:
 <div class="row justify-content-center mb-2">
     <div class="col-12 col-sm-10 col-lg-8">
         <div class="card rounded-1">
@@ -217,6 +217,4 @@ In the shopping cart page, only a portion of the page needs updating. Using part
 ## Streamlining Website Testing with Automated Selenium Testing
 
 ## Ensuring Collaborative Efficiency and Application Quality with Azure DevOps
-
-
 
