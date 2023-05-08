@@ -24,6 +24,7 @@ The order process includes obtaining items from the shopping cart, filling out o
 
 ## Ensuring Successful Multi-Table CUD Operations with Transactions and Rollback on Failure
 
+
 ## Using Redis to Improve Website Data Access Performance
 
 ## Using partial views to reduce duplicate code and enhance user experience
