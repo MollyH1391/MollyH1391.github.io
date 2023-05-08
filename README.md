@@ -9,9 +9,18 @@ The project was developed using **ASP.NET Core MVC**, with a layered architectur
 
 **Selenium** was used for web testing, with test methods written to simulate user behavior, increasing testing efficiency and reducing the likelihood of human error. Finally, Azure DevOps **blue-green deployment** was utilized to enhance rollback capability and reduce risk when adding or modifying the application.
 
-## The design logic of Repository Pattern + Service Layer
+## The design logic of Software Layered Architecture Pattern
+[image]
+This project adopts a layered architecture pattern that follows the principles of single responsibility and separation of concerns, which increases code reusability. and improves team collaboration efficiency. It consists of four layers: 
+  - Presentation Layer (Controller): Handles client requests, calls the Service Layer, and returns ViewModels.
+  - Business Layer (Service): Focuses on processing business logic, calls the Repository Layer, and returns Data Transfer Objects (DTOs) to the Controller.
+  - Data Layer (Repository): Specializes in handling database operations.
+  - Common Layer: Includes shared Enums and Exception Filters across modules
+This architecture greatly facilitates the separation of concerns in the development process, minimizes conflicts in collaboration, and demonstrates significant benefits in multi-person projects.
 
 ## Order Placement Process
+[image]
+The order process includes obtaining items from the shopping cart, filling out ordering information, choosing payment method (credit card or cash), completing the order, and customer feedback.
 
 ## Ensuring Successful Multi-Table CUD Operations with Transactions and Rollback on Failure
 
