@@ -795,7 +795,7 @@ namespace WowDin.Frontstage.Services.Order
                             Discount = input.CouponId == null ? 0 : coupon.First(c => c.CouponId == input.CouponId).DiscountAmount
                         };
 
-                        //如果是滿額折才走這裡
+                        //order with coupon
                         if (input.CouponId != null)
                         {
                             if (coupon.First(c => c.CouponId == input.CouponId).DiscountType == (int)CouponEnum.CouponType.Storewide)
@@ -807,7 +807,7 @@ namespace WowDin.Frontstage.Services.Order
                         _repository.Create<Models.Entity.Order>(orderEntity);
                         _repository.Save();
 
-                        //update coupon state 已使用 Transfer
+                        //update coupon status
                         if (input.CouponId != null) 
                         {
                             var targetCouponContainer = _repository.GetAll<CouponContainer>().FirstOrDefault(cc => cc.UserAccountId == input.UserAccountId && cc.CouponId == input.CouponId);
@@ -847,14 +847,14 @@ namespace WowDin.Frontstage.Services.Order
 
                         if (orderEntity.PaymentType == 0)
                         {
-                            //刪除購物車明細
+                            //delete cart details
                             foreach (var cd in cartdetails)
                             {
                                 _repository.Delete<CartDetail>(cd);
                             }
                                 _repository.Save();
 
-                            //刪除購物車
+                            //delete cart
                             _repository.Delete<Cart>(cart);
                             _repository.Save();
                         }
@@ -864,7 +864,7 @@ namespace WowDin.Frontstage.Services.Order
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    result.Message = "訂單建立失敗";
+                    result.Message = "Failed to create order";
                     return result;
                 }
             }

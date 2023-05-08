@@ -24,6 +24,121 @@ The order process includes obtaining items from the shopping cart, filling out o
 
 ## Ensuring Successful Multi-Table CUD Operations with Transactions and Rollback on Failure
 
+The methods inside the Service use transactions with try-catch blocks to ensure data Atomicity and Consistency. In case of operation failure, it performs a rollback. For example, in the OrderService, the CreateOrder method needs to perform create, update, and delete actions on multiple tables to add the order and order details table, update the coupon table, and delete the shopping cart table. Each action must complete to ensure data integrity. Below is the code for the CreateOrder method:
+
+```c#
+public OperationResult CreateOrder(AddCartDetailsInputDto input)
+        {
+            //create order
+            var result = new OperationResult();
+            var cart = _repository.GetAll<Cart>().FirstOrDefault(c => c.CartId == input.CartId);
+            var cartdetails = _repository.GetAll<CartDetail>().Where(cd => cd.CartId == input.CartId).ToList();
+            var coupon = _repository.GetAll<Coupon>().Where(c => c.ShopId == input.ShopId).ToList();
+
+            if (cart != null && cartdetails != null)
+            {
+                using (var transaction = _repository._context.Database.BeginTransaction())
+                try
+                {
+                        var orderEntity = new Models.Entity.Order()
+                        {
+                            UserAcountId = input.UserAccountId,
+                            OrderDate = input.OrderDate,
+                            PickUpTime = input.PickUpTime,
+                            ShopId = input.ShopId,
+                            TakeMethodId = (int)input.TakeMethodId,
+                            Message = input.Message,
+                            OrderState = (int)input.OrderState,
+                            PaymentType = (int)input.PaymentType,
+                            PayState = (int)input.PayState,
+                            CouponId = input.CouponId,
+                            City = input.City,
+                            District = input.District,
+                            Address = input.Address,
+                            UpdateDate = input.UpdateDate,
+                            OrderStamp = input.OrderStamp,
+                            Vatnumber = input.VATNumber,
+                            DeliveryFee = input.DeliveryFee,
+                            Discount = input.CouponId == null ? 0 : coupon.First(c => c.CouponId == input.CouponId).DiscountAmount
+                        };
+
+                        //order with coupon
+                        if (input.CouponId != null)
+                        {
+                            if (coupon.First(c => c.CouponId == input.CouponId).DiscountType == (int)CouponEnum.CouponType.Storewide)
+                            {
+                                orderEntity.Discount = Math.Ceiling((decimal.Parse(input.FinalPrice) - (decimal)input.DeliveryFee) * (1 - coupon.First(c => c.CouponId == input.CouponId).DiscountAmount));
+                            }
+                        }
+
+                        _repository.Create<Models.Entity.Order>(orderEntity);
+                        _repository.Save();
+
+                        //update coupon status
+                        if (input.CouponId != null) 
+                        {
+                            var targetCouponContainer = _repository.GetAll<CouponContainer>().FirstOrDefault(cc => cc.UserAccountId == input.UserAccountId && cc.CouponId == input.CouponId);
+                            if (targetCouponContainer != null)
+                            { 
+                                targetCouponContainer.CouponState = (int)CouponContainerEnum.CouponState.Used;
+                                _repository.Update(targetCouponContainer);
+                                _repository.Save();
+                            }
+                        }
+
+                        //create orderdetails
+                        var product = _repository.GetAll<Product>();
+                        var orderid = _repository.GetAll<Models.Entity.Order>().FirstOrDefault(o => o.OrderStamp == input.OrderStamp).OrderId;
+
+                        if (orderid.ToString() != null)
+                        {
+                            var orderdetailsList = cartdetails.Select(cd => new OrderDetail()
+                            {
+                                OrderId = orderid,
+                                UserAccountId = cd.UserAccountId,
+                                ProductName = product.First(p => p.ProductId == cd.ProductId).Name,
+                                UnitPrice = cd.UnitPrice,
+                                Discount = 0,
+                                Quantity = (short)cd.Quantity,
+                                Note = cd.Note,
+
+                            });
+
+
+                            foreach (var entity in orderdetailsList)
+                            {
+                                _repository.Create<OrderDetail>(entity);
+                            }
+                                _repository.Save();
+                        }
+
+                        if (orderEntity.PaymentType == 0)
+                        {
+                            //delete cart details
+                            foreach (var cd in cartdetails)
+                            {
+                                _repository.Delete<CartDetail>(cd);
+                            }
+                                _repository.Save();
+
+                            //delete cart
+                            _repository.Delete<Cart>(cart);
+                            _repository.Save();
+                        }
+
+                        transaction.Commit();
+                    }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    result.Message = "Failed to create order";
+                    return result;
+                }
+            }
+
+            return result;
+        }
+```
 
 ## Using Redis to Improve Website Data Access Performance
 
