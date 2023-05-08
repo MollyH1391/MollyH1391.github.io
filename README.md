@@ -11,7 +11,8 @@ The project was developed using **ASP.NET Core MVC**, with a layered architectur
 
 ## The design logic of Software Layered Architecture Pattern
 ![Software Layered Architecture](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/layered_architecture.PNG)
-This project adopts a layered architecture pattern that follows the principles of single responsibility and separation of concerns, which increases code reusability. and improves team collaboration efficiency. It consists of four layers: 
+
+This project adopts a **layered architecture pattern** that follows the principles of single responsibility and separation of concerns, which increases code reusability. and improves team collaboration efficiency. It consists of four layers: 
   - Presentation Layer (Controller): Handles client requests, calls the Service Layer, and returns ViewModels.
   - Business Layer (Service): Focuses on processing business logic, calls the Repository Layer, and returns Data Transfer Objects (DTOs) to the Controller.
   - Data Layer (Repository): Specializes in handling database operations.
@@ -19,12 +20,13 @@ This project adopts a layered architecture pattern that follows the principles o
 This architecture greatly facilitates the separation of concerns in the development process, minimizes conflicts in collaboration, and demonstrates significant benefits in multi-person projects.
 
 ## Order Placement Process
-![Order Placement Process](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/order_process.PNG)
 The order process includes obtaining items from the shopping cart, filling out ordering information, choosing payment method (credit card or cash), completing the order, and customer feedback.
+
+![Order Placement Process](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/order_process.PNG)
 
 ## Ensuring Successful Multi-Table CUD Operations with Transactions and Rollback on Failure
 
-The methods inside the Service use transactions with try-catch blocks to ensure data Atomicity and Consistency. In case of operation failure, it performs a rollback. For example, in the OrderService, the CreateOrder method needs to perform create, update, and delete actions on multiple tables to add the order and order details table, update the coupon table, and delete the shopping cart table. Each action must complete to ensure data integrity. Below is the code for the CreateOrder method:
+The methods inside the Service use **transactions with try-catch blocks** to ensure data Atomicity and Consistency. In case of operation failure, it performs a rollback. For example, in the OrderService, the CreateOrder method needs to perform create, update, and delete actions on multiple tables to add the order and order details table, update the coupon table, and delete the shopping cart table. Each action must complete to ensure data integrity. Below is the code for the CreateOrder method:
 
 ```c#
 public OperationResult CreateOrder(AddCartDetailsInputDto input)
