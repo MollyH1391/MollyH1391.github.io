@@ -194,7 +194,12 @@ One of the challenges encountered in this project was the slow loading speed of 
 ```
 
 ## Streamlining Website Testing with Automated Selenium Testing
+The frontstage project utilizes Selenium for implementing automated website testing, saving testing time and reducing human errors. The main testing focuses on the following three items:
+    - Login is required before ordering: if the user is not logged in, they will be redirected to the login page.
+    - Multiple group-buying items can be added to the cart correctly.
+    - The shopping cart amount calculation is correct.
 
+[Selenium project code](https://github.com/MollyH1391/MollyH1391.github.io/blob/e6e4a072dab6a3415b21a647fec6dc1260fe271d/Selenium/Frontstage_Order_Process_UnitTest.cs)
 
 ## Ensuring Collaborative Efficiency and Application Quality with Azure DevOps
 
