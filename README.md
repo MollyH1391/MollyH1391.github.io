@@ -149,9 +149,9 @@ public OperationResult CreateOrder(AddCartDetailsInputDto input)
 Using partial views reduces code duplication and increases flexibility, making the code more manageable, readable, and improving the user experience. For example, if an order page has many duplicate cards with only some differing data, a partial view can render and pass in different parameters for each card. Here's an example of the order card partial view code:
 
 ``` html:
-&#64; model WowDin.Frontstage.Models.ViewModel.Order.OrdersViewModel
+model WowDin.Frontstage.Models.ViewModel.Order.OrdersViewModel
 
-&#64; {
+{
     ViewData["Title"] = "­q³æ";
 }
 
@@ -161,14 +161,14 @@ Using partial views reduces code duplication and increases flexibility, making t
 
 <div class="row">
 
-	&#64; if(Model.IsOrderExist)
+	if(Model.IsOrderExist)
 	{
 		foreach (var od in Model.OrderListByUser)
 		{
 			<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center ">
 				<div id="cart_card cart_order_complete" class="card mb-3 w-100">
-					<a href="/Order/OrderDetail/&#64;od.OrderId" class="text-decoration-none">
-						&#64; await Html.PartialAsync("_Order_Card_Partial", od)
+					<a href="/Order/OrderDetail/od.OrderId" class="text-decoration-none">
+						await Html.PartialAsync("_Order_Card_Partial", od)
 					</a>
 				</div>
 			</div>
@@ -197,7 +197,7 @@ In the shopping cart page, only a portion of the page needs updating. Using part
                     </div>
                 </div>         
                 <div id="updateCartProducts">
-                    &#64; await Html.PartialAsync("_Update_CartProducts")
+                    await Html.PartialAsync("_Update_CartProducts")
                 </div>
                 <div class="row mt-2">
                     <div class="col-3 m-auto">
