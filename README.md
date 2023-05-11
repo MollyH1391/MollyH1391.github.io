@@ -205,6 +205,7 @@ One of the challenges encountered in this project was the slow loading speed of 
 
 ## Streamlining Website Testing with Automated Selenium Testing
 The frontstage project utilizes Selenium for implementing automated website testing, saving testing time and reducing human errors. The main testing focuses on the following three items:
+    
     - Login is required before ordering: if the user is not logged in, they will be redirected to the login page.
     - Multiple group-buying items can be added to the cart correctly.
     - The shopping cart amount calculation is correct.
