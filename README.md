@@ -18,7 +18,7 @@
 
 The project was developed using **ASP.NET Core MVC**, with a layered architecture of **Repository Pattern + Service Layer**. The front-end utilizes JavaScript and Vue, with data retrieved through API requests using Fetch/Axios, and the back-end utilizes LINQ queries for CRUD operations. Notion was used as a project management tool to enhance schedule management and team collaboration efficiency. Additionally, GitHub and Azure DevOps were used for version control and CI/CD pipeline to ensure application quality.
 
-**Selenium** was used for web testing, with test methods written to simulate user behavior, increasing testing efficiency and reducing the likelihood of human error. Finally, Azure DevOps **blue-green deployment** was utilized to enhance rollback capability and reduce risk when adding or modifying the application.
+**Selenium** was used for web testing, with test methods written to simulate user behavior, increasing testing efficiency and reducing the likelihood of human error. Finally, **Azure DevOps** was utilized to automated build and enabled **blue-green deployment**, achieving efficient collaborative development and deployment, reducing code conflicts and streamlining processes, enhancing application availability, and improving overall efficiency.
 
 ## The design logic of Software Layered Architecture Pattern
 
@@ -27,6 +27,7 @@ This project adopts a **layered architecture pattern** that follows the principl
   - Business Layer (Service): Focuses on processing business logic, calls the Repository Layer, and returns Data Transfer Objects (DTOs) to the Controller.
   - Data Layer (Repository): Specializes in handling database operations.
   - Common Layer: Includes shared Enums and Exception Filters across modules
+
 This architecture greatly facilitates the separation of concerns in the development process, minimizes conflicts in collaboration, and demonstrates significant benefits in multi-person projects.
 
 ![Software Layered Architecture](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/layered_architecture.PNG)
