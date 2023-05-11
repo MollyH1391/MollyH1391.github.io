@@ -2,7 +2,18 @@
 
 ## Table of Content
 
+1. [Summary of WowDin's Development and Achievements](https://github.com/MollyH1391/MollyH1391.github.io#summary-of-wowdins-development-and-achievements)
+2. [The design logic of Software Layered Architecture Pattern](https://github.com/MollyH1391/MollyH1391.github.io#the-design-logic-of-software-layered-architecture-pattern)
+3. [Order Placement Process](https://github.com/MollyH1391/MollyH1391.github.io#order-placement-process)
+4. [Maintaining Data Integrity with Service Transactions and Rollback Mechanisms](https://github.com/MollyH1391/MollyH1391.github.io#maintaining-data-integrity-with-service-transactions-and-rollback-mechanisms)
+5. [Using partial views to reduce duplicate code and enhance user experience](https://github.com/MollyH1391/MollyH1391.github.io#using-partial-views-to-reduce-duplicate-code-and-enhance-user-experience)
+6. [Using refactoring and the AsNoTracking method to improve web page performance](https://github.com/MollyH1391/MollyH1391.github.io#using-refactoring-and-the-asnotracking-method-to-improve-web-page-performance)
+7. [Streamlining Website Testing with Automated Selenium Testing](https://github.com/MollyH1391/MollyH1391.github.io#streamlining-website-testing-with-automated-selenium-testing)
+8. [Ensuring Collaborative Efficiency and Application Quality with Azure DevOps](https://github.com/MollyH1391/MollyH1391.github.io#ensuring-collaborative-efficiency-and-application-quality-with-azure-devops)
+9. [WowDin Food Ordering Platform Website](https://github.com/MollyH1391/MollyH1391.github.io#wowdin-food-ordering-platform-website)
+
 ## Summary of WowDin's Development and Achievements
+
 WowDin is an **online food ordering platform project that replicates a real-life website**, which was completed within three-month in a seven-month microsoft funded bootcamp. The project includes a platform administrator, store management, and ordering web pages, providing a complete shopping process. This article will summarize the important technical details of the **Order module** and showcase the achievements.
 
 The project was developed using **ASP.NET Core MVC**, with a layered architecture of **Repository Pattern + Service Layer**. The front-end utilizes JavaScript and Vue, with data retrieved through API requests using Fetch/Axios, and the back-end utilizes LINQ queries for CRUD operations. Notion was used as a project management tool to enhance schedule management and team collaboration efficiency. Additionally, GitHub and Azure DevOps were used for version control and CI/CD pipeline to ensure application quality.
@@ -21,6 +32,7 @@ This architecture greatly facilitates the separation of concerns in the developm
 ![Software Layered Architecture](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/layered_architecture.PNG)
 
 ## Order Placement Process
+
 The order process includes obtaining items from the shopping cart, filling out ordering information, choosing payment method (credit card or cash), completing the order, and customer feedback.
 
 ![Order Placement Process](https://github.com/MollyH1391/MollyH1391.github.io/blob/14e647e9f14598559f6cddb898e06eba6d07f434/GUI/order_process.PNG)
@@ -143,8 +155,6 @@ public OperationResult CreateOrder(AddCartDetailsInputDto input)
         }
 ```
 
-## Using Redis to Improve Website Data Access Performance
-
 ## Using partial views to reduce duplicate code and enhance user experience
 Using partial views reduces code duplication and increases flexibility, making the code more manageable, readable, and improving the user experience. For example, if an order page has many duplicate cards with only some differing data, a partial view can render and pass in different parameters for each card. Here's an example of the order card partial view code:
 
@@ -217,5 +227,6 @@ The following is the pull request process:
 ![pull request](https://github.com/MollyH1391/MollyH1391.github.io/blob/bd4c253ae0e637c2c5870607db07adaba0915c9c/GUI/PR_demo.gif)
 
 ## WowDin Food Ordering Platform Website
-The initial website access may take a longer time.
+Take a look at the website and see what you and your friends want to order for a meal! (It may take a bit longer the first time you visit.)
+
 [WowDin Food Ordering Platform](https://wowdin.azurewebsites.net)
