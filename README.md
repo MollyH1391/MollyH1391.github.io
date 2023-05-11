@@ -148,20 +148,50 @@ public OperationResult CreateOrder(AddCartDetailsInputDto input)
 ## Using partial views to reduce duplicate code and enhance user experience
 Using partial views reduces code duplication and increases flexibility, making the code more manageable, readable, and improving the user experience. For example, if an order page has many duplicate cards with only some differing data, a partial view can render and pass in different parameters for each card. Here's an example of the order card partial view code:
 
-[orders view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Order/Index.cshtml)
+[Orders View](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Order/Index.cshtml)
 
-![orders](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/order_index.PNG)
+![Orders](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/order_index.PNG)
 
-[order cards partial view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Order_Card_Partial.cshtml)
+[Order Cards Partial View](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Order_Card_Partial.cshtml)
 
 In the shopping cart page, only a portion of the page needs updating. Using partial views, users can obtain the products ordered by other members of the group without having to refresh the entire page, improving the shopping experience. Here's an example of the cart details update code:
 
-[cart product list view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Add_Cart_S1.cshtml)
+[Cart Product List View](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Add_Cart_S1.cshtml)
 
-![cart product list](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/update_productlist.PNG)
+![Cart Product List](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/update_productlist.PNG)
 
-[card products partial view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_CartDetail_GroupBuyList.cshtml)
+[Card Products Partial View](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_CartDetail_GroupBuyList.cshtml)
+
 ## Using refactoring and the AsNoTracking method to improve web page performance
+One of the challenges encountered in this project was the slow loading speed of a brand's order page in the backstage system. After researching, it was found that the slow performance was due to slow data retrieval. To address this, the code was refactored using **select.contains()** to retrieve the necessary order data first and then using the **AsNoTracking** method to disconnect Entity Framework tracking, resulting in improved performance. As a result, the page loading speed was improved from the original 2.9 minutes to 2.6 seconds.
+
+```
+ public IEnumerable<GetAllOrderDetailsByBrandVM> GetAllOrderDetailsByBrand(int brandId)
+        {
+            var brand = _repository.GetAll<Brand>().First(b => b.BrandId == brandId);
+            var shops = _repository.GetAll<Shop>().Where(s => s.BrandId == brandId && s.State != (int)ShopEnum.StateEnum.Remove).AsNoTracking().ToList();
+            var order = _repository.GetAll<Order>().Where(o => shops.Select(s => s.ShopId).Contains(o.ShopId)).OrderByDescending(de => de.OrderDate).AsNoTracking().ToList();
+            var paymentNotComplete = order.Where(o => o.PaymentType == 1 && o.PayDate == null);
+            List<Order> orderListComplete = new List<Order>();
+            if (paymentNotComplete != null)
+            {
+                orderListComplete = order.Except(paymentNotComplete).OrderByDescending(ol => ol.OrderDate).ToList();
+            }
+            else 
+            {
+                orderListComplete = order;
+            }
+            var orderdetail = _repository.GetAll<OrderDetail>().Where(od => orderListComplete.Select(o => o.OrderId).Contains(od.OrderId)).AsNoTracking().ToList();
+            var user = _repository.GetAll<UserAccount>().Where(u => orderdetail.Select(od => od.UserAccountId).Contains(u.UserAccountId)).AsNoTracking().ToList();
+            var coupon = _repository.GetAll<Coupon>().Where(c => shops.Select(s => s.ShopId).Contains(c.ShopId)).ToList();
+            var orderdetails = orderListComplete.Select(o => new GetAllOrderDetailsByBrandVM()
+            {
+                ...
+            }).ToList();     
+
+            return orderdetails;
+        }
+```
 
 ## Streamlining Website Testing with Automated Selenium Testing
 
