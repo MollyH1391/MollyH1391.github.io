@@ -211,8 +211,11 @@ This project has implemented Azure DevOps pull requests, automated builds, and b
 In addition, blue-green deployment can smoothly deploy new versions of the application to production environments without interrupting existing services and has convenient rollback features, achieving high application availability and automating the deployment process, thereby improving development and deployment efficiency.
 
 The following is the Azure DevOps process:
-
+![Azure DevOps](https://github.com/MollyH1391/MollyH1391.github.io/blob/bd4c253ae0e637c2c5870607db07adaba0915c9c/GUI/pipeline_demo.gif)
 
 The following is the pull request process:
+![pull request](https://github.com/MollyH1391/MollyH1391.github.io/blob/bd4c253ae0e637c2c5870607db07adaba0915c9c/GUI/PR_demo.gif)
 
-
+## WowDin Food Ordering Platform Website
+The initial website access may take a longer time.
+[WowDin Food Ordering Platform](https://wowdin.azurewebsites.net)
