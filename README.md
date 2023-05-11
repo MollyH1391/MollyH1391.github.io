@@ -201,7 +201,18 @@ The frontstage project utilizes Selenium for implementing automated website test
 
 [Selenium project code](https://github.com/MollyH1391/MollyH1391.github.io/blob/e6e4a072dab6a3415b21a647fec6dc1260fe271d/Selenium/Frontstage_Order_Process_UnitTest.cs)
 
+**Selenium video recording**
 [![WowDin Selenium Test](https://i.ytimg.com/vi/3jGH0BnLkFg/maxresdefault.jpg)](https://youtu.be/3jGH0BnLkFg "WowDin Selenium Test")
 
 ## Ensuring Collaborative Efficiency and Application Quality with Azure DevOps
+
+This project has implemented Azure DevOps pull requests, automated builds, and blue-green deployment, which effectively improves workflow coordination and enables smooth deployment of new versions of the application to production environments. Code management and version control reduce code conflicts and simplify team development processes, thereby improving collaboration efficiency. 
+
+In addition, blue-green deployment can smoothly deploy new versions of the application to production environments without interrupting existing services and has convenient rollback features, achieving high application availability and automating the deployment process, thereby improving development and deployment efficiency.
+
+The following is the Azure DevOps process:
+
+
+The following is the pull request process:
+
 
