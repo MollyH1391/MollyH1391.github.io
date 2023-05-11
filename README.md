@@ -147,11 +147,20 @@ public OperationResult CreateOrder(AddCartDetailsInputDto input)
 
 ## Using partial views to reduce duplicate code and enhance user experience
 Using partial views reduces code duplication and increases flexibility, making the code more manageable, readable, and improving the user experience. For example, if an order page has many duplicate cards with only some differing data, a partial view can render and pass in different parameters for each card. Here's an example of the order card partial view code:
-orders
-order cards partial view
+
+[orders view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Order/Index.cshtml)
+
+![orders](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/order_index.PNG)
+
+[order cards partial view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Order_Card_Partial.cshtml)
+
 In the shopping cart page, only a portion of the page needs updating. Using partial views, users can obtain the products ordered by other members of the group without having to refresh the entire page, improving the shopping experience. Here's an example of the cart details update code:
-cart product list
-card products partial view
+
+[cart product list view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_Add_Cart_S1.cshtml)
+
+![cart product list](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/GUI/update_productlist.PNG)
+
+[card products partial view](https://github.com/MollyH1391/MollyH1391.github.io/blob/5616c60922cc86523f497cca4cd13f00bbab26c8/FrontStage/WowDin.Frontstage/Views/Shared/_CartDetail_GroupBuyList.cshtml)
 ## Using refactoring and the AsNoTracking method to improve web page performance
 
 ## Streamlining Website Testing with Automated Selenium Testing
