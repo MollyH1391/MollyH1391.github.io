@@ -22,7 +22,7 @@ The project was developed using **ASP.NET Core MVC**, with a layered architectur
 
 ## The design logic of Software Layered Architecture Pattern
 
-This project adopts a **layered architecture pattern** that follows the principles of single responsibility and separation of concerns, which increases code reusability. and improves team collaboration efficiency. It consists of four layers: 
+This project adopts a layered architecture pattern that follows the principles of single responsibility and separation of concerns, which increases code reusability and improves team collaboration efficiency. It consists of four layers: 
   - Presentation Layer (Controller): Handles client requests, calls the Service Layer, and returns ViewModels.
   - Business Layer (Service): Focuses on processing business logic, calls the Repository Layer, and returns Data Transfer Objects (DTOs) to the Controller.
   - Data Layer (Repository): Specializes in handling database operations.
