@@ -231,4 +231,4 @@ The following is the pull request process:
 ## WowDin Food Ordering Platform Website
 Take a look at the website and see what you and your friends want to order for a meal! (It may take a bit longer the first time you visit.)
 
-[WowDin Food Ordering Platform](https://wowdin.azurewebsites.net)
+[WowDin Food Ordering Platform](https://bs-wowdin-front.azurewebsites.net/)
